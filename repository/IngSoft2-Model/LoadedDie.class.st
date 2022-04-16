@@ -15,7 +15,7 @@ LoadedDie class >> assertValid: aLoadedSide [
 ]
 
 { #category : #'instance creation' }
-LoadedDie class >> with: aLoadedSide [
+LoadedDie class >> sized: aLoadedSide [
 
 	self assertValid: aLoadedSide.
 
