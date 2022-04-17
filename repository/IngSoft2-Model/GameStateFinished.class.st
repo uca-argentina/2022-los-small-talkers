@@ -9,3 +9,9 @@ GameStateFinished >> printState [
 
 	^'finished'.
 ]
+
+{ #category : #updating }
+GameStateFinished >> update: gameInstance [
+	
+	Error signal: 'Cannot start another turn in a finished game'.
+]

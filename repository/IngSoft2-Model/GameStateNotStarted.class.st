@@ -9,3 +9,9 @@ GameStateNotStarted >> printState [
 	
 	^'not started'.
 ]
+
+{ #category : #updating }
+GameStateNotStarted >> update: game [
+
+	game start.
+]

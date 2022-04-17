@@ -27,13 +27,22 @@ Board class >> sized: aLength withSpaceships: aCollectionOfSpaceships [
 	^ self new initializeSized: aLength withSpaceships: aCollectionOfSpaceships.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #adding }
+Board >> addSpaceships: aCollectionOfSpaceships [
+	
+	aCollectionOfSpaceships do: [:ship |
+		leaderboard at: (ship name) put: 1.
+	].
+]
+
+{ #category : #initialization }
 Board >> associateGame: aGameInstance [ 
 	game := aGameInstance.
 ]
 
 { #category : #initialization }
 Board >> initializeSized: aLength withSpaceships: aCollectionOfSpaceships [
+
 	length := aLength.
 	leaderboard := Dictionary new.
 	aCollectionOfSpaceships do: [ :ship |
@@ -48,7 +57,7 @@ Board >> initializeWith: aLength [
 	leaderboard := Dictionary new.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'spaceship position related' }
 Board >> move: aShip forwardSquares: numberOfSquaresForward [
 	
 	|shipPosition|
@@ -67,7 +76,7 @@ Board >> move: aShip forwardSquares: numberOfSquaresForward [
 	]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'spaceship position related' }
 Board >> positionOf: aShip [
 	
 	|position|

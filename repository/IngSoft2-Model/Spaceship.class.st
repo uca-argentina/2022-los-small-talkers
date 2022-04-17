@@ -2,7 +2,8 @@ Class {
 	#name : #Spaceship,
 	#superclass : #Object,
 	#instVars : [
-		'name'
+		'name',
+		'game'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -10,6 +11,12 @@ Class {
 { #category : #'instance creation' }
 Spaceship class >> named: aName [ 
 	^ self new initializeWith: aName.
+]
+
+{ #category : #initialization }
+Spaceship >> associateGame: aGameInstance [
+
+	game := aGameInstance.
 ]
 
 { #category : #initialization }
@@ -24,4 +31,9 @@ Spaceship >> name [
 	].
 	
 	^name.
+]
+
+{ #category : #'turn starting' }
+Spaceship >> startTurn [
+	game startTurn: self.
 ]

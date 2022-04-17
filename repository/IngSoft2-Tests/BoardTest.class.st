@@ -57,9 +57,18 @@ BoardTest >> testMovingNotRegisteredSpaceshipIsInvalid [
 { #category : #tests }
 BoardTest >> testMovingRegisteredSpaceshipToGreaterOrEqualThanLastSquareChangesGameStateToFinished [
 
-	|aSpaceship aBoard|
+	|aSpaceship aBoard aGame aDiceCup|
+	aSpaceship := Spaceship new.
+	aBoard := Board sized: 10.
+	aDiceCup := DiceCup with: (LoadedDie with: 14).
+	aGame := GameInstance withShip: aSpaceship diceCup: aDiceCup board: aBoard.
 	
-	self shouldBeImplemented.
+	aSpaceship startTurn.
+	
+	self assert: (aGame printState) equals: 'finished'.
+	
+	
+
 ]
 
 { #category : #tests }
