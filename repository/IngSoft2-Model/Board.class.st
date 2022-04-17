@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'length',
-		'leaderboard'
+		'leaderboard',
+		'game'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -20,20 +21,59 @@ Board class >> sized: aLength [
 	^ self new initializeWith: aLength.
 ]
 
+{ #category : #'intance creation' }
+Board class >> sized: aLength withSpaceships: aCollectionOfSpaceships [
+	self assertValid: aLength.
+	^ self new initializeSized: aLength withSpaceships: aCollectionOfSpaceships.
+]
+
+{ #category : #'as yet unclassified' }
+Board >> associateGame: aGameInstance [ 
+	game := aGameInstance.
+]
+
+{ #category : #initialization }
+Board >> initializeSized: aLength withSpaceships: aCollectionOfSpaceships [
+	length := aLength.
+	leaderboard := Dictionary new.
+	aCollectionOfSpaceships do: [ :ship |
+		 leaderboard at: (ship name) put: 1.
+	].
+	
+]
+
 { #category : #initialization }
 Board >> initializeWith: aLength [ 
 	length := aLength.
+	leaderboard := Dictionary new.
 ]
 
-{ #category : #'spaceship registration' }
-Board >> registerMultipleSpaceships: aCollectionOfSpaceships [
-	aCollectionOfSpaceships do: 
-		[:ship |
-			leaderboard at: (ship name) put: 0  
-		].
+{ #category : #'as yet unclassified' }
+Board >> move: aShip forwardSquares: numberOfSquaresForward [
+	
+	|shipPosition|
+	
+	numberOfSquaresForward < 0 ifTrue: [ 
+		 Error signal: 'Cannot move forward negative squares'.
+	].
+	
+	shipPosition := (self positionOf: aShip) + numberOfSquaresForward .
+	
+	shipPosition >= length ifTrue: [ 
+		leaderboard at: (aShip name) put: length.
+		game end.
+	] ifFalse: [ 
+		leaderboard at: (aShip name) put: numberOfSquaresForward.
+	]
 ]
 
-{ #category : #'spaceship registration' }
-Board >> registerSingleSpaceship: aSpaceship [ 
-	self registerMultipleSpaceships: { aSpaceship }.
+{ #category : #'as yet unclassified' }
+Board >> positionOf: aShip [
+	
+	|position|
+	position := leaderboard at: (aShip name) ifAbsent: [ 
+		 Error signal: 'Cannot get position of unregistered spaceship'.
+	].
+	
+	^position.
 ]

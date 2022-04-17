@@ -16,14 +16,14 @@ DieTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage [
 
 { #category : #'tests - LoadedDie' }
 DieTest >> testLoadedDieRollsAlwaysNumberOnLoadedSide [
-	self assert: [ (LoadedDie sized: 4) roll == 4].
+	self assert: [ (LoadedDie with: 4) roll == 4].
 ]
 
 { #category : #'tests - LoadedDie' }
 DieTest >> testLoadedDieWithZeroOrNegativeLoadedSideIsInvalid [
 	
 self 
-	should: [ LoadedDie sized: 0 ] 
+	should: [ LoadedDie with: 0 ] 
 	raise: Error 
 	withMessage: 'Loaded side cannot be negative nor zero'.
 ]
@@ -31,7 +31,7 @@ self
 { #category : #'tests - RandomDie' }
 DieTest >> testRandomDieRollsNumberBetweenOneAndItself [
 	| result |
-	result := (RandomDie sized: 6) roll.
+	result := (RandomDie with: 6) roll.
 	
 	self assert: [result between: 1 and: 6].
 ]
@@ -40,7 +40,7 @@ DieTest >> testRandomDieRollsNumberBetweenOneAndItself [
 DieTest >> testRandomDieWithNumberOfSidesFewerThan3IsInvalid [
 
 	self
-		should: [ RandomDie sized:  -3 ]
+		should: [ RandomDie with:  -3 ]
 		raise: Error
 		withMessage: 'Number of sides must be greater than 2'
 ]
@@ -49,5 +49,5 @@ DieTest >> testRandomDieWithNumberOfSidesFewerThan3IsInvalid [
 DieTest >> testRandomDieWithNumberOfSidesGreaterThanTwoIsValid [
 	
 	| aRandomDie |
-	aRandomDie := RandomDie sized: 3
+	aRandomDie := RandomDie with: 3
 ]

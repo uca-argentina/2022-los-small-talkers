@@ -15,37 +15,12 @@ BoardTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage [
 ]
 
 { #category : #tests }
-BoardTest >> testAddingOneSpaceshipToBoard [
-
-	| aSpaceship aBoard |
-	aSpaceship := Spaceship new.
-	aBoard := Board sized: 5.
-	
-	aBoard registerSingleSpaceship: aSpaceship.
-
-]
-
-{ #category : #tests }
-BoardTest >> testAddingTwoSpaceshipsToBoard [
-
-	| aFirstSpaceship aBoard aSecondSpaceship |
-	aFirstSpaceship := Spaceship new.
-	aSecondSpaceship := Spaceship new.
-	aBoard := Board sized: 5.
-	
-	aBoard registerMultipleSpaceships: {aFirstSpaceship. aSecondSpaceship }.
-
-]
-
-{ #category : #tests }
 BoardTest >> testAssociatingABoardWithAGame [
 
 	|aGameInstance aBoard|
 	
 	aBoard := Board sized: 10.
-	aGameInstance := GameInstance new.
-	
-	self shouldBeImplemented.
+	aGameInstance := GameInstance board: aBoard.
 ]
 
 { #category : #tests }
@@ -74,9 +49,9 @@ BoardTest >> testMovingNotRegisteredSpaceshipIsInvalid [
 	
 	
 	self
-		should: [ aBoard move: anUnregisteredSpaceship toSquare: 6. ]
+		should: [ aBoard move: anUnregisteredSpaceship forwardSquares: 6. ]
 		raise: Error 
-		withMessage: 'Cannot move unregistered Spaceship'.
+		withMessage: 'Cannot get position of unregistered spaceship'.
 ]
 
 { #category : #tests }
@@ -90,5 +65,25 @@ BoardTest >> testMovingRegisteredSpaceshipToGreaterOrEqualThanLastSquareChangesG
 { #category : #tests }
 BoardTest >> testMovingRegisteredSpaceshipToNegativeSquarePlacesItAtStartingSquare [
 	
-	self shouldBeImplemented.
+	|aBoard aSpaceship|
+	aSpaceship := Spaceship named: 'Lebron James'.
+	aBoard := Board sized: 10 withSpaceships: { aSpaceship }.
+	
+	self 
+		should: [ aBoard move: aSpaceship forwardSquares: -6 ] 
+		raise: Error
+		withMessage: 'Cannot move forward negative squares'.
+]
+
+{ #category : #tests }
+BoardTest >> testObtainingPositionOfUnregisteredShipIsInvalid [
+
+	|aShip aBoard|
+	aShip := Spaceship new.
+	aBoard := Board sized: 10.
+	
+	self 
+		should: [ aBoard positionOf: aShip ]
+		raise: Error 
+		withMessage: 'Cannot get position of unregistered spaceship'.
 ]

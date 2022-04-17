@@ -15,7 +15,7 @@ RandomDie class >> assertValid: aNumberOfSides [
 ]
 
 { #category : #initialization }
-RandomDie class >> sized: aNumberOfSides [
+RandomDie class >> with: aNumberOfSides [
 
 	self assertValid: aNumberOfSides.
 

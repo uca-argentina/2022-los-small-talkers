@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-DiceCup class >> sized: die [
+DiceCup class >> with: die [
 	
 	^self new initializeWithAll: { die }.
 ]
