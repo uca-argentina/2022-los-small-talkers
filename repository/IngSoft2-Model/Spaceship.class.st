@@ -14,7 +14,7 @@ Spaceship class >> named: aName [
 
 { #category : #initialization }
 Spaceship >> initializeWith: aName [
-	name := #aName.
+	name := aName.
 ]
 
 { #category : #initialization }

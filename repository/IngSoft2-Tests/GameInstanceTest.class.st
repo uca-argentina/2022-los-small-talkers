@@ -14,86 +14,116 @@ GameInstanceTest >> should: aBlock raise: anErrorType withMessage: anErrorMessag
 		description: 'Test did not fail for expected reason'
 ]
 
-{ #category : #'tests - adding game parameters' }
-GameInstanceTest >> testAddingBoardWhenGameHasAlreadyStartedIsInvalid [
+{ #category : #tests }
+GameInstanceTest >> testMultipleShipsPositionsOnceGameIsFinished [
 
-	self shouldBeImplemented .
-]
+	|aSpaceshipNamedJorge aSpaceshipNamedJulian aSpaceshipNamedHernan aBoard aLoadedDie aGame winner|
+	aSpaceshipNamedJorge := Spaceship named: 'Jorge'.
+	aSpaceshipNamedJulian := Spaceship named: 'Julian'.
+	aSpaceshipNamedHernan := Spaceship named: 'Hernan'.
+	aLoadedDie := LoadedDie with: 4.
+	aBoard := Board sized: 10 withSpaceships: {aSpaceshipNamedJorge. aSpaceshipNamedJulian. aSpaceshipNamedHernan}.
 
-{ #category : #'tests - adding game parameters' }
-GameInstanceTest >> testAddingBoardWhenGameHasNotStartedIsValid [
-
-	self shouldBeImplemented.
-]
-
-{ #category : #'tests - adding game parameters' }
-GameInstanceTest >> testAddingDiceWhenGameHasAlreadyStartedIsInvalid [
-
-	self shouldBeImplemented .
-]
-
-{ #category : #'tests - adding game parameters' }
-GameInstanceTest >> testAddingDiceWhenGameHasNotStartedIsValid [
+	aGame := GameInstance withShip: {aSpaceshipNamedJorge. aSpaceshipNamedJulian. aSpaceshipNamedHernan} diceCup: aLoadedDie board: aBoard.
+	aBoard associateGame: aGame.
 	
-	self shouldBeImplemented.
+	aGame start.
+
+	aBoard move: aSpaceshipNamedJorge forwardSquares: 2.
+	aBoard move: aSpaceshipNamedJulian forwardSquares: 6.
+	aBoard move: aSpaceshipNamedHernan forwardSquares: 15.
+
+	winner := aBoard getWinner: {aSpaceshipNamedJorge. aSpaceshipNamedJulian. aSpaceshipNamedHernan}.
+	
+	self assert: [((aBoard positionOf: winner) == aBoard length) and: [((aGame state printState) match: 'finished') and: ((winner name) match: 'Hernan')]]
+	
+	
 ]
 
-{ #category : #'tests - spaceship registering' }
-GameInstanceTest >> testRegisteringOneSpaceshipWhenGameHasAlreadyStartedIsInvalid [
+{ #category : #tests }
+GameInstanceTest >> testOneShippedGameWinnerCanBeKnownOnceGameIsFinished [
 
-	self shouldBeImplemented.
+	|aRegisteredSpaceship aBoard aGame aLoadedDie winner|
+
+	aRegisteredSpaceship := Spaceship new.
+	aLoadedDie := LoadedDie with: 11.
+	aBoard := Board sized: 10 withSpaceships: {aRegisteredSpaceship}.
+	
+	aGame := GameInstance withShip: {aRegisteredSpaceship} diceCup: aLoadedDie board: aBoard.
+	aBoard associateGame: aGame.
+	
+	aGame start.
+	aBoard move: aRegisteredSpaceship forwardSquares: aLoadedDie roll.
+
+	winner := aBoard getWinner: {aRegisteredSpaceship}.
+	
+	self assert: [((aBoard positionOf: winner) == aBoard length) and: ((aGame state printState) match: 'finished')]
+	
+	
 ]
 
-{ #category : #'tests - spaceship registering' }
-GameInstanceTest >> testRegisteringOneSpaceshipWhenGameHasNotStartedIsValid [
+{ #category : #tests }
+GameInstanceTest >> testShipCannotMoveOnceGameHasFinished [
 
-	self shouldBeImplemented.
+	|aSpaceshipNamedJorge aSpaceshipNamedJulian aSpaceshipNamedHernan aBoard aLoadedDie aGame|
+	aSpaceshipNamedJorge := Spaceship named: 'Jorge'.
+	aSpaceshipNamedJulian := Spaceship named: 'Julian'.
+	aSpaceshipNamedHernan := Spaceship named: 'Hernan'.
+	aLoadedDie := LoadedDie with: 4.
+	aBoard := Board sized: 10 withSpaceships: {aSpaceshipNamedJorge. aSpaceshipNamedJulian. aSpaceshipNamedHernan}.
+
+	aGame := GameInstance withShip: {aSpaceshipNamedJorge. aSpaceshipNamedJulian} diceCup: aLoadedDie board: aBoard.
+	aBoard associateGame: aGame.
+	
+	aGame start.
+
+	aBoard move: aSpaceshipNamedJorge forwardSquares: 2.
+	aBoard move: aSpaceshipNamedJulian forwardSquares: 11.
+
+	self 
+		should: [ aBoard move: aSpaceshipNamedHernan forwardSquares: 6. ]
+		raise: Error 
+		withMessage: 'Cannot move forward if game is not started'.
+	
+	
 ]
 
-{ #category : #'tests - spaceship registering' }
-GameInstanceTest >> testRegisteringOneSpaceshipWhenThereIsNoBoardIsInvalid [ 
+{ #category : #tests }
+GameInstanceTest >> testStartedGamePlaysUntilOneSpaceshipWins [
+	|aSpaceshipNamedJorge aSpaceshipNamedJulian aSpaceshipNamedHernan aBoard aLoadedDie aGame|
+	aSpaceshipNamedJorge := Spaceship named: 'Jorge'.
+	aSpaceshipNamedJulian := Spaceship named: 'Julian'.
+	aSpaceshipNamedHernan := Spaceship named: 'Hernan'.
+	aLoadedDie := LoadedDie with: 4.
+	aBoard := Board sized: 10 withSpaceships: {aSpaceshipNamedJorge. aSpaceshipNamedJulian. aSpaceshipNamedHernan}.
 
-	self shouldBeImplemented .
+	aGame := GameInstance withShip: {aSpaceshipNamedJorge. aSpaceshipNamedJulian} diceCup: aLoadedDie board: aBoard.
+	aBoard associateGame: aGame.
+	
+	aGame start.
+
 ]
 
-{ #category : #'tests - spaceship registering' }
-GameInstanceTest >> testRegisteringTwoSpaceshipsWhenGameHasAlreadyStartedIsInvalid [
+{ #category : #tests }
+GameInstanceTest >> testTwoShippedGameWinnerCanBeKnownOnceGameIsFinished [
 
-	self shouldBeImplemented .
-]
+	|aSpaceshipNamedJorge aSpaceshipNamedJulian aBoard aLoadedDie aGame winner|
+	aSpaceshipNamedJorge := Spaceship named: 'Jorge'.
+	aSpaceshipNamedJulian := Spaceship named: 'Julian'.
+	aLoadedDie := LoadedDie with: 4.
+	aBoard := Board sized: 10 withSpaceships: {aSpaceshipNamedJorge. aSpaceshipNamedJulian}.
 
-{ #category : #'tests - spaceship registering' }
-GameInstanceTest >> testRegisteringTwoSpaceshipsWhenGameHasNotStartedIsValid [
+	aGame := GameInstance withShip: {aSpaceshipNamedJorge. aSpaceshipNamedJulian} diceCup: aLoadedDie board: aBoard.
+	aBoard associateGame: aGame.
+	
+	aGame start.
 
-	self shouldBeImplemented .
-]
+	aBoard move: aSpaceshipNamedJorge forwardSquares: 2.
+	aBoard move: aSpaceshipNamedJulian forwardSquares: 11.
 
-{ #category : #'tests - spaceship registering' }
-GameInstanceTest >> testRegisteringTwoSpaceshipsWhenThereIsNoBoardIsInvalid [ 
-
-	self shouldBeImplemented .
-]
-
-{ #category : #'tests - starting game checks' }
-GameInstanceTest >> testStartingGameWithNoBoardIsInvalid [
-
-	self shouldBeImplemented.
-]
-
-{ #category : #'tests - starting game checks' }
-GameInstanceTest >> testStartingGameWithNoDiceIsInvalid [
-
-	self shouldBeImplemented .
-]
-
-{ #category : #'tests - starting game checks' }
-GameInstanceTest >> testStartingGameWithNoSpaceshipsIsInvalid [
-
-	self shouldBeImplemented .
-]
-
-{ #category : #'tests - starting game checks' }
-GameInstanceTest >> testStartingGameWithOneSpaceshipIsValid [
-
-	self shouldBeImplemented .
+	winner := aBoard getWinner: {aSpaceshipNamedJorge. aSpaceshipNamedJulian}.
+	
+	self assert: [((aBoard positionOf: winner) == aBoard length) and: [((aGame state printState) match: 'finished') and: ((winner name) match: 'Julian')]]
+	
+	
 ]

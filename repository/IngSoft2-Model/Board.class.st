@@ -31,6 +31,20 @@ Board >> game [
 	^ game
 ]
 
+{ #category : #'as yet unclassified' }
+Board >> getSpaceshipsPositions [
+
+	^leaderboard  
+]
+
+{ #category : #'accessing - attributes' }
+Board >> getWinner: aCollectionOfSpaceships [
+	
+	|winnerName|
+	winnerName := leaderboard keyAtValue: length.
+	^aCollectionOfSpaceships detect: [ :ship | (ship name) match: winnerName ].
+]
+
 { #category : #initialization }
 Board >> initializeSized: aLength withSpaceships: aCollectionOfSpaceships [
 	length := aLength.
@@ -39,6 +53,11 @@ Board >> initializeSized: aLength withSpaceships: aCollectionOfSpaceships [
 		 leaderboard at: (ship name) put: 1.
 	].
 	
+]
+
+{ #category : #'accessing - attributes' }
+Board >> length [
+	^ length
 ]
 
 { #category : #'as yet unclassified' }

@@ -6,7 +6,6 @@ Class {
 		'spaceships',
 		'board',
 		'diceCup',
-		'gameBoard',
 		'state'
 	],
 	#category : #'IngSoft2-Model'
@@ -22,7 +21,7 @@ GameInstance class >> withShip: aCollectionOfSpaceships diceCup: aDiceCup board:
 	^ self new initializeWithShips: aCollectionOfSpaceships diceCup: aDiceCup board: aBoard. 
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing - arguments' }
 GameInstance >> end [
 
 	state := GameStateFinished new.
@@ -36,16 +35,29 @@ GameInstance >> initializeWithBoard: aBoard [
 
 { #category : #initialization }
 GameInstance >> initializeWithShips: aCollectionOfSpaceships diceCup: aDiceCup board: aBoard [ 
-	gameBoard := aBoard.
+	board  := aBoard.
 	diceCup := aDiceCup.
 	spaceships := aCollectionOfSpaceships.
 	state := GameStateNotStarted new.
 ]
 
-{ #category : #accessing }
+{ #category : #actions }
+GameInstance >> plays: aSpaceship [ 
+		"
+	[ state printState match: 'started' ] whileTrue: [ 
+		spaceships do: [ :ship | [ state printState match: 'started' ] ifTrue: (self plays: ship)]
+	 ]"
+	
+	
+	board move: aSpaceship forwardSquares: (diceCup roll). 
+]
+
+{ #category : #'accessing - arguments' }
 GameInstance >> start [
 
 	state := GameStateStarted new.
+	
+	
 ]
 
 { #category : #'accessing - arguments' }
