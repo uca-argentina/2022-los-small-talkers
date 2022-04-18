@@ -1,11 +1,11 @@
 Class {
-	#name : #GameTest,
+	#name : #DieTest,
 	#superclass : #TestCase,
 	#category : #'IngSoft2-Tests'
 }
 
 { #category : #asserting }
-GameTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage [
+DieTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage [
 
 	^self 
 		should: aBlock 
@@ -14,13 +14,13 @@ GameTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage [
 		description: 'Test did not fail for expected reason'
 ]
 
-{ #category : #'RandomDie - tests' }
-GameTest >> testLoadedDieRollsAlwaysNumberOnLoadedSide [
+{ #category : #'tests - LoadedDie' }
+DieTest >> testLoadedDieRollsAlwaysNumberOnLoadedSide [
 	self assert: [ (LoadedDie with: 4) roll == 4].
 ]
 
-{ #category : #'RandomDie - tests' }
-GameTest >> testLoadedDieWithZeroOrNegativeLoadedSideIsInvalid [
+{ #category : #'tests - LoadedDie' }
+DieTest >> testLoadedDieWithZeroOrNegativeLoadedSideIsInvalid [
 	
 self 
 	should: [ LoadedDie with: 0 ] 
@@ -28,16 +28,16 @@ self
 	withMessage: 'Loaded side cannot be negative nor zero'.
 ]
 
-{ #category : #'RandomDie - tests' }
-GameTest >> testRandomDieRollsNumberBetweenOneAndItself [
+{ #category : #'tests - RandomDie' }
+DieTest >> testRandomDieRollsNumberBetweenOneAndItself [
 	| result |
 	result := (RandomDie with: 6) roll.
 	
 	self assert: [result between: 1 and: 6].
 ]
 
-{ #category : #'RandomDie - tests' }
-GameTest >> testRandomDieWithNumberOfSidesFewerThan3IsInvalid [
+{ #category : #'tests - RandomDie' }
+DieTest >> testRandomDieWithNumberOfSidesFewerThan3IsInvalid [
 
 	self
 		should: [ RandomDie with:  -3 ]
@@ -45,8 +45,8 @@ GameTest >> testRandomDieWithNumberOfSidesFewerThan3IsInvalid [
 		withMessage: 'Number of sides must be greater than 2'
 ]
 
-{ #category : #'RandomDie - tests' }
-GameTest >> testRandomDieWithNumberOfSidesGreaterThanTwoIsValid [
+{ #category : #'tests - RandomDie' }
+DieTest >> testRandomDieWithNumberOfSidesGreaterThanTwoIsValid [
 	
 	| aRandomDie |
 	aRandomDie := RandomDie with: 3
