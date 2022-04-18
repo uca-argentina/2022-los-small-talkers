@@ -53,12 +53,12 @@ GameInstance >> initializeWithBoard: aBoard [
 ]
 
 { #category : #initialization }
-GameInstance >> initializeWithShips: aCollectionOfShips diceCup: aDiceCup board: aBoard [
+GameInstance >> initializeWithShips: aCollectionOfSpaceships diceCup: aDiceCup board: aBoard [
 	self associateOwnGameBoardWith: aBoard.
 	dice := aDiceCup.
 	state := GameStateNotStarted new.
-	gameBoard addSpaceships: aCollectionOfShips.
-	self associateGameInstanceToShips: aCollectionOfShips.
+	gameBoard addSpaceships: aCollectionOfSpaceships.
+	self associateGameInstanceToShips: aCollectionOfSpaceships.
 ]
 
 { #category : #printing }
@@ -66,9 +66,19 @@ GameInstance >> printState [
 	^ state printState.
 ]
 
+{}
+GameInstance >> winner [
+  ^(gameBoard spaceshipAt: (gameBoard length)).
+]
+
 { #category : #'game starting' }
 GameInstance >> start [
 	state := GameStateStarted new.
+]
+
+{ #category : #'game starting' }
+GameInstance >> startAutomatedMatch [
+  self shouldBeImplemented.
 ]
 
 { #category : #'turn related' }

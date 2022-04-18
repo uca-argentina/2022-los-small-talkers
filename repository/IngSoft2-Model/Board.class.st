@@ -40,6 +40,20 @@ Board >> associateToGame: aGameInstance [
 	game := aGameInstance.
 ]
 
+{ #category : #'as yet unclassified' }
+Board >> getSpaceshipsPositions [
+
+	^leaderboard  
+]
+
+{ #category : #'accessing - attributes' }
+Board >> getWinner: aCollectionOfSpaceships [
+	
+	|winnerName|
+	winnerName := leaderboard keyAtValue: length.
+	^aCollectionOfSpaceships detect: [ :ship | (ship name) match: winnerName ].
+]
+
 { #category : #initialization }
 Board >> initializeSized: aLength withSpaceships: aCollectionOfSpaceships [
 	length := aLength.
@@ -76,11 +90,22 @@ Board >> move: aShip forwardSquares: numberOfSquaresForward [
 
 { #category : #'spaceship position related' }
 Board >> positionOf: aShip [
-	
 	|position|
 	position := leaderboard at: (aShip name) ifAbsent: [ 
 		 Error signal: 'Cannot get position of unregistered spaceship'.
 	].
 	
 	^position.
+]
+
+{ #category : #'getters' }
+Board >> length [
+  ^length.
+]
+
+{ #category : #'spaceship position related' }
+Board >> spaceshipAt: position [
+  |shipName|
+  shipName := leaderboard keyAtValue: position ifAbsent: [].
+  ^shipName.
 ]
