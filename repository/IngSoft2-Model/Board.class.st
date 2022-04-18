@@ -36,7 +36,7 @@ Board >> addSpaceships: aCollectionOfSpaceships [
 ]
 
 { #category : #initialization }
-Board >> associateGame: aGameInstance [ 
+Board >> associateToGame: aGameInstance [ 
 	game := aGameInstance.
 ]
 

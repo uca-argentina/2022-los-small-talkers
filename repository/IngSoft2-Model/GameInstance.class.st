@@ -17,20 +17,27 @@ GameInstance class >> board: aBoard [
 
 { #category : #'instance creation' }
 GameInstance class >> withShip: aSpaceship diceCup: aDiceCup board: aBoard [ 
-	^ self new initilializeWithShips: { aSpaceship } diceCup: aDiceCup board: aBoard. 
+	^ self new initializeWithShips: { aSpaceship } diceCup: aDiceCup board: aBoard. 
 ]
 
 { #category : #'instance creation' }
 GameInstance class >> withSpaceships: aCollectionOfSpaceships diceCup: aDiceCup board: aBoard [ 
-	^ self new initilializeWithShips: aCollectionOfSpaceships diceCup: aDiceCup board: aBoard. 
+	^ self new initializeWithShips: aCollectionOfSpaceships diceCup: aDiceCup board: aBoard. 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 GameInstance >> associateGameInstanceToShips: aCollectionOfShips [
 	|game|
 	game := self.
 	
-	aCollectionOfShips do: [ :ship | ship associateGame: game ].
+	aCollectionOfShips do: [ :ship | ship associateToGame: game ].
+]
+
+{ #category : #initialization }
+GameInstance >> associateOwnGameBoardWith: aBoard [
+
+	gameBoard := aBoard.
+	gameBoard associateToGame: self
 ]
 
 { #category : #accessing }
@@ -42,20 +49,16 @@ GameInstance >> end [
 { #category : #initialization }
 GameInstance >> initializeWithBoard: aBoard [
 	gameBoard := aBoard.
-	aBoard associateGame: self.
+	aBoard associateToGame: self.
 ]
 
 { #category : #initialization }
-GameInstance >> initilializeWithShips: aCollectionOfShips diceCup: aDiceCup board: aBoard [ 
-	gameBoard := aBoard.
-	gameBoard associateGame: self.
-	
+GameInstance >> initializeWithShips: aCollectionOfShips diceCup: aDiceCup board: aBoard [
+	self associateOwnGameBoardWith: aBoard.
 	dice := aDiceCup.
 	state := GameStateNotStarted new.
 	gameBoard addSpaceships: aCollectionOfShips.
-	
 	self associateGameInstanceToShips: aCollectionOfShips.
-	
 ]
 
 { #category : #printing }
@@ -70,7 +73,7 @@ GameInstance >> start [
 	state := GameStateStarted new.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'turn related' }
 GameInstance >> startTurn: ship [
 	
 	|diceRollResult|

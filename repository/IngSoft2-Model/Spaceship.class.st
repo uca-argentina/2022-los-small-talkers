@@ -14,7 +14,7 @@ Spaceship class >> named: aName [
 ]
 
 { #category : #initialization }
-Spaceship >> associateGame: aGameInstance [
+Spaceship >> associateToGame: aGameInstance [
 
 	game := aGameInstance.
 ]
