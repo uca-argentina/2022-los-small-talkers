@@ -40,7 +40,7 @@ Board >> associateToGame: aGameInstance [
 	game := aGameInstance.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing - attributes' }
 Board >> getSpaceshipsPositions [
 
 	^leaderboard  
@@ -69,6 +69,11 @@ Board >> initializeWith: aLength [
 	leaderboard := Dictionary new.
 ]
 
+{ #category : #'accessing - attributes' }
+Board >> length [
+  ^length.
+]
+
 { #category : #'spaceship position related' }
 Board >> move: aShip forwardSquares: numberOfSquaresForward [
 	
@@ -78,29 +83,40 @@ Board >> move: aShip forwardSquares: numberOfSquaresForward [
 		 Error signal: 'Cannot move forward negative squares'.
 	].
 	
-	shipPosition := (self positionOf: aShip) + numberOfSquaresForward .
+	shipPosition := (self positionOfShip: aShip) + numberOfSquaresForward .
 	
 	shipPosition >= length ifTrue: [ 
 		leaderboard at: (aShip name) put: length.
 		game end.
 	] ifFalse: [ 
-		leaderboard at: (aShip name) put: numberOfSquaresForward.
+		leaderboard at: (aShip name) put: shipPosition .
 	]
 ]
 
 { #category : #'spaceship position related' }
-Board >> positionOf: aShip [
-	|position|
-	position := leaderboard at: (aShip name) ifAbsent: [ 
-		 Error signal: 'Cannot get position of unregistered spaceship'.
-	].
-	
-	^position.
+Board >> positionOfShip: aShip [
+
+	| position |
+	position := leaderboard
+		            at: (aShip name)
+		            ifAbsent: [ 
+		            Error signal:
+			            'Cannot get position of unregistered spaceship' ].
+
+	^ position
 ]
 
-{ #category : #'getters' }
-Board >> length [
-  ^length.
+{ #category : #'spaceship position related' }
+Board >> positionOfShipNamed: aName [
+
+	| position |
+	position := leaderboard
+		            at: aName
+		            ifAbsent: [ 
+		            Error signal:
+			            'Cannot get position of unregistered spaceship' ].
+
+	^ position
 ]
 
 { #category : #'spaceship position related' }

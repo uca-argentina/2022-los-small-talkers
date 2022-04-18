@@ -66,11 +66,6 @@ GameInstance >> printState [
 	^ state printState.
 ]
 
-{ #category : #accessing }
-GameInstance >> winner [
-  ^(gameBoard spaceshipAt: (gameBoard length)).
-]
-
 { #category : #'game starting' }
 GameInstance >> start [
 	state := GameStateStarted new.
@@ -94,4 +89,9 @@ GameInstance >> startTurn: ship [
 	diceRollResult := dice roll.
 	
 	gameBoard move: ship forwardSquares: diceRollResult.
+]
+
+{ #category : #accessing }
+GameInstance >> winner [
+  ^(gameBoard spaceshipAt: (gameBoard length)).
 ]

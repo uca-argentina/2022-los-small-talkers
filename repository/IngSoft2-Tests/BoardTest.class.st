@@ -81,7 +81,7 @@ BoardTest >> testObtainingPositionOfUnregisteredShipIsInvalid [
 	aBoard := Board sized: 10 withSpaceships: {aRegisteredSpaceship}.
 	
 	self 
-		should: [ aBoard positionOf: anUnregisteredSpaceship ]
+		should: [ aBoard positionOfShip: anUnregisteredSpaceship ]
 		raise: Error 
 		withMessage: 'Cannot get position of unregistered spaceship'.
 ]
