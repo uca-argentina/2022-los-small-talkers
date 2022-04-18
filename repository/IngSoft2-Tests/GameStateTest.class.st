@@ -15,51 +15,22 @@ GameStateTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage [
 ]
 
 { #category : #'tests - GameFinished' }
-GameStateTest >> testGameFinishedStateReturnsFinishedWhenCalledForGameState [
-	
-	|aGame aLoadedDie aBoard aSpaceship1 aGameState|
-
-	aLoadedDie := LoadedDie with: 4.
-	aSpaceship1 := Spaceship named: 'Enterprise'.
-	aBoard := Board sized: 5 withSpaceships: {aSpaceship1}.
-	
-	aGame := GameInstance withShip: {aSpaceship1} diceCup: aLoadedDie board: aBoard.
-	aGame end.
-	
-	
-	aGameState := aGame state printState.
-	
-	self assert: [ aGameState match: 'finished' ].
+GameStateTest >> testGameStateFinishedReturnsFinishedWhenCalledForGameState [
+	|state|
+	state := GameStateFinished new.
+	self assert: (state printState) equals: 'finished'.
 ]
 
 { #category : #'tests - GameNotStarted' }
-GameStateTest >> testGameNotStartedStateReturnsNotStartedWhenCalledForGameState [
-	|aGame aLoadedDie aBoard aSpaceship1 aGameState|
-
-	aLoadedDie := LoadedDie with: 4.
-	aSpaceship1 := Spaceship named: 'Enterprise'.
-	aBoard := Board sized: 5 withSpaceships: {aSpaceship1}.
-	
-	aGame := GameInstance withShip: {aSpaceship1} diceCup: aLoadedDie board: aBoard.
-	
-	aGameState := aGame state printState.
-	
-	self assert: [ aGameState match: 'not started' ].	
+GameStateTest >> testGameStateNotStartedReturnsNotStartedWhenCalledForGameState [
+	|state|
+	state := GameStateNotStarted new.
+	self assert: (state printState) equals: 'not started'.
 ]
 
 { #category : #'tests - GameStarted' }
-GameStateTest >> testGameStartedStateReturnsStartedWhenAskedForGameState [
-	|aGame aLoadedDie aBoard aSpaceship1 aGameState|
-
-	aLoadedDie := LoadedDie with: 4.
-	aSpaceship1 := Spaceship named: 'Enterprise'.
-	aBoard := Board sized: 5 withSpaceships: {aSpaceship1}.
-	
-	aGame := GameInstance withShip: {aSpaceship1} diceCup: aLoadedDie board: aBoard.
-	
-	aGame start.
-	
-	aGameState := aGame state printState.
-	
-	self assert: [ aGameState match: 'started' ].	
+GameStateTest >> testGameStateStartedReturnsStartedWhenAskedForGameState [
+	|state|
+	state := GameStateStarted new.
+	self assert: (state printState) equals: 'started'.
 ]

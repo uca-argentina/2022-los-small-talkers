@@ -4,8 +4,7 @@ Class {
 	#instVars : [
 		'dice',
 		'spaceships',
-		'board',
-		'diceCup',
+		'gameBoard',
 		'state'
 	],
 	#category : #'IngSoft2-Model'
@@ -17,50 +16,82 @@ GameInstance class >> board: aBoard [
 ]
 
 { #category : #'instance creation' }
-GameInstance class >> withShip: aCollectionOfSpaceships diceCup: aDiceCup board: aBoard [ 
+GameInstance class >> withShip: aSpaceship diceCup: aDiceCup board: aBoard [ 
+	^ self new initializeWithShips: { aSpaceship } diceCup: aDiceCup board: aBoard. 
+]
+
+{ #category : #'instance creation' }
+GameInstance class >> withSpaceships: aCollectionOfSpaceships diceCup: aDiceCup board: aBoard [ 
 	^ self new initializeWithShips: aCollectionOfSpaceships diceCup: aDiceCup board: aBoard. 
 ]
 
-{ #category : #'accessing - arguments' }
-GameInstance >> end [
+{ #category : #initialization }
+GameInstance >> associateGameInstanceToShips: aCollectionOfShips [
+	|game|
+	game := self.
+	
+	aCollectionOfShips do: [ :ship | ship associateToGame: game ].
+]
 
+{ #category : #initialization }
+GameInstance >> associateOwnGameBoardWith: aBoard [
+	gameBoard := aBoard.
+	gameBoard associateToGame: self
+]
+
+{ #category : #accessing }
+GameInstance >> end [
 	state := GameStateFinished new.
 ]
 
 { #category : #initialization }
 GameInstance >> initializeWithBoard: aBoard [
-	board := aBoard.
-	aBoard associateGame: self.
+	"only for testing Board-GameInstance interaction purposes"
+
+	gameBoard := aBoard.
+	aBoard associateToGame: self.
 ]
 
 { #category : #initialization }
-GameInstance >> initializeWithShips: aCollectionOfSpaceships diceCup: aDiceCup board: aBoard [ 
-	board  := aBoard.
-	diceCup := aDiceCup.
-	spaceships := aCollectionOfSpaceships.
+GameInstance >> initializeWithShips: aCollectionOfSpaceships diceCup: aDiceCup board: aBoard [
+	self associateOwnGameBoardWith: aBoard.
+	dice := aDiceCup.
 	state := GameStateNotStarted new.
+	gameBoard addSpaceships: aCollectionOfSpaceships.
+	self associateGameInstanceToShips: aCollectionOfSpaceships.
 ]
 
-{ #category : #actions }
-GameInstance >> plays: aSpaceship [ 
-		"
-	[ state printState match: 'started' ] whileTrue: [ 
-		spaceships do: [ :ship | [ state printState match: 'started' ] ifTrue: (self plays: ship)]
-	 ]"
-	
-	
-	board move: aSpaceship forwardSquares: (diceCup roll). 
+{ #category : #printing }
+GameInstance >> printState [
+	^ state printState.
 ]
 
-{ #category : #'accessing - arguments' }
+{ #category : #'game starting' }
 GameInstance >> start [
-
 	state := GameStateStarted new.
-	
-	
 ]
 
-{ #category : #'accessing - arguments' }
-GameInstance >> state [
-	^ state
+{ #category : #'game starting' }
+GameInstance >> startAutomatedMatch [
+  self shouldBeImplemented.
+]
+
+{ #category : #'turn related' }
+GameInstance >> startTurn: ship [
+	|diceRollResult|
+	
+	((dice isNil) or: (gameBoard isNil)) ifTrue: [ 
+		 Error signal: 'Cannot start a game without board or dice'.
+	].
+	
+	state update: self.
+	
+	diceRollResult := dice roll.
+	
+	gameBoard move: ship forwardSquares: diceRollResult.
+]
+
+{ #category : #accessing }
+GameInstance >> winner [
+  ^(gameBoard spaceshipAt: (gameBoard length)).
 ]
