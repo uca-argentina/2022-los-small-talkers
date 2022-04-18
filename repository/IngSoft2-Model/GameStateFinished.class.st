@@ -13,4 +13,3 @@ GameStateFinished >> printState [
 GameStateFinished >> update: gameInstance [
 	Error signal: 'Cannot start another turn in a finished game'.
 ]
-

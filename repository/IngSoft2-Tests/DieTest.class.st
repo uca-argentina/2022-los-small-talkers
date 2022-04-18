@@ -14,6 +14,38 @@ DieTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage [
 		description: 'Test did not fail for expected reason'
 ]
 
+{ #category : #'tests - DiceCup' }
+DieTest >> testCreatingDiceCupWithOnlyOneDiceIsValid [
+	|aDiceCup|
+	
+	aDiceCup := DiceCup with: (LoadedDie with: 10).
+	self assert: (aDiceCup roll) equals: 10.
+]
+
+{ #category : #'tests - DiceCup' }
+DieTest >> testCreatingDiceCupWithTwoDiceIsValid [
+	|aDiceCup aFirstDice aSecondDice|
+	aFirstDice := RandomDie with: 5.
+	aSecondDice := RandomDie with: 7.
+	aDiceCup := DiceCup withAll: { aFirstDice . aSecondDice }.
+	
+	self assert: ((aDiceCup roll) between: 2 and: 12 ).
+	 
+]
+
+{ #category : #'tests - DiceCup' }
+DieTest >> testDiceCupRollsSumOfAllIndividualDiceRollsResultsInsideIt [
+	|aFirstDie aSecondDie aThirdDie aDiceCup sumOfAllDiceRolls|
+	aFirstDie := LoadedDie with: 7.
+	aSecondDie := LoadedDie with: 8.
+	aThirdDie := LoadedDie with: 9.
+	aDiceCup := DiceCup withAll: { aFirstDie . aSecondDie . aThirdDie }.
+	
+	sumOfAllDiceRolls := { aFirstDie roll . aSecondDie roll . aThirdDie roll} sum.
+	
+	self assert: (aDiceCup roll) equals: sumOfAllDiceRolls.
+]
+
 { #category : #'tests - LoadedDie' }
 DieTest >> testLoadedDieRollsAlwaysNumberOnLoadedSide [
 	self assert: [ (LoadedDie with: 4) roll == 4].

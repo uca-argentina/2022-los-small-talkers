@@ -46,6 +46,8 @@ GameInstance >> end [
 
 { #category : #initialization }
 GameInstance >> initializeWithBoard: aBoard [
+	"only for testing Board-GameInstance interaction purposes"
+
 	gameBoard := aBoard.
 	aBoard associateToGame: self.
 ]
@@ -72,6 +74,10 @@ GameInstance >> start [
 { #category : #'turn related' }
 GameInstance >> startTurn: ship [
 	|diceRollResult|
+	
+	((dice isNil) or: (gameBoard isNil)) ifTrue: [ 
+		 Error signal: 'Cannot start a game without board or dice'.
+	].
 	
 	state update: self.
 	

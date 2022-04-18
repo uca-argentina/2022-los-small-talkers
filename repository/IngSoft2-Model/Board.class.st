@@ -16,7 +16,6 @@ Board class >> assertValid: aLength [
 ]
 
 { #category : #'instance creation' }
-
 Board class >> sized: aLength [ 
 	self assertValid: aLength.
 	^ self new initializeWith: aLength.
@@ -27,7 +26,6 @@ Board class >> sized: aLength withSpaceships: aCollectionOfSpaceships [
 	self assertValid: aLength.
 	^ self new initializeSized: aLength withSpaceships: aCollectionOfSpaceships.
 ]
-
 
 { #category : #adding }
 Board >> addSpaceships: aCollectionOfSpaceships [
@@ -50,7 +48,6 @@ Board >> initializeSized: aLength withSpaceships: aCollectionOfSpaceships [
 		 leaderboard at: (ship name) put: 1.
 	].
 ]
-
 
 { #category : #initialization }
 Board >> initializeWith: aLength [ 

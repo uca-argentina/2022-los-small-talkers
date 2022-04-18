@@ -20,7 +20,7 @@ Spaceship >> associateToGame: aGameInstance [
 
 { #category : #initialization }
 Spaceship >> initializeWith: aName [
-	name := #aName.
+	name := aName.
 ]
 
 { #category : #initialization }
