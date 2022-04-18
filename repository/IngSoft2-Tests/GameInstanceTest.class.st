@@ -16,7 +16,6 @@ GameInstanceTest >> should: aBlock raise: anErrorType withMessage: anErrorMessag
 
 { #category : #tests }
 GameInstanceTest >> testAskingForGameStateWhenFinishedReturnsFinished [
-
 	|game aShip aDiceCup aBoard|
 	aShip := Spaceship new.
 	aBoard := Board sized: 5.
@@ -29,13 +28,12 @@ GameInstanceTest >> testAskingForGameStateWhenFinishedReturnsFinished [
 
 { #category : #tests }
 GameInstanceTest >> testAskingForGameStateWhenNotStartedReturnsNotStarted [
-
 	self shouldBeImplemented.
 ]
 
+
 { #category : #tests }
 GameInstanceTest >> testAskingForGameStateWhenStartedReturnsStarted [
-
 	self shouldBeImplemented.
 ]
 

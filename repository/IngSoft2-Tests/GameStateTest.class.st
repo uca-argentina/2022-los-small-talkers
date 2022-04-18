@@ -15,24 +15,21 @@ GameStateTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage [
 ]
 
 { #category : #'tests - GameFinished' }
-GameStateTest >> testGameFinishedStateReturnsFinishedWhenCalledForGameState [
-
+GameStateTest >> testGameStateFinishedReturnsFinishedWhenCalledForGameState [
 	|state|
 	state := GameStateFinished new.
 	self assert: (state printState) equals: 'finished'.
 ]
 
 { #category : #'tests - GameNotStarted' }
-GameStateTest >> testGameNotStartedStateReturnsNotStartedWhenCalledForGameState [
-
+GameStateTest >> testGameStateNotStartedReturnsNotStartedWhenCalledForGameState [
 	|state|
 	state := GameStateNotStarted new.
 	self assert: (state printState) equals: 'not started'.
 ]
 
 { #category : #'tests - GameStarted' }
-GameStateTest >> testGameStartedStateReturnsStartedWhenAskedForGameState [
-
+GameStateTest >> testGameStateStartedReturnsStartedWhenAskedForGameState [
 	|state|
 	state := GameStateStarted new.
 	self assert: (state printState) equals: 'started'.

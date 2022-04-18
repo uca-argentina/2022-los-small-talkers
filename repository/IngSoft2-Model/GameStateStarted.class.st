@@ -6,7 +6,6 @@ Class {
 
 { #category : #printing }
 GameStateStarted >> printState [ 
-
 	^'started'.
 ]
 

@@ -35,14 +35,12 @@ GameInstance >> associateGameInstanceToShips: aCollectionOfShips [
 
 { #category : #initialization }
 GameInstance >> associateOwnGameBoardWith: aBoard [
-
 	gameBoard := aBoard.
 	gameBoard associateToGame: self
 ]
 
 { #category : #accessing }
 GameInstance >> end [
-
 	state := GameStateFinished new.
 ]
 
@@ -63,19 +61,16 @@ GameInstance >> initializeWithShips: aCollectionOfShips diceCup: aDiceCup board:
 
 { #category : #printing }
 GameInstance >> printState [
-
 	^ state printState.
 ]
 
 { #category : #'game starting' }
 GameInstance >> start [
-	
 	state := GameStateStarted new.
 ]
 
 { #category : #'turn related' }
 GameInstance >> startTurn: ship [
-	
 	|diceRollResult|
 	
 	state update: self.

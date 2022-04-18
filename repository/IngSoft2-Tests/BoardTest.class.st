@@ -6,7 +6,6 @@ Class {
 
 { #category : #asserting }
 BoardTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage [
-
 	^self 
 		should: aBlock 
 		raise: anErrorType  
@@ -16,7 +15,6 @@ BoardTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage [
 
 { #category : #tests }
 BoardTest >> testAssociatingABoardWithAGame [
-
 	|aGameInstance aBoard|
 	
 	aBoard := Board sized: 10.
@@ -25,7 +23,6 @@ BoardTest >> testAssociatingABoardWithAGame [
 
 { #category : #tests }
 BoardTest >> testBoardCreationWhereLengthEqualsZero [
-
 	self 
 		should: [Board sized: 0]
 		raise: Error
@@ -34,19 +31,15 @@ BoardTest >> testBoardCreationWhereLengthEqualsZero [
 
 { #category : #tests }
 BoardTest >> testBoardCreationWhereLengthIsValid [
-
 	| aBoard |
 	aBoard := Board sized: 10.
-
 ]
 
 { #category : #tests }
 BoardTest >> testMovingNotRegisteredSpaceshipIsInvalid [
-	
 	|anUnregisteredSpaceship aBoard|
 	anUnregisteredSpaceship := Spaceship new.
 	aBoard := Board sized: 10.
-	
 	
 	self
 		should: [ aBoard move: anUnregisteredSpaceship forwardSquares: 6. ]
@@ -56,7 +49,6 @@ BoardTest >> testMovingNotRegisteredSpaceshipIsInvalid [
 
 { #category : #tests }
 BoardTest >> testMovingRegisteredSpaceshipToGreaterOrEqualThanLastSquareChangesGameStateToFinished [
-
 	|aSpaceship aBoard aGame aDiceCup|
 	aSpaceship := Spaceship new.
 	aBoard := Board sized: 10.
@@ -66,14 +58,10 @@ BoardTest >> testMovingRegisteredSpaceshipToGreaterOrEqualThanLastSquareChangesG
 	aSpaceship startTurn.
 	
 	self assert: (aGame printState) equals: 'finished'.
-	
-	
-
 ]
 
 { #category : #tests }
 BoardTest >> testMovingRegisteredSpaceshipToNegativeSquarePlacesItAtStartingSquare [
-	
 	|aBoard aSpaceship|
 	aSpaceship := Spaceship named: 'Lebron James'.
 	aBoard := Board sized: 10 withSpaceships: { aSpaceship }.
@@ -86,13 +74,14 @@ BoardTest >> testMovingRegisteredSpaceshipToNegativeSquarePlacesItAtStartingSqua
 
 { #category : #tests }
 BoardTest >> testObtainingPositionOfUnregisteredShipIsInvalid [
+	|aRegisteredSpaceship anUnregisteredSpaceship aBoard|
 
-	|aShip aBoard|
-	aShip := Spaceship new.
-	aBoard := Board sized: 10.
+	aRegisteredSpaceship := Spaceship new.
+	anUnregisteredSpaceship := Spaceship new.
+	aBoard := Board sized: 10 withSpaceships: {aRegisteredSpaceship}.
 	
 	self 
-		should: [ aBoard positionOf: aShip ]
+		should: [ aBoard positionOf: anUnregisteredSpaceship ]
 		raise: Error 
 		withMessage: 'Cannot get position of unregistered spaceship'.
 ]

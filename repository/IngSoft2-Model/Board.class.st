@@ -15,17 +15,19 @@ Board class >> assertValid: aLength [
 		Error signal: 'Boards need a minimum length of 1' ].
 ]
 
-{ #category : #'intance creation' }
+{ #category : #'instance creation' }
+
 Board class >> sized: aLength [ 
 	self assertValid: aLength.
 	^ self new initializeWith: aLength.
 ]
 
-{ #category : #'intance creation' }
+{ #category : #'test only - instance creation' }
 Board class >> sized: aLength withSpaceships: aCollectionOfSpaceships [
 	self assertValid: aLength.
 	^ self new initializeSized: aLength withSpaceships: aCollectionOfSpaceships.
 ]
+
 
 { #category : #adding }
 Board >> addSpaceships: aCollectionOfSpaceships [
@@ -42,14 +44,13 @@ Board >> associateToGame: aGameInstance [
 
 { #category : #initialization }
 Board >> initializeSized: aLength withSpaceships: aCollectionOfSpaceships [
-
 	length := aLength.
 	leaderboard := Dictionary new.
 	aCollectionOfSpaceships do: [ :ship |
 		 leaderboard at: (ship name) put: 1.
 	].
-	
 ]
+
 
 { #category : #initialization }
 Board >> initializeWith: aLength [ 
