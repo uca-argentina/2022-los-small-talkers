@@ -66,7 +66,7 @@ GameInstance >> printState [
 	^ state printState.
 ]
 
-{}
+{ #category : #accessing }
 GameInstance >> winner [
   ^(gameBoard spaceshipAt: (gameBoard length)).
 ]
