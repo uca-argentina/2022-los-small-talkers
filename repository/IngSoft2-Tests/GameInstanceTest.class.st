@@ -14,64 +14,27 @@ GameInstanceTest >> should: aBlock raise: anErrorType withMessage: anErrorMessag
 		description: 'Test did not fail for expected reason'
 ]
 
-{ #category : #'tests - adding game parameters' }
-GameInstanceTest >> testAddingBoardWhenGameHasAlreadyStartedIsInvalid [
-
-	self shouldBeImplemented .
-]
-
-{ #category : #'tests - adding game parameters' }
-GameInstanceTest >> testAddingBoardWhenGameHasNotStartedIsValid [
-
-	self shouldBeImplemented.
-]
-
-{ #category : #'tests - adding game parameters' }
-GameInstanceTest >> testAddingDiceWhenGameHasAlreadyStartedIsInvalid [
-
-	self shouldBeImplemented .
-]
-
-{ #category : #'tests - adding game parameters' }
-GameInstanceTest >> testAddingDiceWhenGameHasNotStartedIsValid [
+{ #category : #tests }
+GameInstanceTest >> testAskingForGameStateWhenFinishedReturnsFinished [
+	|game aShip aDiceCup aBoard|
+	aShip := Spaceship new.
+	aBoard := Board sized: 5.
+	aDiceCup := DiceCup with:(LoadedDie with: 10).
+	game := GameInstance withShip: aShip diceCup: aDiceCup board: aBoard.
+	aShip startTurn.
 	
+	self assert: (game printState) equals: 'finished'.
+]
+
+{ #category : #tests }
+GameInstanceTest >> testAskingForGameStateWhenNotStartedReturnsNotStarted [
 	self shouldBeImplemented.
 ]
 
-{ #category : #'tests - spaceship registering' }
-GameInstanceTest >> testRegisteringOneSpaceshipWhenGameHasAlreadyStartedIsInvalid [
 
+{ #category : #tests }
+GameInstanceTest >> testAskingForGameStateWhenStartedReturnsStarted [
 	self shouldBeImplemented.
-]
-
-{ #category : #'tests - spaceship registering' }
-GameInstanceTest >> testRegisteringOneSpaceshipWhenGameHasNotStartedIsValid [
-
-	self shouldBeImplemented.
-]
-
-{ #category : #'tests - spaceship registering' }
-GameInstanceTest >> testRegisteringOneSpaceshipWhenThereIsNoBoardIsInvalid [ 
-
-	self shouldBeImplemented .
-]
-
-{ #category : #'tests - spaceship registering' }
-GameInstanceTest >> testRegisteringTwoSpaceshipsWhenGameHasAlreadyStartedIsInvalid [
-
-	self shouldBeImplemented .
-]
-
-{ #category : #'tests - spaceship registering' }
-GameInstanceTest >> testRegisteringTwoSpaceshipsWhenGameHasNotStartedIsValid [
-
-	self shouldBeImplemented .
-]
-
-{ #category : #'tests - spaceship registering' }
-GameInstanceTest >> testRegisteringTwoSpaceshipsWhenThereIsNoBoardIsInvalid [ 
-
-	self shouldBeImplemented .
 ]
 
 { #category : #'tests - starting game checks' }

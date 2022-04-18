@@ -4,8 +4,6 @@ Class {
 	#instVars : [
 		'dice',
 		'spaceships',
-		'board',
-		'diceCup',
 		'gameBoard',
 		'state'
 	],
@@ -18,37 +16,66 @@ GameInstance class >> board: aBoard [
 ]
 
 { #category : #'instance creation' }
-GameInstance class >> withShip: aCollectionOfSpaceships diceCup: aDiceCup board: aBoard [ 
+GameInstance class >> withShip: aSpaceship diceCup: aDiceCup board: aBoard [ 
+	^ self new initializeWithShips: { aSpaceship } diceCup: aDiceCup board: aBoard. 
+]
+
+{ #category : #'instance creation' }
+GameInstance class >> withSpaceships: aCollectionOfSpaceships diceCup: aDiceCup board: aBoard [ 
 	^ self new initializeWithShips: aCollectionOfSpaceships diceCup: aDiceCup board: aBoard. 
+]
+
+{ #category : #initialization }
+GameInstance >> associateGameInstanceToShips: aCollectionOfShips [
+	|game|
+	game := self.
+	
+	aCollectionOfShips do: [ :ship | ship associateToGame: game ].
+]
+
+{ #category : #initialization }
+GameInstance >> associateOwnGameBoardWith: aBoard [
+	gameBoard := aBoard.
+	gameBoard associateToGame: self
 ]
 
 { #category : #accessing }
 GameInstance >> end [
-
 	state := GameStateFinished new.
 ]
 
 { #category : #initialization }
 GameInstance >> initializeWithBoard: aBoard [
-	board := aBoard.
-	aBoard associateGame: self.
+	gameBoard := aBoard.
+	aBoard associateToGame: self.
 ]
 
 { #category : #initialization }
-GameInstance >> initializeWithShips: aCollectionOfSpaceships diceCup: aDiceCup board: aBoard [ 
-	gameBoard := aBoard.
-	diceCup := aDiceCup.
-	spaceships := aCollectionOfSpaceships.
+GameInstance >> initializeWithShips: aCollectionOfShips diceCup: aDiceCup board: aBoard [
+	self associateOwnGameBoardWith: aBoard.
+	dice := aDiceCup.
 	state := GameStateNotStarted new.
+	gameBoard addSpaceships: aCollectionOfShips.
+	self associateGameInstanceToShips: aCollectionOfShips.
 ]
 
-{ #category : #accessing }
-GameInstance >> start [
+{ #category : #printing }
+GameInstance >> printState [
+	^ state printState.
+]
 
+{ #category : #'game starting' }
+GameInstance >> start [
 	state := GameStateStarted new.
 ]
 
-{ #category : #'accessing - arguments' }
-GameInstance >> state [
-	^ state
+{ #category : #'turn related' }
+GameInstance >> startTurn: ship [
+	|diceRollResult|
+	
+	state update: self.
+	
+	diceRollResult := dice roll.
+	
+	gameBoard move: ship forwardSquares: diceRollResult.
 ]

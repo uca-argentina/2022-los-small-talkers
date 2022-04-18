@@ -6,6 +6,9 @@ Class {
 
 { #category : #printing }
 GameStateStarted >> printState [ 
-
 	^'started'.
+]
+
+{ #category : #updating }
+GameStateStarted >> update: game [
 ]
