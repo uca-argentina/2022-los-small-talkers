@@ -206,8 +206,28 @@ GameInstanceTest >> testTwoShippedGameCanOnlyKnowWinnerOnceGameIsFinished [
 ]
 
 { #category : #tests }
+GameInstanceTest >> testWinnerOfFixedMatchMatchesRanking [
+	|aSpaceshipNamedJorge aSpaceshipNamedJulian aBoard aLoadedDie aGame ranking|
+	aSpaceshipNamedJorge := Spaceship named: 'Jorge'.
+	aSpaceshipNamedJulian := Spaceship named: 'Julian'.
+	aLoadedDie := LoadedDie with: 6.
+	aBoard := Board sized: 10.
+
+	aGame := GameInstance withSpaceships: {aSpaceshipNamedJorge. aSpaceshipNamedJulian} diceCup: aLoadedDie board: aBoard.
+
+	aSpaceshipNamedJorge startTurn.
+	aSpaceshipNamedJulian startTurn.
+	aSpaceshipNamedJorge startTurn.
+
+	ranking := aGame ranking.
+	
+	
+	self assert: (ranking at: aSpaceshipNamedJorge ) > (ranking at: aSpaceshipNamedJulian ).
+]
+
+{ #category : #tests }
 GameInstanceTest >> testWinnerOfFixedMatchMatchesReadableRanking [
-	|aSpaceshipNamedJorge aSpaceshipNamedJulian aBoard aLoadedDie aGame winner ranking|
+	|aSpaceshipNamedJorge aSpaceshipNamedJulian aBoard aLoadedDie aGame ranking|
 	aSpaceshipNamedJorge := Spaceship named: 'Jorge'.
 	aSpaceshipNamedJulian := Spaceship named: 'Julian'.
 	aLoadedDie := LoadedDie with: 6.
