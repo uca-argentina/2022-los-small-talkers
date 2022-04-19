@@ -71,11 +71,6 @@ GameInstance >> start [
 	state := GameStateStarted new.
 ]
 
-{ #category : #'game starting' }
-GameInstance >> startAutomatedMatch [
-  self shouldBeImplemented.
-]
-
 { #category : #'turn related' }
 GameInstance >> startTurn: ship [
 	|diceRollResult|
