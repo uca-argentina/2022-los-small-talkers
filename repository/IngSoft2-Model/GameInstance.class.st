@@ -3,7 +3,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'dice',
-		'spaceships',
+		'leaderboard',
 		'gameBoard',
 		'state'
 	],
@@ -57,13 +57,25 @@ GameInstance >> initializeWithShips: aCollectionOfSpaceships diceCup: aDiceCup b
 	self associateOwnGameBoardWith: aBoard.
 	dice := aDiceCup.
 	state := GameStateNotStarted new.
-	gameBoard addSpaceships: aCollectionOfSpaceships.
+	leaderboard := Leaderboard withSpaceships: aCollectionOfSpaceships.
 	self associateGameInstanceToShips: aCollectionOfSpaceships.
 ]
 
 { #category : #printing }
 GameInstance >> printState [
 	^ state printState.
+]
+
+{ #category : #accessing }
+GameInstance >> ranking [ 
+
+	^leaderboard ranking.
+]
+
+{ #category : #accessing }
+GameInstance >> readableRanking [
+
+	^leaderboard readableRanking.
 ]
 
 { #category : #'game starting' }
@@ -73,7 +85,17 @@ GameInstance >> start [
 
 { #category : #'game starting' }
 GameInstance >> startAutomatedMatch [
-  self shouldBeImplemented.
+	|ships|
+	
+	ships := leaderboard players.
+	[self winner] whileNil: [ 
+		ships do: [ :ship |
+			(self winner isNil) ifTrue: [ 
+				ship startTurn.
+			].
+		]
+	]
+	
 ]
 
 { #category : #'turn related' }
@@ -88,10 +110,16 @@ GameInstance >> startTurn: ship [
 	
 	diceRollResult := dice roll.
 	
-	gameBoard move: ship forwardSquares: diceRollResult.
+	leaderboard move: ship forwardSquares: diceRollResult then: [ :newPosition | (newPosition >= gameBoard length) ifTrue: [self end]].
 ]
 
 { #category : #accessing }
 GameInstance >> winner [
-  ^(gameBoard spaceshipAt: (gameBoard length)).
+  ^state winner: self.
+]
+
+{ #category : #accessing }
+GameInstance >> winningSpaceship [
+
+	^leaderboard winningSpaceship.
 ]

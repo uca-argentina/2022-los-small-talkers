@@ -9,7 +9,13 @@ GameStateFinished >> printState [
 	^'finished'.
 ]
 
-{ #category : #updating }
+{ #category : #'determining game behaviour' }
 GameStateFinished >> update: gameInstance [
 	Error signal: 'Cannot start another turn in a finished game'.
+]
+
+{ #category : #'determining game behaviour' }
+GameStateFinished >> winner: game [
+	
+	^game winningSpaceship.
 ]

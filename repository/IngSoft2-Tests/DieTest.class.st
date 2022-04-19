@@ -48,7 +48,7 @@ DieTest >> testDiceCupRollsSumOfAllIndividualDiceRollsResultsInsideIt [
 
 { #category : #'tests - LoadedDie' }
 DieTest >> testLoadedDieRollsAlwaysNumberOnLoadedSide [
-	self assert: [ (LoadedDie with: 4) roll == 4].
+	self assert: [(LoadedDie with: 4) roll == 4].
 ]
 
 { #category : #'tests - LoadedDie' }
@@ -79,7 +79,6 @@ DieTest >> testRandomDieWithNumberOfSidesFewerThan3IsInvalid [
 
 { #category : #'tests - RandomDie' }
 DieTest >> testRandomDieWithNumberOfSidesGreaterThanTwoIsValid [
-	
 	| aRandomDie |
 	aRandomDie := RandomDie with: 3
 ]

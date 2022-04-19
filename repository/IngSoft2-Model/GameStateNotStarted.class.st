@@ -9,7 +9,13 @@ GameStateNotStarted >> printState [
 	^'not started'.
 ]
 
-{ #category : #updating }
+{ #category : #'determining game behaviour' }
 GameStateNotStarted >> update: game [
 	game start.
+]
+
+{ #category : #'determining game behaviour' }
+GameStateNotStarted >> winner: game [
+
+	^nil.
 ]
