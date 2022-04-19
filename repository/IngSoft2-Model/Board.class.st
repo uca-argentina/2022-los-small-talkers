@@ -27,15 +27,6 @@ Board >> associateToGame: aGameInstance [
 ]
 
 { #category : #initialization }
-Board >> initializeSized: aLength withSpaceships: aCollectionOfSpaceships [
-	length := aLength.
-	leaderboard := Dictionary new.
-	aCollectionOfSpaceships do: [ :ship |
-		 leaderboard at: (ship name) put: 1.
-	].
-]
-
-{ #category : #initialization }
 Board >> initializeWith: aLength [ 
 	length := aLength.
 	leaderboard := Dictionary new.
@@ -44,17 +35,4 @@ Board >> initializeWith: aLength [
 { #category : #'accessing - attributes' }
 Board >> length [
   ^length.
-]
-
-{ #category : #'spaceship position related' }
-Board >> positionOfShipNamed: aName [
-
-	| position |
-	position := leaderboard
-		            at: aName
-		            ifAbsent: [ 
-		            Error signal:
-			            'Cannot get position of unregistered spaceship' ].
-
-	^ position
 ]
