@@ -67,14 +67,14 @@ GameInstanceTest >> testMultipleShipsPositionsOnceGameIsFinished [
   
 	winner := aGame winner.
 	
-	self assert: [((aBoard positionOfShipNamed: winner) == aBoard length) and: (((aGame printState) match: 'finished') and: (winner match: 'Jorge'))].
+	self assert: [(((aGame printState) match: 'finished') and: (winner name match: 'Jorge'))].
 ]
 
 { #category : #tests }
 GameInstanceTest >> testOneShippedGameCanOnlyKnowWinnerOnceGameIsFinished [
 	|aRegisteredSpaceship aBoard aGame aLoadedDie winner|
 
-	aRegisteredSpaceship := Spaceship new.
+	aRegisteredSpaceship := Spaceship named: 'Enterprise'.
 	aLoadedDie := LoadedDie with: 11.
 	aBoard := Board sized: 10.
 	aGame := GameInstance withShip: aRegisteredSpaceship diceCup: aLoadedDie board: aBoard.
@@ -83,7 +83,7 @@ GameInstanceTest >> testOneShippedGameCanOnlyKnowWinnerOnceGameIsFinished [
     
 	winner := aGame winner.
 	
-	self assert: [((aBoard positionOfShipNamed: winner) == aBoard length) and: ((aGame printState) match: 'finished')].
+	self assert: [((aGame printState) match: 'finished') and: (winner name match: 'Enterprise')].
 ]
 
 { #category : #tests }
@@ -185,5 +185,5 @@ GameInstanceTest >> testTwoShippedGameCanOnlyKnowWinnerOnceGameIsFinished [
 
 	winner := aGame winner.
 	
-	self assert: [((aBoard positionOfShipNamed: winner) == aBoard length) and: (((aGame printState) match: 'finished') and: (winner match: 'Julian'))].
+	self assert: [(((aGame printState) match: 'finished') and: (winner name match: 'Julian'))].
 ]

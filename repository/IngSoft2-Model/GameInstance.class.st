@@ -3,7 +3,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'dice',
-		'spaceships',
+		'leaderboard',
 		'gameBoard',
 		'state'
 	],
@@ -57,7 +57,7 @@ GameInstance >> initializeWithShips: aCollectionOfSpaceships diceCup: aDiceCup b
 	self associateOwnGameBoardWith: aBoard.
 	dice := aDiceCup.
 	state := GameStateNotStarted new.
-	gameBoard addSpaceships: aCollectionOfSpaceships.
+	leaderboard := Leaderboard withSpaceships: aCollectionOfSpaceships.
 	self associateGameInstanceToShips: aCollectionOfSpaceships.
 ]
 
@@ -88,10 +88,16 @@ GameInstance >> startTurn: ship [
 	
 	diceRollResult := dice roll.
 	
-	gameBoard move: ship forwardSquares: diceRollResult.
+	leaderboard move: ship forwardSquares: diceRollResult then: [ :newPosition | (newPosition >= gameBoard length) ifTrue: [self end]].
 ]
 
 { #category : #accessing }
 GameInstance >> winner [
-  ^(gameBoard spaceshipAt: (gameBoard length)).
+  ^state winner: self.
+]
+
+{ #category : #accessing }
+GameInstance >> winningSpaceship [
+
+	^leaderboard winningSpaceship.
 ]
