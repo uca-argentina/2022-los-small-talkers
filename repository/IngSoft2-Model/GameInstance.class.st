@@ -66,9 +66,36 @@ GameInstance >> printState [
 	^ state printState.
 ]
 
+{ #category : #accessing }
+GameInstance >> ranking [ 
+
+	^leaderboard ranking.
+]
+
+{ #category : #accessing }
+GameInstance >> readableRanking [
+
+	^leaderboard readableRanking.
+]
+
 { #category : #'game starting' }
 GameInstance >> start [
 	state := GameStateStarted new.
+]
+
+{ #category : #'game starting' }
+GameInstance >> startAutomatedMatch [
+	|ships|
+	
+	ships := leaderboard players.
+	[self winner] whileNil: [ 
+		ships do: [ :ship |
+			(self winner isNil) ifTrue: [ 
+				ship startTurn.
+			].
+		]
+	]
+	
 ]
 
 { #category : #'turn related' }

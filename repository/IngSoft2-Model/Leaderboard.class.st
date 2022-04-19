@@ -76,6 +76,20 @@ Leaderboard >> ranking [
 ]
 
 { #category : #accessing }
+Leaderboard >> readableRanking [
+	|keys values|
+	keys := records collect: [ :record | 
+		record ship name.
+	].
+
+	values := records collect: [ :record | 
+		record square.
+	].
+
+	^Dictionary newFromKeys: keys andValues: values.
+]
+
+{ #category : #accessing }
 Leaderboard >> recordOf: aSpaceship ifAbsent: aFullBlockClosure [ 
 	|matchingResults|
 	

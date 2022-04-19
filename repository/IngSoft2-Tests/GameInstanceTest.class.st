@@ -50,6 +50,23 @@ GameInstanceTest >> testAskingForGameStateWhenStartedReturnsStarted [
 ]
 
 { #category : #tests }
+GameInstanceTest >> testGamePlayedAutomaticallyFinishedWithValidWinner [
+	|aSpaceshipNamedJorge aSpaceshipNamedJulian aBoard aLoadedDie aGame winner|
+	aSpaceshipNamedJorge := Spaceship named: 'Jorge'.
+	aSpaceshipNamedJulian := Spaceship named: 'Julian'.
+	aLoadedDie := RandomDie with: 6.
+	aBoard := Board sized: 10.
+
+	aGame := GameInstance withSpaceships: {aSpaceshipNamedJorge. aSpaceshipNamedJulian} diceCup: aLoadedDie board: aBoard.
+
+	aGame startAutomatedMatch.
+
+	winner := aGame winner.
+	
+	self assert: [(((aGame printState) match: 'finished') and: (winner isNotNil))].
+]
+
+{ #category : #tests }
 GameInstanceTest >> testMultipleShipsPositionsOnceGameIsFinished [
 	|aSpaceshipNamedJorge aSpaceshipNamedJulian aSpaceshipNamedHernan aBoard aLoadedDie aGame winner|
 	aSpaceshipNamedJorge := Spaceship named: 'Jorge'.
@@ -186,4 +203,23 @@ GameInstanceTest >> testTwoShippedGameCanOnlyKnowWinnerOnceGameIsFinished [
 	winner := aGame winner.
 	
 	self assert: [(((aGame printState) match: 'finished') and: (winner name match: 'Julian'))].
+]
+
+{ #category : #tests }
+GameInstanceTest >> testWinnerOfFixedMatchMatchesReadableRanking [
+	|aSpaceshipNamedJorge aSpaceshipNamedJulian aBoard aLoadedDie aGame winner ranking|
+	aSpaceshipNamedJorge := Spaceship named: 'Jorge'.
+	aSpaceshipNamedJulian := Spaceship named: 'Julian'.
+	aLoadedDie := LoadedDie with: 6.
+	aBoard := Board sized: 10.
+
+	aGame := GameInstance withSpaceships: {aSpaceshipNamedJorge. aSpaceshipNamedJulian} diceCup: aLoadedDie board: aBoard.
+
+	aSpaceshipNamedJorge startTurn.
+	aSpaceshipNamedJulian startTurn.
+	aSpaceshipNamedJorge startTurn.
+
+	ranking := aGame readableRanking.
+	
+	self assert: (ranking at: 'Jorge') > (ranking at: 'Julian').
 ]
