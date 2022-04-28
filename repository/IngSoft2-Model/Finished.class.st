@@ -1,21 +1,21 @@
 Class {
-	#name : #GameStateFinished,
-	#superclass : #Object,
+	#name : #Finished,
+	#superclass : #GameState,
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #printing }
-GameStateFinished >> printState [
-	^'finished'.
+Finished >> isStarted [
+	^false.
 ]
 
 { #category : #'determining game behaviour' }
-GameStateFinished >> update: gameInstance [
+Finished >> update: gameInstance [
 	Error signal: 'Cannot start another turn in a finished game'.
 ]
 
 { #category : #'determining game behaviour' }
-GameStateFinished >> winner: game [
+Finished >> winner: game [
 	
-	^game winningSpaceship.
+	^game positionTracker winningSpaceship.
 ]

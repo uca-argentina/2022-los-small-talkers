@@ -1,5 +1,5 @@
 Class {
-	#name : #Leaderboard,
+	#name : #PositionTracker,
 	#superclass : #Object,
 	#instVars : [
 		'records'
@@ -8,17 +8,17 @@ Class {
 }
 
 { #category : #'instance creation' }
-Leaderboard class >> withShip: aSpaceship [ 
+PositionTracker class >> withShip: aSpaceship [ 
 	^self new initializeWithSpaceships: { aSpaceship }.
 ]
 
 { #category : #'instance creation' }
-Leaderboard class >> withSpaceships: aCollectionOfSpaceships [
+PositionTracker class >> withSpaceships: aCollectionOfSpaceships [
 	^self new initializeWithSpaceships: aCollectionOfSpaceships.
 ]
 
 { #category : #deleting }
-Leaderboard >> deleteRecordOf: aSpaceship [ 
+PositionTracker >> deleteRecordOf: aSpaceship [ 
 	|foundRecord|
 	foundRecord := self recordOf: aSpaceship  ifAbsent: [ Error signal: 'Cannot delete record of unknown ship'. ].
 	
@@ -26,15 +26,15 @@ Leaderboard >> deleteRecordOf: aSpaceship [
 ]
 
 { #category : #initialization }
-Leaderboard >> initializeWithSpaceships: aCollectionOfSpaceships [
+PositionTracker >> initializeWithSpaceships: aCollectionOfSpaceships [
 	
 	records := OrderedCollection withAll: (aCollectionOfSpaceships collect: [ :ship |
-		LeaderboardRecord withShip: ship atSquare: 1.	
+		Position of: ship atSquare: 1.	
 	]).
 ]
 
 { #category : #moving }
-Leaderboard >> move: aSpaceship forwardSquares: anInteger then: aFinishingCleanupBlock [
+PositionTracker >> move: aSpaceship forwardSquares: anInteger then: aFinishingCleanupBlock [
 	
 	|shipRecord currentPosition nextPosition|
 	shipRecord := self recordOf: aSpaceship ifAbsent: [
@@ -47,14 +47,14 @@ Leaderboard >> move: aSpaceship forwardSquares: anInteger then: aFinishingCleanu
 	
 	self deleteRecordOf: aSpaceship.
 	
-	records add: (LeaderboardRecord withShip: aSpaceship atSquare: nextPosition).
+	records add: (Position of: aSpaceship atSquare: nextPosition).
 	
 	(aFinishingCleanupBlock argumentCount = 1) ifTrue: [ aFinishingCleanupBlock value: nextPosition . ].
 	(aFinishingCleanupBlock argumentCount = 0) ifTrue: [ aFinishingCleanupBlock value. ]
 ]
 
 { #category : #accessing }
-Leaderboard >> players [
+PositionTracker >> players [
 	
 	^ records collect: [ :record | 
 		record ship.
@@ -62,7 +62,7 @@ Leaderboard >> players [
 ]
 
 { #category : #accessing }
-Leaderboard >> ranking [
+PositionTracker >> positions [
 	|keys values|
 	keys := records collect: [ :record | 
 		record ship.
@@ -76,21 +76,7 @@ Leaderboard >> ranking [
 ]
 
 { #category : #accessing }
-Leaderboard >> readableRanking [
-	|keys values|
-	keys := records collect: [ :record | 
-		record ship name.
-	].
-
-	values := records collect: [ :record | 
-		record square.
-	].
-
-	^Dictionary newFromKeys: keys andValues: values.
-]
-
-{ #category : #accessing }
-Leaderboard >> recordOf: aSpaceship ifAbsent: aFullBlockClosure [ 
+PositionTracker >> recordOf: aSpaceship ifAbsent: aFullBlockClosure [ 
 	|matchingResults|
 	
 	matchingResults := records select: [ :record |
@@ -101,7 +87,7 @@ Leaderboard >> recordOf: aSpaceship ifAbsent: aFullBlockClosure [
 ]
 
 { #category : #accessing }
-Leaderboard >> winningSpaceship [ 
+PositionTracker >> winningSpaceship [ 
 	
 	^ (records detectMax: [:shipSquarePair | shipSquarePair square]) ship.
 ]

@@ -14,14 +14,6 @@ BoardTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage [
 ]
 
 { #category : #tests }
-BoardTest >> testAssociatingABoardWithAGame [
-	|aGameInstance aBoard|
-	
-	aBoard := Board sized: 10.
-	aGameInstance := GameInstance board: aBoard.
-]
-
-{ #category : #tests }
 BoardTest >> testBoardCreationWhereLengthEqualsZero [
 	self 
 		should: [Board sized: 0]
