@@ -109,7 +109,7 @@ LeaderboardTest >> testObtainingAllSpaceshipsFromTheLeaderboardReturnsCollection
 	aSecondShip := Spaceship named: 'PlanetExpress'.
 	leaderboard := PositionTracker withSpaceships: { aFirstShip . aSecondShip }.
 	
-	self assert: (leaderboard players) equals: (OrderedCollection withAll: { aFirstShip . aSecondShip }).
+	self assert: (leaderboard spaceships) equals: (OrderedCollection withAll: { aFirstShip . aSecondShip }).
 ]
 
 { #category : #'tests - Leaderboard' }

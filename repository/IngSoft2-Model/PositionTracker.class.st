@@ -54,14 +54,6 @@ PositionTracker >> move: aSpaceship forwardSquares: anInteger then: aFinishingCl
 ]
 
 { #category : #accessing }
-PositionTracker >> players [
-	
-	^ records collect: [ :record | 
-		record ship.
-	]
-]
-
-{ #category : #accessing }
 PositionTracker >> positions [
 	|keys values|
 	keys := records collect: [ :record | 
@@ -84,6 +76,14 @@ PositionTracker >> recordOf: aSpaceship ifAbsent: aFullBlockClosure [
 	].
 
 	(matchingResults isEmpty) ifTrue: [ aFullBlockClosure value. ] ifFalse: [ ^matchingResults at: 1 ].
+]
+
+{ #category : #accessing }
+PositionTracker >> spaceships [
+	
+	^ records collect: [ :record | 
+		record ship.
+	]
 ]
 
 { #category : #accessing }
