@@ -4,18 +4,24 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #printing }
+{ #category : #'asserting state' }
+Finished >> isFinished [
+
+	^true.
+]
+
+{ #category : #'asserting state' }
 Finished >> isStarted [
 	^false.
 ]
 
-{ #category : #'determining game behaviour' }
+{ #category : #updating }
 Finished >> update: gameInstance [
 	Error signal: 'Cannot start another turn in a finished game'.
 ]
 
 { #category : #'determining game behaviour' }
 Finished >> winner: game [
-	
-	^game positionTracker winningSpaceship.
+
+	^ game currentLeader
 ]

@@ -10,29 +10,16 @@ Class {
 
 { #category : #'instance creation' }
 Spaceship class >> named: aName [ 
-	^ self new initializeWith: aName.
+	^ self new initializeNamed: aName.
 ]
 
 { #category : #initialization }
-Spaceship >> associateToGame: aGameInstance [
-	game := aGameInstance.
-]
-
-{ #category : #initialization }
-Spaceship >> initializeWith: aName [
+Spaceship >> initializeNamed: aName [
 	name := aName.
 ]
 
 { #category : #initialization }
 Spaceship >> name [
-	name isNotNil ifFalse: [ 
-		name := (self hash) printString.
-	].
-	
-	^name.
-]
 
-{ #category : #'turn starting' }
-Spaceship >> startTurn [
-	game startTurn: self.
+	^ name
 ]

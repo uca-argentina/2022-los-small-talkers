@@ -1,11 +1,11 @@
 Class {
-	#name : #LeaderboardTest,
+	#name : #PositionTrackerTest,
 	#superclass : #TestCase,
 	#category : #'IngSoft2-Tests'
 }
 
 { #category : #asserting }
-LeaderboardTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage [
+PositionTrackerTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage [
 
 	^self 
 		should: aBlock 
@@ -15,7 +15,7 @@ LeaderboardTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage
 ]
 
 { #category : #'tests - LeaderboardRecord' }
-LeaderboardTest >> testAskingForShipOnRecordReturnsSameShip [
+PositionTrackerTest >> testAskingForShipOnRecordReturnsSameShip [
 
 	|aShip record|
 	aShip := Spaceship named: 'Enterprise'.
@@ -24,7 +24,7 @@ LeaderboardTest >> testAskingForShipOnRecordReturnsSameShip [
 ]
 
 { #category : #'tests - LeaderboardRecord' }
-LeaderboardTest >> testAskingForSquareOnRecordReturnsSquare [
+PositionTrackerTest >> testAskingForSquareOnRecordReturnsSquare [
 
 	|aShip record|
 	aShip := Spaceship named: 'Enterprise'.
@@ -33,7 +33,7 @@ LeaderboardTest >> testAskingForSquareOnRecordReturnsSquare [
 ]
 
 { #category : #'tests - LeaderboardRecord' }
-LeaderboardTest >> testCreatingALeaderboardRecordWithAPositivePositionAndShipIsValid [
+PositionTrackerTest >> testCreatingALeaderboardRecordWithAPositivePositionAndShipIsValid [
 
 	|record aShip|
 	aShip := Spaceship named: 'Enterprise'.
@@ -41,7 +41,7 @@ LeaderboardTest >> testCreatingALeaderboardRecordWithAPositivePositionAndShipIsV
 ]
 
 { #category : #'tests - Leaderboard' }
-LeaderboardTest >> testCreatingALeaderboardWithASingleShipIsValid [
+PositionTrackerTest >> testCreatingALeaderboardWithASingleShipIsValid [
 
 	|leaderboard aShip|
 	aShip := Spaceship named: 'Enterprise'.
@@ -49,7 +49,7 @@ LeaderboardTest >> testCreatingALeaderboardWithASingleShipIsValid [
 ]
 
 { #category : #'tests - Leaderboard' }
-LeaderboardTest >> testCreatingALeaderboardWithMultipleShipsIsValid [
+PositionTrackerTest >> testCreatingALeaderboardWithMultipleShipsIsValid [
 
 	|leaderboard aFirstShip aSecondShip|
 	aFirstShip := Spaceship named: 'Enterprise'.
@@ -58,51 +58,53 @@ LeaderboardTest >> testCreatingALeaderboardWithMultipleShipsIsValid [
 ]
 
 { #category : #'tests - Leaderboard' }
-LeaderboardTest >> testDeletingARecordOfANonExistingShipIsInvalid [
+PositionTrackerTest >> testDeletingARecordOfANonExistingShipIsInvalid [
 
-	|aSpaceship anotherSpaceship leaderboard|
+	| aSpaceship anotherSpaceship leaderboard |
 	aSpaceship := Spaceship named: 'Enterprise'.
 	anotherSpaceship := Spaceship named: 'PlanetExpress'.
 	leaderboard := PositionTracker withShip: aSpaceship.
-	
-	self 
-		should: [leaderboard deleteRecordOf: anotherSpaceship.]
-		raise: Error 
-		withMessage: 'Cannot delete record of unknown ship'.
+
+	self
+		should: [ leaderboard removePositionOf: anotherSpaceship ]
+		raise: Error
+		withMessage: 'Cannot delete record of unknown ship'
 ]
 
 { #category : #'tests - Leaderboard' }
-LeaderboardTest >> testMovingAShipForwardSquaresUpdatesRankings [
+PositionTrackerTest >> testMovingAShipForwardSquaresUpdatesRankings [
 
-	|leaderboard aSpaceship|
+	| leaderboard aSpaceship |
 	aSpaceship := Spaceship named: 'Enterprise'.
 	leaderboard := PositionTracker withShip: aSpaceship.
-	
-	self assert: (leaderboard positions) equals: (Dictionary newFromKeys: {aSpaceship} andValues: {1}).
-	
-	leaderboard move: aSpaceship forwardSquares: 5 then: [].
-	
-	self assert: (leaderboard positions) equals: (Dictionary newFromKeys: {aSpaceship} andValues: {6}).
+
+	self
+		assert: leaderboard positions
+		equals: (Dictionary newFromKeys: { aSpaceship } andValues: { 1 }).
+
+	leaderboard move: aSpaceship forward: 5.
+
+	self
+		assert: leaderboard positions
+		equals: (Dictionary newFromKeys: { aSpaceship } andValues: { 6 })
 ]
 
 { #category : #'tests - Leaderboard' }
-LeaderboardTest >> testMovingAnUnknownShipForwardSquaresIsInvalid [
+PositionTrackerTest >> testMovingAnUnknownShipForwardSquaresIsInvalid [
 
-	|leaderboard aSpaceship anotherSpaceship|
+	| leaderboard aSpaceship anotherSpaceship |
 	aSpaceship := Spaceship named: 'Enterprise'.
 	anotherSpaceship := Spaceship named: 'PlanetExpress'.
 	leaderboard := PositionTracker withShip: aSpaceship.
-	
-	self 
-		should: [leaderboard move: anotherSpaceship forwardSquares: 5 then: [].]
-		raise: Error 
-		withMessage: 'Cannot move an unregistered ship'.
-	
-	
+
+	self
+		should: [ leaderboard move: anotherSpaceship forward: 5]
+		raise: Error
+		withMessage: 'Cannot move an unregistered ship'
 ]
 
 { #category : #'tests - Leaderboard' }
-LeaderboardTest >> testObtainingAllSpaceshipsFromTheLeaderboardReturnsCollectionWithShips [
+PositionTrackerTest >> testObtainingAllSpaceshipsFromTheLeaderboardReturnsCollectionWithShips [
 
 	|aFirstShip aSecondShip leaderboard|
 	aFirstShip := Spaceship named: 'Enterprise'.
@@ -113,7 +115,7 @@ LeaderboardTest >> testObtainingAllSpaceshipsFromTheLeaderboardReturnsCollection
 ]
 
 { #category : #'tests - Leaderboard' }
-LeaderboardTest >> testObtainingRankingsFromLeaderboardReturnsDictionaryWithNamesOfShipsAndTheirPositions [
+PositionTrackerTest >> testObtainingRankingsFromLeaderboardReturnsDictionaryWithNamesOfShipsAndTheirPositions [
 
 	|aFirstShip aSecondShip leaderboard|
 	aFirstShip := Spaceship named: 'Enterprise'.

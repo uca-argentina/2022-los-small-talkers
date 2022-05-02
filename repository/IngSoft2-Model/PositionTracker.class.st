@@ -17,14 +17,6 @@ PositionTracker class >> withSpaceships: aCollectionOfSpaceships [
 	^self new initializeWithSpaceships: aCollectionOfSpaceships.
 ]
 
-{ #category : #deleting }
-PositionTracker >> deleteRecordOf: aSpaceship [ 
-	|foundRecord|
-	foundRecord := self recordOf: aSpaceship  ifAbsent: [ Error signal: 'Cannot delete record of unknown ship'. ].
-	
-	records remove: foundRecord ifAbsent: [].
-]
-
 { #category : #initialization }
 PositionTracker >> initializeWithSpaceships: aCollectionOfSpaceships [
 	
@@ -34,41 +26,48 @@ PositionTracker >> initializeWithSpaceships: aCollectionOfSpaceships [
 ]
 
 { #category : #moving }
-PositionTracker >> move: aSpaceship forwardSquares: anInteger then: aFinishingCleanupBlock [
-	
-	|shipRecord currentPosition nextPosition|
-	shipRecord := self recordOf: aSpaceship ifAbsent: [
-		Error signal: 'Cannot move an unregistered ship'.
-	].
-	
+PositionTracker >> move: aSpaceship forward: aNumberOfSquares [
+
+	self move: aSpaceship forward: aNumberOfSquares then: [  ]
+]
+
+{ #category : #moving }
+PositionTracker >> move: aSpaceship forward: aNumberOfSquares then: aFinishingCleanupBlock [
+
+	| shipRecord currentPosition nextPosition |
+	shipRecord := self
+		              positionOf: aSpaceship
+		              ifAbsent: [ 
+		              Error signal: 'Cannot move an unregistered ship' ].
+
 	currentPosition := shipRecord square.
-	
-	nextPosition := currentPosition + anInteger.
-	
-	self deleteRecordOf: aSpaceship.
+
+	nextPosition := currentPosition + aNumberOfSquares.
+
+	self move: aSpaceship to: nextPosition then: aFinishingCleanupBlock
+]
+
+{ #category : #moving }
+PositionTracker >> move: aSpaceship to: nextPosition [
+
+	self move: aSpaceship to: nextPosition then: [  ]
+]
+
+{ #category : #moving }
+PositionTracker >> move: aSpaceship to: nextPosition then: aFinishingCleanupBlock [
+
+	self removePositionOf: aSpaceship.
 	
 	records add: (Position of: aSpaceship atSquare: nextPosition).
 	
-	(aFinishingCleanupBlock argumentCount = 1) ifTrue: [ aFinishingCleanupBlock value: nextPosition . ].
-	(aFinishingCleanupBlock argumentCount = 0) ifTrue: [ aFinishingCleanupBlock value. ]
+	aFinishingCleanupBlock argumentCount = 1 ifTrue: [ 
+		aFinishingCleanupBlock value: nextPosition ].
+	
+	
 ]
 
 { #category : #accessing }
-PositionTracker >> positions [
-	|keys values|
-	keys := records collect: [ :record | 
-		record ship.
-	].
-
-	values := records collect: [ :record | 
-		record square.
-	].
-
-	^Dictionary newFromKeys: keys andValues: values.
-]
-
-{ #category : #accessing }
-PositionTracker >> recordOf: aSpaceship ifAbsent: aFullBlockClosure [ 
+PositionTracker >> positionOf: aSpaceship ifAbsent: aFullBlockClosure [ 
 	|matchingResults|
 	
 	matchingResults := records select: [ :record |
@@ -79,15 +78,28 @@ PositionTracker >> recordOf: aSpaceship ifAbsent: aFullBlockClosure [
 ]
 
 { #category : #accessing }
+PositionTracker >> positions [
+
+	|spaceships  squares|
+	spaceships := self spaceships .
+
+	squares := records collect: [ :record | record square ].
+
+	^ Dictionary newFromKeys: spaceships andValues: squares
+]
+
+{ #category : #private }
+PositionTracker >> removePositionOf: aSpaceship [ 
+	|foundRecord|
+	foundRecord := self positionOf: aSpaceship  ifAbsent: [ Error signal: 'Cannot delete record of unknown ship'. ].
+	
+	records remove: foundRecord ifAbsent: [].
+]
+
+{ #category : #accessing }
 PositionTracker >> spaceships [
 	
 	^ records collect: [ :record | 
 		record ship.
 	]
-]
-
-{ #category : #accessing }
-PositionTracker >> winningSpaceship [ 
-	
-	^ (records detectMax: [:shipSquarePair | shipSquarePair square]) ship.
 ]

@@ -15,43 +15,35 @@ TrenchRunGameInstance class >> withParticipating: spaceships rolling: aDiceCup o
 	^ self new initializeWithParticipating: spaceships rolling: aDiceCup on: aBoard. 
 ]
 
-{ #category : #initialization }
-TrenchRunGameInstance >> associateGameInstanceToShips: aCollectionOfShips [
-	|game|
-	game := self.
-	
-	aCollectionOfShips do: [ :ship | ship associateToGame: game ].
-]
-
-{ #category : #initialization }
-TrenchRunGameInstance >> associateOwnGameBoardWith: aBoard [
-	gameBoard := aBoard.
-	gameBoard associateToGame: self
-]
-
 { #category : #accessing }
+TrenchRunGameInstance >> currentLeader [
+
+	^ (self positions keyAtValue: (self positions values detectMax: [ :square | square ] )) 
+]
+
+{ #category : #private }
 TrenchRunGameInstance >> end [
 	state := Finished new.
 ]
 
 { #category : #initialization }
 TrenchRunGameInstance >> initializeWithParticipating: aCollectionOfSpaceships rolling: aDiceCup on: aBoard [
-	self associateOwnGameBoardWith: aBoard.
+
+	gameBoard := aBoard.
 	dice := aDiceCup.
 	state := Started new.
 	positionTracker := PositionTracker withSpaceships: aCollectionOfSpaceships.
-	self associateGameInstanceToShips: aCollectionOfSpaceships.
 ]
 
-{ #category : #printing }
+{ #category : #'asserting state' }
+TrenchRunGameInstance >> isFinished [
+
+	^ state isFinished.
+]
+
+{ #category : #'asserting state' }
 TrenchRunGameInstance >> isStarted [
 	^ state isStarted.
-]
-
-{ #category : #accessing }
-TrenchRunGameInstance >> positionTracker [
-
-	^positionTracker.
 ]
 
 { #category : #accessing }
@@ -60,39 +52,28 @@ TrenchRunGameInstance >> positions [
 	^positionTracker positions.
 ]
 
-{ #category : #'game starting' }
-TrenchRunGameInstance >> start [
-	state := Started new.
-]
-
-{ #category : #'game starting' }
-TrenchRunGameInstance >> startAutomatedMatch [
-	|ships|
-	
-	ships := positionTracker players.
-	[self winner] whileNil: [ 
-		ships do: [ :ship |
-			(self winner isNil) ifTrue: [ 
-				ship startTurn.
-			].
-		]
-	]
-	
-]
-
 { #category : #'turn related' }
 TrenchRunGameInstance >> startTurn: ship [
-	|diceRollResult|
-	
-	((dice isNil) or: (gameBoard isNil)) ifTrue: [ 
-		 Error signal: 'Cannot start a game without board or dice'.
-	].
-	
+
+	| diceRollResult currentPosition nextPosition |
+	currentPosition := (positionTracker
+		                   positionOf: ship
+		                   ifAbsent: [ 
+		                   Error signal:
+			                   'Cannot start turn of an unknown ship' ]) square.
+
 	state update: self.
-	
+
 	diceRollResult := dice roll.
-	
-	positionTracker move: ship forwardSquares: diceRollResult then: [ :newPosition | (newPosition >= gameBoard length) ifTrue: [self end]].
+
+	(diceRollResult + currentPosition > gameBoard length) ifTrue: [ 
+			nextPosition := gameBoard length.
+			positionTracker move: ship to: nextPosition.
+			self end 
+		] ifFalse: [ 
+			nextPosition := diceRollResult + currentPosition.
+			positionTracker move: ship to: nextPosition 
+		]
 ]
 
 { #category : #accessing }

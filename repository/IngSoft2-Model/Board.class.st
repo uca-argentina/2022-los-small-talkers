@@ -2,9 +2,7 @@ Class {
 	#name : #Board,
 	#superclass : #Object,
 	#instVars : [
-		'length',
-		'leaderboard',
-		'game'
+		'length'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -18,18 +16,13 @@ Board class >> assertValid: aLength [
 { #category : #'instance creation' }
 Board class >> sized: aLength [ 
 	self assertValid: aLength.
-	^ self new initializeWith: aLength.
+	^ self new initializeSized: aLength.
 ]
 
 { #category : #initialization }
-Board >> associateToGame: aGameInstance [ 
-	game := aGameInstance.
-]
+Board >> initializeSized: aLength [
 
-{ #category : #initialization }
-Board >> initializeWith: aLength [ 
 	length := aLength.
-	leaderboard := Dictionary new.
 ]
 
 { #category : #'accessing - attributes' }

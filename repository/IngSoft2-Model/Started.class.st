@@ -4,17 +4,25 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #printing }
+{ #category : #'asserting state' }
+Started >> isFinished [ 
+
+	^false
+]
+
+{ #category : #'asserting state' }
 Started >> isStarted [ 
 	^true.
 ]
 
-{ #category : #'determining game behaviour' }
+{ #category : #updating }
 Started >> update: game [
+
+	^ self
 ]
 
 { #category : #'determining game behaviour' }
 Started >> winner: game [
 
-	Error signal: [ 'There cannot be a winner if the game has not finished' ]
+	Error signal: 'There cannot be a winner if the game has not finished'.
 ]
