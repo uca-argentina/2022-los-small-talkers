@@ -12,7 +12,8 @@ Finished >> isFinished [
 
 { #category : #'asserting state' }
 Finished >> isStarted [
-	^false.
+
+	^ false
 ]
 
 { #category : #updating }

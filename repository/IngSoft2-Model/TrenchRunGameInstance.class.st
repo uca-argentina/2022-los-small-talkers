@@ -5,7 +5,8 @@ Class {
 		'dice',
 		'gameBoard',
 		'state',
-		'positionTracker'
+		'positionTracker',
+		'sequence'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -27,12 +28,13 @@ TrenchRunGameInstance >> end [
 ]
 
 { #category : #initialization }
-TrenchRunGameInstance >> initializeWithParticipating: aCollectionOfSpaceships rolling: aDiceCup on: aBoard [
+TrenchRunGameInstance >> initializeWithParticipating: spaceships rolling: aDiceCup on: aBoard [
 
 	gameBoard := aBoard.
 	dice := aDiceCup.
 	state := Started new.
-	positionTracker := PositionTracker withSpaceships: aCollectionOfSpaceships.
+	positionTracker := PositionTracker withAll: spaceships.
+	sequence := TrenchRunSpaceshipSequence withAll: spaceships.
 ]
 
 { #category : #'asserting state' }
@@ -46,6 +48,30 @@ TrenchRunGameInstance >> isStarted [
 	^ state isStarted.
 ]
 
+{ #category : #'turn related' }
+TrenchRunGameInstance >> playNextTurn [
+
+	| diceRollResult currentPosition nextPosition ship |
+	ship := sequence nextInSequence.
+
+	currentPosition := (positionTracker positionOf: ship ifAbsent: [  ])
+		                   square.
+
+
+	state update: self.
+
+	diceRollResult := dice roll.
+
+	diceRollResult + currentPosition > gameBoard length
+		ifTrue: [ 
+			nextPosition := gameBoard length.
+			positionTracker move: ship to: nextPosition.
+			self end ]
+		ifFalse: [ 
+			nextPosition := diceRollResult + currentPosition.
+			positionTracker move: ship to: nextPosition ]
+]
+
 { #category : #accessing }
 TrenchRunGameInstance >> positions [ 
 
@@ -57,23 +83,25 @@ TrenchRunGameInstance >> startTurn: ship [
 
 	| diceRollResult currentPosition nextPosition |
 	currentPosition := (positionTracker
-		                   positionOf: ship
-		                   ifAbsent: [ 
-		                   Error signal:
-			                   'Cannot start turn of an unknown ship' ]) square.
+		                    positionOf: ship
+		                    ifAbsent: [ 
+		                    Error signal:
+			                    'Cannot start turn of an unknown ship' ])
+		                   square.
+
 
 	state update: self.
 
 	diceRollResult := dice roll.
 
-	(diceRollResult + currentPosition > gameBoard length) ifTrue: [ 
+	diceRollResult + currentPosition > gameBoard length
+		ifTrue: [ 
 			nextPosition := gameBoard length.
 			positionTracker move: ship to: nextPosition.
-			self end 
-		] ifFalse: [ 
+			self end ]
+		ifFalse: [ 
 			nextPosition := diceRollResult + currentPosition.
-			positionTracker move: ship to: nextPosition 
-		]
+			positionTracker move: ship to: nextPosition ]
 ]
 
 { #category : #accessing }

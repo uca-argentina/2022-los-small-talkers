@@ -2,8 +2,7 @@ Class {
 	#name : #Spaceship,
 	#superclass : #Object,
 	#instVars : [
-		'name',
-		'game'
+		'name'
 	],
 	#category : #'IngSoft2-Model'
 }

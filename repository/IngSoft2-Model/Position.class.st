@@ -9,13 +9,13 @@ Class {
 }
 
 { #category : #'instance creation' }
-Position class >> of: aSpaceship atSquare: squareNumber [ 
+Position class >> of: aSpaceship at: square [
 
-	^self new initializeOf: aSpaceship atSquare: squareNumber.
+	^ self new initializeOf: aSpaceship at: square
 ]
 
 { #category : #initialization }
-Position >> initializeOf: aSpaceship atSquare: aSquare [ 
+Position >> initializeOf: aSpaceship at: aSquare [ 
 	
 	ship := aSpaceship.
 	square := aSquare.

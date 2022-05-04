@@ -25,7 +25,7 @@ GameInstanceTest >> testAskingForGameStateWhenFinishedReturnsFinished [
 		        withParticipating: { aShip }
 		        rolling: aDiceCup
 		        on: aBoard.
-	game startTurn: aShip.
+	game playNextTurn .
 
 	self assert: [ game isFinished ]
 ]
@@ -37,7 +37,7 @@ GameInstanceTest >> testAskingForGameStateWhenStartedReturnsStarted [
 	aBoard := Board sized: 10.
 	aDiceCup := DiceCup with:(LoadedDie with: 7).
 	game := TrenchRunGameInstance withParticipating: {aShip} rolling: aDiceCup on: aBoard.
-	game startTurn: aShip.
+	game playNextTurn .
 	
 	self assert: [game isStarted].
 ]
@@ -60,78 +60,98 @@ GameInstanceTest >> testAskingForWinnerWhenGameStillHasNotFinishedIsInvalid [
 
 { #category : #tests }
 GameInstanceTest >> testMultipleShipsPositionsOnceGameIsFinished [
-	|aSpaceshipNamedJorge aSpaceshipNamedJulian aSpaceshipNamedHernan aBoard aLoadedDie aGame winner|
+
+	| aSpaceshipNamedJorge aSpaceshipNamedJulian aSpaceshipNamedHernan aBoard aLoadedDie aGame winner |
 	aSpaceshipNamedJorge := Spaceship named: 'Jorge'.
 	aSpaceshipNamedJulian := Spaceship named: 'Julian'.
 	aSpaceshipNamedHernan := Spaceship named: 'Hernan'.
 	aLoadedDie := LoadedDie with: 8.
 	aBoard := Board sized: 10.
-  
-	aGame := TrenchRunGameInstance withParticipating: {aSpaceshipNamedJorge. aSpaceshipNamedJulian. aSpaceshipNamedHernan} rolling: aLoadedDie on: aBoard.
-  
-	aGame startTurn: aSpaceshipNamedJorge.
-	aGame startTurn: aSpaceshipNamedJulian.
-	aGame startTurn: aSpaceshipNamedHernan.
-  aGame startTurn: aSpaceshipNamedJorge.
-  
+
+	aGame := TrenchRunGameInstance
+		         withParticipating: { 
+				         aSpaceshipNamedJorge.
+				         aSpaceshipNamedJulian.
+				         aSpaceshipNamedHernan }
+		         rolling: aLoadedDie
+		         on: aBoard.
+
+	aGame playNextTurn.
+	aGame playNextTurn.
+	aGame playNextTurn.
+	aGame playNextTurn.
+
 	winner := aGame winner.
-	
-	self assert: [((aGame isFinished ) and: (winner name match: 'Jorge'))].
+
+	self assert: [ aGame isFinished and: (winner name match: 'Jorge') ]
 ]
 
 { #category : #tests }
 GameInstanceTest >> testOneShippedGameCanOnlyKnowWinnerOnceGameIsFinished [
-	|aShip aBoard aGame aLoadedDie winner|
 
+	| aShip aBoard aGame aLoadedDie winner |
 	aShip := Spaceship named: 'Enterprise'.
 	aLoadedDie := LoadedDie with: 11.
 	aBoard := Board sized: 10.
-	aGame  := TrenchRunGameInstance withParticipating: {aShip} rolling: aLoadedDie on: aBoard.
-	
-	aGame startTurn: aShip.
-    
+	aGame := TrenchRunGameInstance
+		         withParticipating: { aShip }
+		         rolling: aLoadedDie
+		         on: aBoard.
+
+	aGame playNextTurn.
+
 	winner := aGame winner.
-	
-	self assert: ((aGame isFinished) and: (winner name match: 'Enterprise')).
+
+	self assert:
+		(aGame isFinished and: (winner name match: 'Enterprise'))
 ]
 
 { #category : #tests }
 GameInstanceTest >> testShipCannotStartAnotherTurnOnceGameHasFinished [
 
-	|aSpaceshipNamedJorge aSpaceshipNamedJulian aSpaceshipNamedHernan aBoard aLoadedDie aGame|
+	| aSpaceshipNamedJorge aSpaceshipNamedJulian aSpaceshipNamedHernan aBoard aLoadedDie aGame |
 	aSpaceshipNamedJorge := Spaceship named: 'Jorge'.
 	aSpaceshipNamedJulian := Spaceship named: 'Julian'.
 	aSpaceshipNamedHernan := Spaceship named: 'Hernan'.
 	aLoadedDie := LoadedDie with: 15.
 	aBoard := Board sized: 10.
-	aGame := TrenchRunGameInstance withParticipating: {aSpaceshipNamedJorge. aSpaceshipNamedJulian. aSpaceshipNamedHernan} rolling: aLoadedDie on: aBoard.
+	aGame := TrenchRunGameInstance
+		         withParticipating: { 
+				         aSpaceshipNamedJorge.
+				         aSpaceshipNamedJulian.
+				         aSpaceshipNamedHernan }
+		         rolling: aLoadedDie
+		         on: aBoard.
 
-	aGame startTurn: aSpaceshipNamedJorge.
+	aGame playNextTurn.
 
-	self 
-		should: [ aGame startTurn: aSpaceshipNamedHernan. ]
-		raise: Error 
-		withMessage: 'Cannot start another turn in a finished game'.
+	self
+		should: [ aGame playNextTurn ]
+		raise: Error
+		withMessage: 'Cannot start another turn in a finished game'
 ]
 
 { #category : #tests }
 GameInstanceTest >> testStartedGamePlaysUntilOneSpaceshipWins [
-	|aSpaceshipNamedJorge aSpaceshipNamedJulian aBoard aLoadedDie aGame|
+
+	| aSpaceshipNamedJorge aSpaceshipNamedJulian aBoard aLoadedDie aGame |
 	aSpaceshipNamedJorge := Spaceship named: 'Jorge'.
 	aSpaceshipNamedJulian := Spaceship named: 'Julian'.
 	aLoadedDie := LoadedDie with: 4.
 	aBoard := Board sized: 10.
 
-	aGame := TrenchRunGameInstance withParticipating: {aSpaceshipNamedJorge. aSpaceshipNamedJulian} rolling: aLoadedDie on: aBoard.
-	
-	[aGame isFinished] whileFalse: [
-		aGame startTurn: aSpaceshipNamedJorge.
-		aGame isFinished ifFalse: [ 
-			aGame startTurn: aSpaceshipNamedJulian.
-		].
-	].
-	self assert: (aGame isFinished and: [aGame winner name match: 'Jorge']).
-	
+	aGame := TrenchRunGameInstance
+		         withParticipating: { 
+				         aSpaceshipNamedJorge.
+				         aSpaceshipNamedJulian }
+		         rolling: aLoadedDie
+		         on: aBoard.
+
+	[ aGame isFinished ] whileFalse: [ 
+		aGame playNextTurn .
+		aGame isFinished ifFalse: [ aGame playNextTurn.] ].
+	self assert:
+		(aGame isFinished and: [ aGame winner name match: 'Jorge' ])
 ]
 
 { #category : #'tests - starting game checks' }
@@ -143,7 +163,7 @@ GameInstanceTest >> testStartingGameWithOneSpaceshipIsValid [
 	
 	"When only one spaceship is being added to game, message withShip:diceCup:board: can be used"
 	game := TrenchRunGameInstance withParticipating: {aShip} rolling: aDiceCup on: aBoard.
-	game startTurn: aShip.
+	game playNextTurn.
 	
 	self assert: (game isStarted).
 ]
@@ -159,8 +179,8 @@ GameInstanceTest >> testStartingGameWithTwoOrMoreSpaceshipsIsValid [
 	
 	"When two or more spaceships want to be added to a game, message withSpaceships:diceCup:board: must be used"
 	game := TrenchRunGameInstance withParticipating: {aFirstShip . aSecondShip } rolling: aDiceCup on: aBoard.
-	game startTurn: aFirstShip.
-	game startTurn: aSecondShip.
+	game playNextTurn.
+	game playNextTurn.
 	
 	self assert: [game isStarted].
 ]
@@ -175,34 +195,40 @@ GameInstanceTest >> testTwoShippedGameCanOnlyKnowWinnerOnceGameIsFinished [
 
 	aGame := TrenchRunGameInstance withParticipating: {aSpaceshipNamedJorge. aSpaceshipNamedJulian} rolling: aLoadedDie on: aBoard.
 
-	aGame startTurn: aSpaceshipNamedJulian.
-	aGame startTurn: aSpaceshipNamedJorge.
-	aGame startTurn: aSpaceshipNamedJulian.
+	aGame playNextTurn.
+
+	aGame playNextTurn.
+	aGame playNextTurn.
+
 
 	winner := aGame winner.
 	
-	self assert: ((aGame isFinished and: (winner name match: 'Julian'))).
+	self assert: ((aGame isFinished and: (winner name match: 'Jorge'))).
 ]
 
 { #category : #tests }
 GameInstanceTest >> testWinnerOfFixedMatchMatchesPositionsTable [
-	|aSpaceshipNamedJorge aSpaceshipNamedJulian aBoard aLoadedDie aGame positions|
+
+	| aSpaceshipNamedJorge aSpaceshipNamedJulian aBoard aLoadedDie aGame positions |
 	aSpaceshipNamedJorge := Spaceship named: 'Jorge'.
 	aSpaceshipNamedJulian := Spaceship named: 'Julian'.
 	aLoadedDie := LoadedDie with: 6.
 	aBoard := Board sized: 10.
 
-	aGame := TrenchRunGameInstance withParticipating: {aSpaceshipNamedJorge. aSpaceshipNamedJulian} rolling: aLoadedDie on: aBoard.
+	aGame := TrenchRunGameInstance
+		         withParticipating: { 
+				         aSpaceshipNamedJorge.
+				         aSpaceshipNamedJulian }
+		         rolling: aLoadedDie
+		         on: aBoard.
 
-	aGame startTurn: aSpaceshipNamedJorge.
-	aGame startTurn: aSpaceshipNamedJulian.
-	aGame startTurn: aSpaceshipNamedJorge.
+	aGame playNextTurn.
+	aGame playNextTurn.
+	aGame playNextTurn.
 
 	positions := aGame positions.
-	
-	self assert: (aGame isFinished and: 
-							[(aGame winner name match: 'Jorge') and: 
-								[(positions at: aSpaceshipNamedJorge) = 10]
-							]
-					 ).
+
+	self assert: (aGame isFinished and: [ 
+			 (aGame winner name match: 'Jorge') and: [ 
+				 (positions at: aSpaceshipNamedJorge) = aBoard length ] ])
 ]

@@ -8,31 +8,26 @@ Class {
 }
 
 { #category : #'instance creation' }
-PositionTracker class >> withShip: aSpaceship [ 
-	^self new initializeWithSpaceships: { aSpaceship }.
+PositionTracker class >> with: aSpaceship [ 
+	^self new initializeWithAll: { aSpaceship }.
 ]
 
 { #category : #'instance creation' }
-PositionTracker class >> withSpaceships: aCollectionOfSpaceships [
-	^self new initializeWithSpaceships: aCollectionOfSpaceships.
+PositionTracker class >> withAll: spaceships [
+
+	^ self new initializeWithAll: spaceships
 ]
 
 { #category : #initialization }
-PositionTracker >> initializeWithSpaceships: aCollectionOfSpaceships [
-	
-	records := OrderedCollection withAll: (aCollectionOfSpaceships collect: [ :ship |
-		Position of: ship atSquare: 1.	
-	]).
+PositionTracker >> initializeWithAll: spaceships [
+
+	records := OrderedCollection withAll:
+		           (spaceships collect: [ :ship | 
+			            Position of: ship at: 1 ])
 ]
 
 { #category : #moving }
 PositionTracker >> move: aSpaceship forward: aNumberOfSquares [
-
-	self move: aSpaceship forward: aNumberOfSquares then: [  ]
-]
-
-{ #category : #moving }
-PositionTracker >> move: aSpaceship forward: aNumberOfSquares then: aFinishingCleanupBlock [
 
 	| shipRecord currentPosition nextPosition |
 	shipRecord := self
@@ -44,24 +39,15 @@ PositionTracker >> move: aSpaceship forward: aNumberOfSquares then: aFinishingCl
 
 	nextPosition := currentPosition + aNumberOfSquares.
 
-	self move: aSpaceship to: nextPosition then: aFinishingCleanupBlock
+	self move: aSpaceship to: nextPosition
 ]
 
 { #category : #moving }
 PositionTracker >> move: aSpaceship to: nextPosition [
 
-	self move: aSpaceship to: nextPosition then: [  ]
-]
-
-{ #category : #moving }
-PositionTracker >> move: aSpaceship to: nextPosition then: aFinishingCleanupBlock [
-
 	self removePositionOf: aSpaceship.
 	
-	records add: (Position of: aSpaceship atSquare: nextPosition).
-	
-	aFinishingCleanupBlock argumentCount = 1 ifTrue: [ 
-		aFinishingCleanupBlock value: nextPosition ].
+	records add: (Position of: aSpaceship at: nextPosition).
 	
 	
 ]

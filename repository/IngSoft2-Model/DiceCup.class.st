@@ -20,9 +20,9 @@ DiceCup class >> withAll: dice [
 ]
 
 { #category : #initialization }
-DiceCup >> initializeWithAll: aDice [
+DiceCup >> initializeWithAll: diceVar [
 
-	dice := aDice.
+	dice := diceVar.
 ]
 
 { #category : #rolling }
