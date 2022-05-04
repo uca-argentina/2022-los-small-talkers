@@ -78,32 +78,6 @@ TrenchRunGameInstance >> positions [
 	^positionTracker positions.
 ]
 
-{ #category : #'turn related' }
-TrenchRunGameInstance >> startTurn: ship [
-
-	| diceRollResult currentPosition nextPosition |
-	currentPosition := (positionTracker
-		                    positionOf: ship
-		                    ifAbsent: [ 
-		                    Error signal:
-			                    'Cannot start turn of an unknown ship' ])
-		                   square.
-
-
-	state update: self.
-
-	diceRollResult := dice roll.
-
-	diceRollResult + currentPosition > gameBoard length
-		ifTrue: [ 
-			nextPosition := gameBoard length.
-			positionTracker move: ship to: nextPosition.
-			self end ]
-		ifFalse: [ 
-			nextPosition := diceRollResult + currentPosition.
-			positionTracker move: ship to: nextPosition ]
-]
-
 { #category : #accessing }
 TrenchRunGameInstance >> winner [
   ^state winner: self.
