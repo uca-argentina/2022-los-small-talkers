@@ -14,15 +14,7 @@ BoardTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage [
 ]
 
 { #category : #tests }
-BoardTest >> testAssociatingABoardWithAGame [
-	|aGameInstance aBoard|
-	
-	aBoard := Board sized: 10.
-	aGameInstance := GameInstance board: aBoard.
-]
-
-{ #category : #tests }
-BoardTest >> testBoardCreationWhereLengthEqualsZero [
+BoardTest >> testBoardCreationWhereLengthEqualsZeroIsInvalid [
 	self 
 		should: [Board sized: 0]
 		raise: Error
@@ -30,7 +22,9 @@ BoardTest >> testBoardCreationWhereLengthEqualsZero [
 ]
 
 { #category : #tests }
-BoardTest >> testBoardCreationWhereLengthIsValid [
-	| aBoard |
-	aBoard := Board sized: 10.
+BoardTest >> testBoardCreationWhereLengthLowerThanZeroIsInvalid [
+	self 
+		should: [Board sized: -5]
+		raise: Error
+		withMessage: 'Boards need a minimum length of 1'.
 ]

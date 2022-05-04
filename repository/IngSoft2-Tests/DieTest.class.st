@@ -25,8 +25,8 @@ DieTest >> testCreatingDiceCupWithOnlyOneDiceIsValid [
 { #category : #'tests - DiceCup' }
 DieTest >> testCreatingDiceCupWithTwoDiceIsValid [
 	|aDiceCup aFirstDice aSecondDice|
-	aFirstDice := RandomDie with: 5.
-	aSecondDice := RandomDie with: 7.
+	aFirstDice := Die with: 5.
+	aSecondDice := Die with: 7.
 	aDiceCup := DiceCup withAll: { aFirstDice . aSecondDice }.
 	
 	self assert: ((aDiceCup roll) between: 2 and: 12 ).
@@ -63,7 +63,7 @@ self
 { #category : #'tests - RandomDie' }
 DieTest >> testRandomDieRollsNumberBetweenOneAndItself [
 	| result |
-	result := (RandomDie with: 6) roll.
+	result := (Die with: 6) roll.
 	
 	self assert: [result between: 1 and: 6].
 ]
@@ -72,7 +72,7 @@ DieTest >> testRandomDieRollsNumberBetweenOneAndItself [
 DieTest >> testRandomDieWithNumberOfSidesFewerThan3IsInvalid [
 
 	self
-		should: [ RandomDie with:  -3 ]
+		should: [ Die with:  -3 ]
 		raise: Error
 		withMessage: 'Number of sides must be greater than 2'
 ]
@@ -80,5 +80,5 @@ DieTest >> testRandomDieWithNumberOfSidesFewerThan3IsInvalid [
 { #category : #'tests - RandomDie' }
 DieTest >> testRandomDieWithNumberOfSidesGreaterThanTwoIsValid [
 	| aRandomDie |
-	aRandomDie := RandomDie with: 3
+	aRandomDie := Die with: 3
 ]

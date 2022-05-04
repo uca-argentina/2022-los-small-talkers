@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'loadedSide'
 	],
-	#category : #'IngSoft2-Model'
+	#category : #'IngSoft2-Tests'
 }
 
 { #category : #'instance creation' }

@@ -1,5 +1,5 @@
 Class {
-	#name : #RandomDie,
+	#name : #Die,
 	#superclass : #Object,
 	#instVars : [
 		'numberOfSides'
@@ -8,14 +8,14 @@ Class {
 }
 
 { #category : #initialization }
-RandomDie class >> assertValid: aNumberOfSides [
+Die class >> assertValid: aNumberOfSides [
 
 	aNumberOfSides > 2 ifFalse: [ 
 		Error signal: 'Number of sides must be greater than 2' ]
 ]
 
 { #category : #initialization }
-RandomDie class >> with: aNumberOfSides [
+Die class >> with: aNumberOfSides [
 
 	self assertValid: aNumberOfSides.
 
@@ -23,11 +23,11 @@ RandomDie class >> with: aNumberOfSides [
 ]
 
 { #category : #initialization }
-RandomDie >> initializeWith: aNumberOfSides [ 
+Die >> initializeWith: aNumberOfSides [ 
 	numberOfSides := aNumberOfSides.
 ]
 
 { #category : #rolling }
-RandomDie >> roll [
+Die >> roll [
 	^ numberOfSides atRandom.
 ]
