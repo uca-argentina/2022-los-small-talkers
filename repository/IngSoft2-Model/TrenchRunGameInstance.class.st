@@ -6,20 +6,28 @@ Class {
 		'gameBoard',
 		'state',
 		'positionTracker',
-		'sequence'
+		'sequence',
+		'endingLap'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
-TrenchRunGameInstance class >> withParticipating: spaceships rolling: aDiceCup on: aBoard [ 
-	^ self new initializeWithParticipating: spaceships rolling: aDiceCup on: aBoard. 
+TrenchRunGameInstance class >> withParticipating: spaceships rolling: aDiceCup on: aBoard endLap: lapNumber [
+
+	^ self new
+		  initializeWithParticipating: spaceships
+		  rolling: aDiceCup
+		  on: aBoard
+		  endLap: lapNumber.
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing - positions' }
 TrenchRunGameInstance >> currentLeader [
 
-	^ (self positions keyAtValue: (self positions values detectMax: [ :square | square ] )) 
+	^ (self positions detectMax:
+		  [ :position | position lap * gameBoard length + position square ])
+			  ship
 ]
 
 { #category : #private }
@@ -28,13 +36,14 @@ TrenchRunGameInstance >> end [
 ]
 
 { #category : #initialization }
-TrenchRunGameInstance >> initializeWithParticipating: spaceships rolling: aDiceCup on: aBoard [
+TrenchRunGameInstance >> initializeWithParticipating: spaceships rolling: aDiceCup on: aBoard endLap: lapNumber [
 
 	gameBoard := aBoard.
 	dice := aDiceCup.
 	state := Started new.
+	endingLap := lapNumber.
 	positionTracker := PositionTracker withAll: spaceships.
-	sequence := TrenchRunSpaceshipSequence withAll: spaceships.
+	sequence := TrenchRunSpaceshipSequence withAll: spaceships
 ]
 
 { #category : #'asserting state' }
@@ -48,37 +57,69 @@ TrenchRunGameInstance >> isStarted [
 	^ state isStarted.
 ]
 
+{ #category : #'accessing - positions' }
+TrenchRunGameInstance >> lapOf: aShip [
+
+	^ (self positionOf: aShip) lap
+]
+
 { #category : #'turn related' }
 TrenchRunGameInstance >> playNextTurn [
 
-	| diceRollResult currentPosition nextPosition ship |
+	| diceRollResult currentSquare nextSquare ship currentLap nextLap |
 	ship := sequence nextInSequence.
-
-	currentPosition := (positionTracker positionOf: ship ifAbsent: [  ])
-		                   square.
-
-
+	currentSquare := self squareOf: ship.
+	currentLap := self lapOf: ship.
 	state update: self.
-
 	diceRollResult := dice roll.
+	nextSquare := currentSquare + diceRollResult \\ gameBoard length.
+	nextLap := currentLap
+	           +
+	           (currentSquare + diceRollResult - nextSquare
+	            / gameBoard length).
 
-	diceRollResult + currentPosition > gameBoard length
+	nextLap > endingLap
 		ifTrue: [ 
-			nextPosition := gameBoard length.
-			positionTracker move: ship to: nextPosition.
+			positionTracker move: ship to: 1 lap: endingLap + 1.
 			self end ]
-		ifFalse: [ 
-			nextPosition := diceRollResult + currentPosition.
-			positionTracker move: ship to: nextPosition ]
+		ifFalse: [ positionTracker move: ship to: nextSquare lap: nextLap ]
 ]
 
-{ #category : #accessing }
+{ #category : #private }
+TrenchRunGameInstance >> positionOf: aShip [
+
+	^ positionTracker positionOf: aShip ifAbsent: [  ]
+]
+
+{ #category : #'accessing - positions' }
 TrenchRunGameInstance >> positions [ 
 
 	^positionTracker positions.
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing - positions' }
+TrenchRunGameInstance >> ranking [
+
+	| sortedPositions rankingSize |
+	sortedPositions := SortedCollection sortUsing: [ :firstPosition :secondPosition | 
+		                   firstPosition lap * gameBoard length + firstPosition square >
+		                   (secondPosition lap * gameBoard length + secondPosition square) ].
+	sortedPositions addAll: self positions.
+	rankingSize := 3 min: sortedPositions size.
+	
+	^ Dictionary newFromKeys: (1 to: rankingSize by: 1) andValues: (sortedPositions
+			collect: [ :position | position ship name ]
+			from: 1
+			to: rankingSize ).
+]
+
+{ #category : #'accessing - positions' }
+TrenchRunGameInstance >> squareOf: aShip [
+
+	^ (self positionOf: aShip) square
+]
+
+{ #category : #'accessing - positions' }
 TrenchRunGameInstance >> winner [
   ^state winner: self.
 ]
