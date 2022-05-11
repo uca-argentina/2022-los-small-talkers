@@ -19,7 +19,7 @@ GameInstanceTest >> testAskingForGameStateWhenFinishedReturnsFinished [
 
 	| game aShip aDiceCup aBoard |
 	aShip := Spaceship named: 'Enterprise'.
-	aBoard := Board sized: 5.
+	aBoard := Board blankSized: 5.
 	aDiceCup := DiceCup with: (LoadedDie with: 6).
 	game := TrenchRunGameInstance
 		        withParticipating: { aShip }
@@ -37,7 +37,7 @@ GameInstanceTest >> testAskingForGameStateWhenStartedReturnsStarted [
 
 	| game aShip aDiceCup aBoard |
 	aShip := Spaceship new.
-	aBoard := Board sized: 10.
+	aBoard := Board blankSized: 10.
 	aDiceCup := DiceCup with: (LoadedDie with: 7).
 	game := TrenchRunGameInstance
 		        withParticipating: { aShip }
@@ -74,7 +74,7 @@ GameInstanceTest >> testMultipleShipsPositionsOnceGameIsFinished [
 	aSpaceshipNamedJulian := Spaceship named: 'Julian'.
 	aSpaceshipNamedHernan := Spaceship named: 'Hernan'.
 	aLoadedDie := LoadedDie with: 8.
-	aBoard := Board sized: 10.
+	aBoard := Board blankSized: 10.
 	aGame := TrenchRunGameInstance
 		         withParticipating: { 
 				         aSpaceshipNamedJorge.
@@ -99,7 +99,7 @@ GameInstanceTest >> testOneShippedGameCanOnlyKnowWinnerOnceGameIsFinished [
 	| aShip aBoard aGame aLoadedDie winner |
 	aShip := Spaceship named: 'Enterprise'.
 	aLoadedDie := LoadedDie with: 11.
-	aBoard := Board sized: 10.
+	aBoard := Board blankSized: 10.
 	aGame := TrenchRunGameInstance
 		         withParticipating: { aShip }
 		         rolling: aLoadedDie
@@ -121,7 +121,7 @@ GameInstanceTest >> testShipCannotStartAnotherTurnOnceGameHasFinished [
 	aSpaceshipNamedJulian := Spaceship named: 'Julian'.
 	aSpaceshipNamedHernan := Spaceship named: 'Hernan'.
 	aLoadedDie := LoadedDie with: 15.
-	aBoard := Board sized: 10.
+	aBoard := Board blankSized: 10.
 	aGame := TrenchRunGameInstance
 		         withParticipating: { 
 				         aSpaceshipNamedJorge.
@@ -144,7 +144,7 @@ GameInstanceTest >> testSpaceshipCompletingALapActuallyCountsIntoPositionTracker
 
 	| game aShip aDiceCup aBoard |
 	aShip := Spaceship named: 'Enterprise'.
-	aBoard := Board sized: 5.
+	aBoard := Board blankSized: 5.
 	aDiceCup := DiceCup with: (LoadedDie with: 8).
 	game := TrenchRunGameInstance
 		        withParticipating: { aShip }
@@ -165,7 +165,7 @@ GameInstanceTest >> testStartedGamePlaysUntilOneSpaceshipWins [
 	aSpaceshipNamedJorge := Spaceship named: 'Jorge'.
 	aSpaceshipNamedJulian := Spaceship named: 'Julian'.
 	aLoadedDie := LoadedDie with: 4.
-	aBoard := Board sized: 10.
+	aBoard := Board blankSized: 10.
 	aGame := TrenchRunGameInstance
 		         withParticipating: { 
 				         aSpaceshipNamedJorge.
@@ -186,7 +186,7 @@ GameInstanceTest >> testStartingGameWithOneSpaceshipIsValid [
 
 	| game aShip aDiceCup aBoard |
 	aShip := Spaceship new.
-	aBoard := Board sized: 10.
+	aBoard := Board blankSized: 10.
 	aDiceCup := DiceCup with: (LoadedDie with: 7).
 	game := TrenchRunGameInstance
 		        withParticipating: { aShip }
@@ -206,7 +206,7 @@ GameInstanceTest >> testStartingGameWithTwoOrMoreSpaceshipsIsValid [
 	aFirstShip := Spaceship named: 'Planet Express'.
 	aSecondShip := Spaceship named: 'Enterprise'.
 	aDiceCup := DiceCup with: (LoadedDie with: 5).
-	aBoard := Board sized: 10.
+	aBoard := Board blankSized: 10.
 	game := TrenchRunGameInstance
 		        withParticipating: { 
 				        aFirstShip.
@@ -227,7 +227,7 @@ GameInstanceTest >> testTwoShippedGameCanOnlyKnowWinnerOnceGameIsFinished [
 	| aSpaceshipNamedJorge aSpaceshipNamedJulian aLoadedDie aGame aBoard winner |
 	aSpaceshipNamedJorge := Spaceship named: 'Jorge'.
 	aSpaceshipNamedJulian := Spaceship named: 'Julian'.
-	aBoard := Board sized: 10.
+	aBoard := Board blankSized: 10.
 	aLoadedDie := LoadedDie with: 6.
 	aGame := TrenchRunGameInstance
 		         withParticipating: { 
@@ -252,7 +252,7 @@ GameInstanceTest >> testWinnerOfFixedMatchMatchesPositionsTable [
 	aSpaceshipNamedJorge := Spaceship named: 'Jorge'.
 	aSpaceshipNamedJulian := Spaceship named: 'Julian'.
 	aLoadedDie := LoadedDie with: 6.
-	aBoard := Board sized: 10.
+	aBoard := Board blankSized: 10.
 	aGame := TrenchRunGameInstance
 		         withParticipating: { 
 				         aSpaceshipNamedJorge.
@@ -280,7 +280,7 @@ GameInstanceTest >> testWinnerOfFixedMatchMatchesRanking [
 	aSpaceshipNamedJorge := Spaceship named: 'Jorge'.
 	aSpaceshipNamedJulian := Spaceship named: 'Julian'.
 	aLoadedDie := LoadedDie with: 6.
-	aBoard := Board sized: 10.
+	aBoard := Board blankSized: 10.
 	aGame := TrenchRunGameInstance
 		         withParticipating: { 
 				         aSpaceshipNamedJorge.

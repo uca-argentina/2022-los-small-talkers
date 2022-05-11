@@ -64,25 +64,32 @@ TrenchRunGameInstance >> lapOf: aShip [
 ]
 
 { #category : #'turn related' }
-TrenchRunGameInstance >> playNextTurn [
+TrenchRunGameInstance >> move: ship anAmountOf: squares [
 
-	| diceRollResult currentSquare nextSquare ship currentLap nextLap |
-	ship := sequence nextInSequence.
+	| currentLap nextLap currentSquare nextSquare |
 	currentSquare := self squareOf: ship.
 	currentLap := self lapOf: ship.
-	state update: self.
-	diceRollResult := dice roll.
-	nextSquare := currentSquare + diceRollResult \\ gameBoard length.
+	nextSquare := currentSquare + squares \\ gameBoard length.
 	nextLap := currentLap
 	           +
-	           (currentSquare + diceRollResult - nextSquare
-	            / gameBoard length).
+	           (currentSquare + squares - nextSquare / gameBoard length).
 
 	nextLap > endingLap
 		ifTrue: [ 
 			positionTracker move: ship to: 1 lap: endingLap + 1.
 			self end ]
 		ifFalse: [ positionTracker move: ship to: nextSquare lap: nextLap ]
+]
+
+{ #category : #'turn related' }
+TrenchRunGameInstance >> playNextTurn [
+
+	| diceRollResult ship |
+	ship := sequence nextInSequence.
+	state update: self.
+	diceRollResult := dice roll.
+	self move: ship anAmountOf: diceRollResult.
+	gameBoard applyEffectTo: ship at:(self squareOf: ship) from: self.
 ]
 
 { #category : #private }
