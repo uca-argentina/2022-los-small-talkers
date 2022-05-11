@@ -15,11 +15,20 @@ PositionTrackerTest >> should: aBlock raise: anErrorType withMessage: anErrorMes
 ]
 
 { #category : #'tests - LeaderboardRecord' }
+PositionTrackerTest >> testAskingForLapOnRecordReturnsLap [
+
+	|aShip record|
+	aShip := Spaceship named: 'Enterprise'.
+	record := Position of: aShip at: 4 lap: 1.
+	self assert: record lap equals: 1.
+]
+
+{ #category : #'tests - LeaderboardRecord' }
 PositionTrackerTest >> testAskingForShipOnRecordReturnsSameShip [
 
 	|aShip record|
 	aShip := Spaceship named: 'Enterprise'.
-	record := Position of: aShip at: 4.
+	record := Position of: aShip at: 4 lap: 1.
 	self assert: record ship equals: aShip.
 ]
 
@@ -28,33 +37,8 @@ PositionTrackerTest >> testAskingForSquareOnRecordReturnsSquare [
 
 	|aShip record|
 	aShip := Spaceship named: 'Enterprise'.
-	record := Position of: aShip at: 4.
+	record := Position of: aShip at: 4 lap: 1.
 	self assert: record square equals: 4.
-]
-
-{ #category : #'tests - LeaderboardRecord' }
-PositionTrackerTest >> testCreatingALeaderboardRecordWithAPositivePositionAndShipIsValid [
-
-	|record aShip|
-	aShip := Spaceship named: 'Enterprise'.
-	record := Position of: aShip at: 4.
-]
-
-{ #category : #'tests - Leaderboard' }
-PositionTrackerTest >> testCreatingALeaderboardWithASingleShipIsValid [
-
-	|leaderboard aShip|
-	aShip := Spaceship named: 'Enterprise'.
-	leaderboard := PositionTracker with: aShip.
-]
-
-{ #category : #'tests - Leaderboard' }
-PositionTrackerTest >> testCreatingALeaderboardWithMultipleShipsIsValid [
-
-	|leaderboard aFirstShip aSecondShip|
-	aFirstShip := Spaceship named: 'Enterprise'.
-	aSecondShip := Spaceship named: 'PlanetExpress'.
-	leaderboard := PositionTracker withAll: {aFirstShip. aSecondShip}.
 ]
 
 { #category : #'tests - Leaderboard' }
@@ -80,13 +64,17 @@ PositionTrackerTest >> testMovingAShipForwardSquaresUpdatesRankings [
 
 	self
 		assert: leaderboard positions
-		equals: (Dictionary newFromKeys: { aSpaceship } andValues: { 1 }).
+		equals:
+		(OrderedCollection newFrom:
+			 { (Position of: aSpaceship at: 1 lap: 1) }).
 
-	leaderboard move: aSpaceship forward: 5.
+	leaderboard move: aSpaceship to: 6 lap: 1.
 
 	self
 		assert: leaderboard positions
-		equals: (Dictionary newFromKeys: { aSpaceship } andValues: { 6 })
+		equals:
+		(OrderedCollection newFrom:
+			 { (Position of: aSpaceship at: 6 lap: 1) })
 ]
 
 { #category : #'tests - Leaderboard' }
@@ -98,29 +86,43 @@ PositionTrackerTest >> testMovingAnUnknownShipForwardSquaresIsInvalid [
 	leaderboard := PositionTracker with: aSpaceship.
 
 	self
-		should: [ leaderboard move: anotherSpaceship forward: 5]
+		should: [ leaderboard move: anotherSpaceship to: 5 lap: 1 ]
 		raise: Error
 		withMessage: 'Cannot move an unregistered ship'
 ]
 
 { #category : #'tests - Leaderboard' }
-PositionTrackerTest >> testObtainingAllSpaceshipsFromTheLeaderboardReturnsCollectionWithShips [
+PositionTrackerTest >> testObtainingAllSpaceshipsFromPositionTrackerReturnsCollectionWithShips [
 
-	|aFirstShip aSecondShip leaderboard|
+	| aFirstShip aSecondShip leaderboard |
 	aFirstShip := Spaceship named: 'Enterprise'.
 	aSecondShip := Spaceship named: 'PlanetExpress'.
-	leaderboard := PositionTracker withAll: { aFirstShip . aSecondShip }.
-	
-	self assert: (leaderboard spaceships) equals: (OrderedCollection withAll: { aFirstShip . aSecondShip }).
+	leaderboard := PositionTracker withAll: { 
+			               aFirstShip.
+			               aSecondShip }.
+
+	self
+		assert: leaderboard spaceships
+		equals: (OrderedCollection withAll: { 
+					 aFirstShip.
+					 aSecondShip })
 ]
 
 { #category : #'tests - Leaderboard' }
-PositionTrackerTest >> testObtainingRankingsFromLeaderboardReturnsDictionaryWithNamesOfShipsAndTheirPositions [
+PositionTrackerTest >> testObtainingPositionsFromLeaderboardReturnsDictionaryWithNamesOfShipsAndTheirPositions [
 
-	|aFirstShip aSecondShip leaderboard|
+	| aFirstShip aSecondShip leaderboard |
 	aFirstShip := Spaceship named: 'Enterprise'.
 	aSecondShip := Spaceship named: 'PlanetExpress'.
-	leaderboard := PositionTracker withAll: { aFirstShip . aSecondShip }.
-	
-	self assert: (leaderboard positions) equals: (Dictionary newFromKeys: { aFirstShip . aSecondShip } andValues: { 1 . 1 }).
+	leaderboard := PositionTracker withAll: { 
+			               aFirstShip.
+			               aSecondShip }.
+
+	self
+		assert: (leaderboard positions at: 1)
+		equals: (Position of: aFirstShip at: 1 lap: 1).
+
+	self
+		assert: (leaderboard positions at: 2)
+		equals: (Position of: aSecondShip at: 1 lap: 1)
 ]

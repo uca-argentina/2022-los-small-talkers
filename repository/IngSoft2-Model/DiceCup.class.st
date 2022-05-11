@@ -14,15 +14,15 @@ DiceCup class >> with: die [
 ]
 
 { #category : #'instance creation' }
-DiceCup class >> withAll: dice [
-	
-	^self new initializeWithAll: dice.
+DiceCup class >> withAll: givenDice [
+
+	^ self new initializeWithAll: givenDice
 ]
 
 { #category : #initialization }
-DiceCup >> initializeWithAll: diceVar [
+DiceCup >> initializeWithAll: givenDice [
 
-	dice := diceVar.
+	dice := givenDice
 ]
 
 { #category : #rolling }
