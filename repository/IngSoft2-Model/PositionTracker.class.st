@@ -8,12 +8,6 @@ Class {
 }
 
 { #category : #'instance creation' }
-PositionTracker class >> with: aSpaceship [
-
-	^ self new initializeWithAll: { aSpaceship }.
-]
-
-{ #category : #'instance creation' }
 PositionTracker class >> withAll: spaceships [
 
 	^ self new initializeWithAll: spaceships.
@@ -22,7 +16,9 @@ PositionTracker class >> withAll: spaceships [
 { #category : #initialization }
 PositionTracker >> initializeWithAll: spaceships [
 
-	positions := OrderedCollection newFrom: (spaceships collect: [ :ship | Position of: ship at: 1 lap: 1 ]).
+	positions := OrderedCollection newFrom:
+		             (spaceships collect: [ :ship | 
+			              Position of: ship at: 1 lap: 1 ])
 ]
 
 { #category : #moving }
@@ -43,7 +39,7 @@ PositionTracker >> positionOf: aSpaceship ifAbsent: aFullBlockClosure [
 
 	| matchingResults |
 	matchingResults := positions select: [ :position | 
-		                   (position ship) = aSpaceship ].
+		                   position ship = aSpaceship ].
 
 	matchingResults isEmpty
 		ifTrue: [ aFullBlockClosure value ]
@@ -57,17 +53,19 @@ PositionTracker >> positions [
 ]
 
 { #category : #private }
-PositionTracker >> removePositionOf: aSpaceship [ 
-	|foundRecord|
-	foundRecord := self positionOf: aSpaceship  ifAbsent: [ Error signal: 'Cannot delete record of unknown ship'. ].
-	
-	positions remove: foundRecord ifAbsent: [].
+PositionTracker >> removePositionOf: aSpaceship [
+
+	| foundRecord |
+	foundRecord := self
+		               positionOf: aSpaceship
+		               ifAbsent: [ 
+		               Error signal: 'Cannot delete record of unknown ship' ].
+
+	positions remove: foundRecord ifAbsent: [  ]
 ]
 
 { #category : #accessing }
 PositionTracker >> spaceships [
-	
-	^ positions collect: [ :position | 
-		position ship.
-	]
+
+	^ positions collect: [ :position | position ship ]
 ]

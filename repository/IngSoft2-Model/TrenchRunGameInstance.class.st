@@ -13,13 +13,18 @@ Class {
 }
 
 { #category : #'instance creation' }
-TrenchRunGameInstance class >> withParticipating: spaceships rolling: aDiceCup on: aBoard endLap: lapNumber [
+TrenchRunGameInstance class >> withParticipating: spaceships rolling: aDiceCup on: aBoard until: endLap [
 
 	^ self new
 		  initializeWithParticipating: spaceships
 		  rolling: aDiceCup
 		  on: aBoard
-		  endLap: lapNumber.
+		  until: endLap
+]
+
+{ #category : #accessing }
+TrenchRunGameInstance >> board [
+	^gameBoard.
 ]
 
 { #category : #'accessing - positions' }
@@ -36,14 +41,14 @@ TrenchRunGameInstance >> end [
 ]
 
 { #category : #initialization }
-TrenchRunGameInstance >> initializeWithParticipating: spaceships rolling: aDiceCup on: aBoard endLap: lapNumber [
+TrenchRunGameInstance >> initializeWithParticipating: spaceships rolling: aDiceCup on: aBoard until: endLap [
 
 	gameBoard := aBoard.
 	dice := aDiceCup.
 	state := Started new.
-	endingLap := lapNumber.
+	endingLap := endLap.
 	positionTracker := PositionTracker withAll: spaceships.
-	sequence := TrenchRunSpaceshipSequence withAll: spaceships
+	sequence := TrenchRunSequence withAll: spaceships
 ]
 
 { #category : #'asserting state' }
@@ -54,7 +59,8 @@ TrenchRunGameInstance >> isFinished [
 
 { #category : #'asserting state' }
 TrenchRunGameInstance >> isStarted [
-	^ state isStarted.
+
+	^ state isStarted
 ]
 
 { #category : #'accessing - positions' }
@@ -64,25 +70,37 @@ TrenchRunGameInstance >> lapOf: aShip [
 ]
 
 { #category : #'turn related' }
-TrenchRunGameInstance >> playNextTurn [
+TrenchRunGameInstance >> move: ship anAmountOf: squares [
 
-	| diceRollResult currentSquare nextSquare ship currentLap nextLap |
-	ship := sequence nextInSequence.
+	| currentLap nextLap currentSquare nextSquare |
 	currentSquare := self squareOf: ship.
 	currentLap := self lapOf: ship.
-	state update: self.
-	diceRollResult := dice roll.
-	nextSquare := currentSquare + diceRollResult \\ gameBoard length.
+	nextSquare := currentSquare + squares \\ gameBoard length.
 	nextLap := currentLap
 	           +
-	           (currentSquare + diceRollResult - nextSquare
-	            / gameBoard length).
+	           (currentSquare + squares - nextSquare / gameBoard length).
+
+	nextLap < 1 ifTrue: [ 
+		nextLap := 1.
+		nextSquare := 1 ].
 
 	nextLap > endingLap
 		ifTrue: [ 
 			positionTracker move: ship to: 1 lap: endingLap + 1.
 			self end ]
 		ifFalse: [ positionTracker move: ship to: nextSquare lap: nextLap ]
+]
+
+{ #category : #'turn related' }
+TrenchRunGameInstance >> playNextTurn [
+
+	| diceRollResult ship |
+	ship := sequence nextInSequence.
+	state update: self.
+	diceRollResult := dice roll.
+	self move: ship anAmountOf: diceRollResult.
+	self isFinished ifFalse: [ 
+		gameBoard applyEffectTo: ship at: (self squareOf: ship) from: self ]
 ]
 
 { #category : #private }
@@ -113,6 +131,12 @@ TrenchRunGameInstance >> ranking [
 			to: rankingSize ).
 ]
 
+{ #category : #accessing }
+TrenchRunGameInstance >> spaceships [ 
+
+	^ positionTracker spaceships.
+]
+
 { #category : #'accessing - positions' }
 TrenchRunGameInstance >> squareOf: aShip [
 
@@ -121,5 +145,6 @@ TrenchRunGameInstance >> squareOf: aShip [
 
 { #category : #'accessing - positions' }
 TrenchRunGameInstance >> winner [
-  ^state winner: self.
+
+	^ state winner: self
 ]
