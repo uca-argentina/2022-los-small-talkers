@@ -1,5 +1,5 @@
 Class {
-	#name : #TrenchRunSpaceshipSequence,
+	#name : #TrenchRunSequence,
 	#superclass : #Object,
 	#instVars : [
 		'elements',
@@ -9,23 +9,23 @@ Class {
 }
 
 { #category : #'instance creation' }
-TrenchRunSpaceshipSequence class >> withAll: spaceships [
+TrenchRunSequence class >> withAll: spaceships [
 	^self new initializeWithAll: spaceships.
 ]
 
 { #category : #private }
-TrenchRunSpaceshipSequence >> counterAdd [
+TrenchRunSequence >> counterAdd [
 	counter := counter + 1.
 ]
 
 { #category : #initialization }
-TrenchRunSpaceshipSequence >> initializeWithAll: spaceships [
+TrenchRunSequence >> initializeWithAll: spaceships [
 	elements := spaceships.
 	counter := 0
 ]
 
 { #category : #accessing }
-TrenchRunSpaceshipSequence >> nextInSequence [
+TrenchRunSequence >> nextInSequence [
 	self counterAdd.
 	^elements at: (((counter -1) \\ elements size)+1) .
 ]

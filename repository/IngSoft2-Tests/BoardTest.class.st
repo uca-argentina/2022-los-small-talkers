@@ -15,16 +15,40 @@ BoardTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage [
 
 { #category : #tests }
 BoardTest >> testBoardCreationWhereLengthEqualsZeroIsInvalid [
-	self 
-		should: [Board sized: 0]
+
+	self
+		should: [ Board sized: 0 dividedIn: 10 ]
 		raise: Error
-		withMessage: 'Boards need a minimum length of 1'.
+		withMessage: 'Boards need a minimum length of 1'
 ]
 
 { #category : #tests }
 BoardTest >> testBoardCreationWhereLengthLowerThanZeroIsInvalid [
-	self 
-		should: [Board sized: -5]
+
+	self
+		should: [ Board sized: -5 dividedIn: 10 ]
+		raise: Error
+		withMessage: 'Boards need a minimum length of 1'
+]
+
+{ #category : #tests }
+BoardTest >> testBoardCreationWhereParsecsLowerOrEqualToZeroIsInvalid [
+
+	self
+		should: [ Board sized: 10 dividedIn: 0 ]
 		raise: Error
 		withMessage: 'Boards need a minimum length of 1'.
+
+	self
+		should: [ Board sized: 10 dividedIn: -10 ]
+		raise: Error
+		withMessage: 'Boards need a minimum length of 1'
+]
+
+{ #category : #tests }
+BoardTest >> testCreatingABoardWithRandomSquares [
+
+	| board |
+	board := Board sized: 200 dividedIn: 200.
+	board length
 ]

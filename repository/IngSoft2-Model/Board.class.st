@@ -2,8 +2,9 @@ Class {
 	#name : #Board,
 	#superclass : #Object,
 	#instVars : [
-		'length',
-		'squares'
+		'squares',
+		'totalParsecs',
+		'totalSquares'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -14,39 +15,78 @@ Board class >> assertValid: aLength [
 		Error signal: 'Boards need a minimum length of 1' ].
 ]
 
-{ #category : #'as yet unclassified' }
-Board class >> blankSized: aSize [
-	self assertValid: aSize.
-	^self new initializeBlankSized: aSize.
+{ #category : #'instance creation' }
+Board class >> sized: someSquares dividedIn: someParsecs [
+
+	self assertValid: someParsecs.
+	self assertValid: someSquares.
+	^ self new initializeSized: someSquares dividedIn: someParsecs
 ]
 
 { #category : #'instance creation' }
-Board class >> sized: aLength [ 
-	self assertValid: aLength.
-	^ self new initializeSized: aLength.
+Board class >> sized: someSquares dividedIn: someParsecs from: slotSquareDictionary [
+
+	self assertValid: someParsecs.
+	self assertValid: someSquares.
+	^ self new
+		  initializeSized: someSquares
+		  dividedIn: someParsecs
+		  from: slotSquareDictionary
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'executing effects' }
 Board >> applyEffectTo: spaceship at: square from: game [
 
 	(squares at: square) applyEffectTo: spaceship from: game.
 ]
 
 { #category : #initialization }
-Board >> initializeBlankSized: aLength [
+Board >> initializeSized: someSquares dividedIn: someParsecs [
 
-	length := aLength.
-	squares := OrderedCollection new.
-	(1 to: length by: 1) do: [:i | squares add: BlankSlot new ].
+	totalSquares := someSquares.
+	totalParsecs := someParsecs.
+	squares := (RandomSquaresGenerator
+		           creating: { 
+				           AtomicBombSlot new.
+				           HyperJumpSlot new.
+				           MoonWalkSlot new.
+				           SpeedUpSlot new.
+				           WormHoleSlot new.
+				           BlankSlot new }
+		           with: { 
+				           (2 / 100).
+				           (8 / 100).
+				           (1 / 10).
+				           (2 / 10).
+				           (2 / 10).
+				           (4 / 10) }
+		           sized: someSquares) generateSlots.
 ]
 
 { #category : #initialization }
-Board >> initializeSized: aLength [
+Board >> initializeSized: someSquares dividedIn: someParsecs from: slotSquareDictionary [
 
-	length := aLength.
+	totalSquares := someSquares.
+	totalParsecs := someParsecs.
+	slotSquareDictionary isEmpty 
+		ifTrue: [ squares := OrderedCollection newFrom: (
+			(1 to: someSquares  by: 1) collect: 
+				[ :i | BlankSlot new. ]). ]
+		ifFalse: [ squares := OrderedCollection newFrom: (
+			(1 to: someSquares  by: 1) collect: 
+				[ :i | slotSquareDictionary at: i ifAbsentPut: [BlankSlot new.] ]).
+			].
+	
+
+	
 ]
 
 { #category : #'accessing - attributes' }
 Board >> length [
-  ^length.
+  ^totalSquares.
+]
+
+{ #category : #accessing }
+Board >> squaresPerParsec [
+	^ totalSquares / totalParsecs.
 ]

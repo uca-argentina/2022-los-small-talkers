@@ -22,6 +22,11 @@ TrenchRunGameInstance class >> withParticipating: spaceships rolling: aDiceCup o
 		  endLap: lapNumber.
 ]
 
+{ #category : #accessing }
+TrenchRunGameInstance >> board [
+	^gameBoard.
+]
+
 { #category : #'accessing - positions' }
 TrenchRunGameInstance >> currentLeader [
 
@@ -43,7 +48,7 @@ TrenchRunGameInstance >> initializeWithParticipating: spaceships rolling: aDiceC
 	state := Started new.
 	endingLap := lapNumber.
 	positionTracker := PositionTracker withAll: spaceships.
-	sequence := TrenchRunSpaceshipSequence withAll: spaceships
+	sequence := TrenchRunSequence withAll: spaceships
 ]
 
 { #category : #'asserting state' }
@@ -73,6 +78,11 @@ TrenchRunGameInstance >> move: ship anAmountOf: squares [
 	nextLap := currentLap
 	           +
 	           (currentSquare + squares - nextSquare / gameBoard length).
+
+	nextLap < 1 ifTrue: [ 
+		nextLap := 1.
+		nextSquare := 1
+	].
 
 	nextLap > endingLap
 		ifTrue: [ 
