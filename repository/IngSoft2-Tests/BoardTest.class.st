@@ -46,9 +46,8 @@ BoardTest >> testBoardCreationWhereParsecsLowerOrEqualToZeroIsInvalid [
 ]
 
 { #category : #tests }
-BoardTest >> testCreatingABoardWithRandomSquares [
+BoardTest >> testRandomBoardCreationThrowsNoErrors [
 
 	| board |
-	board := Board sized: 200 dividedIn: 200.
-	board length
+	board := Board sized: 100 dividedIn: 200
 ]

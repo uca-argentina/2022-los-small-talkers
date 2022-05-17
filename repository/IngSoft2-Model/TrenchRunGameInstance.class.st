@@ -130,6 +130,12 @@ TrenchRunGameInstance >> ranking [
 			to: rankingSize ).
 ]
 
+{ #category : #accessing }
+TrenchRunGameInstance >> spaceships [ 
+
+	^ positionTracker spaceships.
+]
+
 { #category : #'accessing - positions' }
 TrenchRunGameInstance >> squareOf: aShip [
 

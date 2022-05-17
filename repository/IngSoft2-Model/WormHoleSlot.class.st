@@ -4,6 +4,12 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #'instance creation' }
+WormHoleSlot class >> with: parameterObject [
+
+	^self new.
+]
+
 { #category : #'executing effects' }
 WormHoleSlot >> applyEffectTo: spaceship from: game [
 

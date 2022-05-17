@@ -43,24 +43,30 @@ Board >> applyEffectTo: spaceship at: square from: game [
 { #category : #initialization }
 Board >> initializeSized: someSquares dividedIn: someParsecs [
 
+	| creationParameters |
 	totalSquares := someSquares.
 	totalParsecs := someParsecs.
+	creationParameters := { 
+		                      ('Nmax' -> 5).
+		                      ('Mmax' -> 5).
+		                      ('Mamount' -> 3) } asDictionary.
 	squares := (RandomSquaresGenerator
-		           creating: { 
-				           AtomicBombSlot new.
-				           HyperJumpSlot new.
-				           MoonWalkSlot new.
-				           SpeedUpSlot new.
-				           WormHoleSlot new.
-				           BlankSlot new }
-		           with: { 
-				           (2 / 100).
-				           (8 / 100).
-				           (1 / 10).
-				           (2 / 10).
-				           (2 / 10).
-				           (4 / 10) }
-		           sized: someSquares) generateSlots.
+		            creating: { 
+				            AtomicBombSlot.
+				            HyperJumpSlot.
+				            MoonWalkSlot.
+				            SpeedUpSlot.
+				            WormHoleSlot.
+				            BlankSlot }
+		            with: { 
+				            (2 / 100).
+				            (8 / 100).
+				            (1 / 10).
+				            (2 / 10).
+				            (2 / 10).
+				            (4 / 10) }
+		            sized: someSquares
+		            accordingTo: creationParameters) generateSlots
 ]
 
 { #category : #initialization }
@@ -84,6 +90,12 @@ Board >> initializeSized: someSquares dividedIn: someParsecs from: slotSquareDic
 { #category : #'accessing - attributes' }
 Board >> length [
   ^totalSquares.
+]
+
+{ #category : #accessing }
+Board >> squares [
+
+	^squares
 ]
 
 { #category : #accessing }

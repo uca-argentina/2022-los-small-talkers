@@ -83,18 +83,67 @@ GameInstanceTest >> testBlankSlotHasNoEffect [
 
 { #category : #'tests - slot functionality' }
 GameInstanceTest >> testHyperJumpMovesPlayersInDescendingOrderOfSequenceGiven [
-	
+
 	| game ship die board |
 	ship := Spaceship named: 'Enterprise'.
 	die := LoadedDie with: 1.
-	board := Board sized: 10 dividedIn: 20 from: ({2 -> (HyperJumpSlot with: {3 . 4}). 5 -> (HyperJumpSlot with: {1 . 2})} asDictionary ).
-	game := TrenchRunGameInstance withParticipating: {ship}  rolling: die on: board endLap: 1.
-	
+	board := Board sized: 10 dividedIn: 20 from: { 
+			         (2
+			          ->
+			          (HyperJumpSlot with: { ('M' -> { 3. 4 }) } asDictionary)).
+			         (5 -> (HyperJumpSlot with: { ('M' -> { 1. 2 }) } asDictionary)) }
+			         asDictionary.
+	game := TrenchRunGameInstance
+		        withParticipating: { ship }
+		        rolling: die
+		        on: board
+		        endLap: 1.
+
 	game playNextTurn.
-	self assert: ((game squareOf: ship) = 4 and: [ (game lapOf: ship) = 1]).
-	
+	self assert:
+		((game squareOf: ship) = 4 and: [ (game lapOf: ship) = 1 ]).
+
 	game playNextTurn.
-	self assert: ((game squareOf: ship) = 6 and: [ (game lapOf: ship) = 1]).
+	self assert:
+		((game squareOf: ship) = 6 and: [ (game lapOf: ship) = 1 ])
+]
+
+{ #category : #tests }
+GameInstanceTest >> testMoonWalkSlotBackTracksEverySpaceshipAnAmountOfSquaresExceptFromTheShipPlayingTheirTurn [
+
+	| aGame spaceship board aSpaceship anotherSpaceship aDie aMoonwalkSlot slots |
+	aDie := LoadedDie with: 3.
+	aMoonwalkSlot := MoonWalkSlot with: { 'N' -> 1 } asDictionary .
+	slots := Dictionary newFromPairs: { 
+			         7.
+			         aMoonwalkSlot.
+			         4.
+			         BlankSlot new }.
+	board := Board sized: 10 dividedIn: 10 from: slots.
+	spaceship := Spaceship named: 'Enterprise'.
+	aSpaceship := Spaceship named: 'Starfighter'.
+	anotherSpaceship := Spaceship named: 'Explorer'.
+	aGame := TrenchRunGameInstance
+		         withParticipating: { 
+				         spaceship.
+				         aSpaceship.
+				         anotherSpaceship }
+		         rolling: aDie
+		         on: board
+		         endLap: 1.
+
+
+	aGame playNextTurn.
+	aGame playNextTurn.
+	aGame playNextTurn.
+	aGame playNextTurn.
+
+	self assert: (aGame squareOf: spaceship) equals: 7.
+	self assert: (aGame lapOf: spaceship) equals: 1.
+	self assert: (aGame squareOf: aSpaceship) equals: 3.
+	self assert: (aGame lapOf: aSpaceship) equals: 1.
+	self assert: (aGame squareOf: anotherSpaceship) equals: 3.
+	self assert: (aGame lapOf: anotherSpaceship) equals: 1
 ]
 
 { #category : #'tests - positions' }

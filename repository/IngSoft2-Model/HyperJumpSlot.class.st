@@ -8,9 +8,15 @@ Class {
 }
 
 { #category : #'instance creation' }
-HyperJumpSlot class >> with: someJumps [
-	someJumps ifEmpty: [ Error signal: 'Cannot initialize HyperJumpSlot with empty jump parameters' ].
-	^self new initializeWith: someJumps.
+HyperJumpSlot class >> with: parameterObject [
+	
+	| someJumps |
+	someJumps := parameterObject at: 'M' ifAbsent: [ Error signal: 'Missing M sequence parameter on HyperJumpSlot creation' ].
+
+	someJumps ifEmpty: [ 
+		Error signal:
+			'Cannot initialize HyperJumpSlot with empty jump parameters' ].
+	^ self new initializeWith: someJumps
 ]
 
 { #category : #'executing effects' }
