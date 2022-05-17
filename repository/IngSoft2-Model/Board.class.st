@@ -74,31 +74,27 @@ Board >> initializeSized: someSquares dividedIn: someParsecs from: slotSquareDic
 
 	totalSquares := someSquares.
 	totalParsecs := someParsecs.
-	slotSquareDictionary isEmpty 
-		ifTrue: [ squares := OrderedCollection newFrom: (
-			(1 to: someSquares  by: 1) collect: 
-				[ :i | BlankSlot new. ]). ]
-		ifFalse: [ squares := OrderedCollection newFrom: (
-			(1 to: someSquares  by: 1) collect: 
-				[ :i | slotSquareDictionary at: i ifAbsentPut: [BlankSlot new.] ]).
-			].
-	
-
-	
+	squares := slotSquareDictionary isEmpty
+		           ifTrue: [ 
+			           OrderedCollection newFrom:
+				           ((1 to: someSquares by: 1) collect: [ :i | 
+					            BlankSlot new ]) ]
+		           ifFalse: [ 
+			           OrderedCollection newFrom:
+				           ((1 to: someSquares by: 1) collect: [ :i | 
+					            slotSquareDictionary
+						            at: i
+						            ifAbsentPut: [ BlankSlot new ] ]) ]
 ]
 
 { #category : #'accessing - attributes' }
 Board >> length [
-  ^totalSquares.
-]
 
-{ #category : #accessing }
-Board >> squares [
-
-	^squares
+	^ totalSquares
 ]
 
 { #category : #accessing }
 Board >> squaresPerParsec [
-	^ totalSquares / totalParsecs.
+
+	^ totalSquares / totalParsecs
 ]

@@ -1,11 +1,11 @@
 Class {
 	#name : #SpeedUpSlot,
-	#superclass : #Object,
+	#superclass : #BlankSlot,
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'instance creation' }
-SpeedUpSlot class >> with: parameterObject [
+{ #category : #'executing effects' }
+SpeedUpSlot >> applyEffectTo: spaceship from: game [
 
-	^self new.
+	game move: spaceship anAmountOf: 4
 ]

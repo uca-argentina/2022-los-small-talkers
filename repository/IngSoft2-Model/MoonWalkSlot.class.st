@@ -1,6 +1,6 @@
 Class {
 	#name : #MoonWalkSlot,
-	#superclass : #Object,
+	#superclass : #BlankSlot,
 	#instVars : [
 		'amountToMove'
 	],
@@ -8,9 +8,9 @@ Class {
 }
 
 { #category : #'instance creation' }
-MoonWalkSlot class >> with: parameterObject [
+MoonWalkSlot class >> with: retrogression [
 	| n |
-	n := parameterObject at: 'N' ifAbsent: [ 
+	n := retrogression at: 'N' ifAbsent: [ 
 		             Error signal:
 			             'Missing N parameter on MoonWalkSlot creation' ].
 
@@ -28,11 +28,11 @@ MoonWalkSlot >> applyEffectTo: spaceship from: game [
 	spaceshipsToMove remove: spaceship.
 	length := spaceshipsToMove size.
 	(1 to: length by: 1) do: [ :i | 
-		game move: (spaceshipsToMove at: i) anAmountOf: (0 - amountToMove) ]
+		game move: (spaceshipsToMove at: i) anAmountOf: 0 - amountToMove ]
 ]
 
 { #category : #initialization }
 MoonWalkSlot >> initializeWith: n [
 
-	amountToMove := n.
+	amountToMove := n
 ]

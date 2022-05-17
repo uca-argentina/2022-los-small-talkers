@@ -7,7 +7,7 @@ Class {
 { #category : #'asserting state' }
 Finished >> isFinished [
 
-	^true.
+	^ true
 ]
 
 { #category : #'asserting state' }
@@ -18,7 +18,8 @@ Finished >> isStarted [
 
 { #category : #updating }
 Finished >> update: gameInstance [
-	Error signal: 'Cannot start another turn in a finished game'.
+
+	Error signal: 'Cannot start another turn in a finished game'
 ]
 
 { #category : #'determining game behaviour' }

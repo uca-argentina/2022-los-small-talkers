@@ -23,11 +23,13 @@ Die class >> with: aNumberOfSides [
 ]
 
 { #category : #initialization }
-Die >> initializeWith: aNumberOfSides [ 
-	numberOfSides := aNumberOfSides.
+Die >> initializeWith: aNumberOfSides [
+
+	numberOfSides := aNumberOfSides
 ]
 
 { #category : #rolling }
 Die >> roll [
-	^ numberOfSides atRandom.
+
+	^ numberOfSides atRandom
 ]

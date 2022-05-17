@@ -17,28 +17,28 @@ PositionTrackerTest >> should: aBlock raise: anErrorType withMessage: anErrorMes
 { #category : #'tests - LeaderboardRecord' }
 PositionTrackerTest >> testAskingForLapOnRecordReturnsLap [
 
-	|aShip record|
+	| aShip record |
 	aShip := Spaceship named: 'Enterprise'.
 	record := Position of: aShip at: 4 lap: 1.
-	self assert: record lap equals: 1.
+	self assert: record lap equals: 1
 ]
 
 { #category : #'tests - LeaderboardRecord' }
 PositionTrackerTest >> testAskingForShipOnRecordReturnsSameShip [
 
-	|aShip record|
+	| aShip record |
 	aShip := Spaceship named: 'Enterprise'.
 	record := Position of: aShip at: 4 lap: 1.
-	self assert: record ship equals: aShip.
+	self assert: record ship equals: aShip
 ]
 
 { #category : #'tests - LeaderboardRecord' }
 PositionTrackerTest >> testAskingForSquareOnRecordReturnsSquare [
 
-	|aShip record|
+	| aShip record |
 	aShip := Spaceship named: 'Enterprise'.
 	record := Position of: aShip at: 4 lap: 1.
-	self assert: record square equals: 4.
+	self assert: record square equals: 4
 ]
 
 { #category : #'tests - Leaderboard' }
@@ -47,7 +47,7 @@ PositionTrackerTest >> testDeletingARecordOfANonExistingShipIsInvalid [
 	| aSpaceship anotherSpaceship leaderboard |
 	aSpaceship := Spaceship named: 'Enterprise'.
 	anotherSpaceship := Spaceship named: 'PlanetExpress'.
-	leaderboard := PositionTracker with: aSpaceship.
+	leaderboard := PositionTracker withAll: { aSpaceship }.
 
 	self
 		should: [ leaderboard removePositionOf: anotherSpaceship ]
@@ -60,7 +60,7 @@ PositionTrackerTest >> testMovingAShipForwardSquaresUpdatesRankings [
 
 	| leaderboard aSpaceship |
 	aSpaceship := Spaceship named: 'Enterprise'.
-	leaderboard := PositionTracker with: aSpaceship.
+	leaderboard := PositionTracker withAll: { aSpaceship }.
 
 	self
 		assert: leaderboard positions
@@ -83,7 +83,7 @@ PositionTrackerTest >> testMovingAnUnknownShipForwardSquaresIsInvalid [
 	| leaderboard aSpaceship anotherSpaceship |
 	aSpaceship := Spaceship named: 'Enterprise'.
 	anotherSpaceship := Spaceship named: 'PlanetExpress'.
-	leaderboard := PositionTracker with: aSpaceship.
+	leaderboard := PositionTracker withAll: { aSpaceship }.
 
 	self
 		should: [ leaderboard move: anotherSpaceship to: 5 lap: 1 ]

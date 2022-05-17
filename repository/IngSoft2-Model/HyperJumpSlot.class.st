@@ -1,6 +1,6 @@
 Class {
 	#name : #HyperJumpSlot,
-	#superclass : #Object,
+	#superclass : #BlankSlot,
 	#instVars : [
 		'jumpSequence'
 	],
@@ -8,10 +8,10 @@ Class {
 }
 
 { #category : #'instance creation' }
-HyperJumpSlot class >> with: parameterObject [
+HyperJumpSlot class >> with: advancingParsecs [
 	
 	| someJumps |
-	someJumps := parameterObject at: 'M' ifAbsent: [ Error signal: 'Missing M sequence parameter on HyperJumpSlot creation' ].
+	someJumps := advancingParsecs at: 'M' ifAbsent: [ Error signal: 'Missing M sequence parameter on HyperJumpSlot creation' ].
 
 	someJumps ifEmpty: [ 
 		Error signal:
@@ -21,13 +21,16 @@ HyperJumpSlot class >> with: parameterObject [
 
 { #category : #'executing effects' }
 HyperJumpSlot >> applyEffectTo: spaceship from: game [
-	|amountToMove|
-	amountToMove := (game board squaresPerParsec * (jumpSequence nextInSequence)) floor.
-	game move: spaceship anAmountOf: amountToMove.
+
+	| amountToMove |
+	amountToMove := (game board squaresPerParsec
+	                 * jumpSequence nextInSequence) floor.
+	game move: spaceship anAmountOf: amountToMove
 ]
 
 { #category : #initialization }
 HyperJumpSlot >> initializeWith: someJumps [
-	
-	jumpSequence := TrenchRunSequence withAll: (someJumps sorted: [ :x :y | x > y ]).
+
+	jumpSequence := TrenchRunSequence withAll:
+		                (someJumps sorted: [ :x :y | x > y ])
 ]

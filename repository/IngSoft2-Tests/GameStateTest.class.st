@@ -16,14 +16,16 @@ GameStateTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage [
 
 { #category : #'tests - GameFinished' }
 GameStateTest >> testGameStateFinishedReturnsFinishedWhenCalledForGameState [
-	|state|
+
+	| state |
 	state := Finished new.
-	self assert: [state isStarted not].
+	self assert: [ state isStarted not ]
 ]
 
 { #category : #'tests - GameStarted' }
 GameStateTest >> testGameStateStartedReturnsStartedWhenAskedForGameState [
-	|state|
+
+	| state |
 	state := Started new.
-	self assert: [state isStarted].
+	self assert: [ state isStarted ]
 ]

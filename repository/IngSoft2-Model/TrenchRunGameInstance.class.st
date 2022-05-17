@@ -13,13 +13,13 @@ Class {
 }
 
 { #category : #'instance creation' }
-TrenchRunGameInstance class >> withParticipating: spaceships rolling: aDiceCup on: aBoard endLap: lapNumber [
+TrenchRunGameInstance class >> withParticipating: spaceships rolling: aDiceCup on: aBoard until: endLap [
 
 	^ self new
 		  initializeWithParticipating: spaceships
 		  rolling: aDiceCup
 		  on: aBoard
-		  endLap: lapNumber.
+		  until: endLap
 ]
 
 { #category : #accessing }
@@ -41,12 +41,12 @@ TrenchRunGameInstance >> end [
 ]
 
 { #category : #initialization }
-TrenchRunGameInstance >> initializeWithParticipating: spaceships rolling: aDiceCup on: aBoard endLap: lapNumber [
+TrenchRunGameInstance >> initializeWithParticipating: spaceships rolling: aDiceCup on: aBoard until: endLap [
 
 	gameBoard := aBoard.
 	dice := aDiceCup.
 	state := Started new.
-	endingLap := lapNumber.
+	endingLap := endLap.
 	positionTracker := PositionTracker withAll: spaceships.
 	sequence := TrenchRunSequence withAll: spaceships
 ]
@@ -59,7 +59,8 @@ TrenchRunGameInstance >> isFinished [
 
 { #category : #'asserting state' }
 TrenchRunGameInstance >> isStarted [
-	^ state isStarted.
+
+	^ state isStarted
 ]
 
 { #category : #'accessing - positions' }
@@ -81,8 +82,7 @@ TrenchRunGameInstance >> move: ship anAmountOf: squares [
 
 	nextLap < 1 ifTrue: [ 
 		nextLap := 1.
-		nextSquare := 1
-	].
+		nextSquare := 1 ].
 
 	nextLap > endingLap
 		ifTrue: [ 
@@ -99,7 +99,8 @@ TrenchRunGameInstance >> playNextTurn [
 	state update: self.
 	diceRollResult := dice roll.
 	self move: ship anAmountOf: diceRollResult.
-	gameBoard applyEffectTo: ship at:(self squareOf: ship) from: self.
+	self isFinished ifFalse: [ 
+		gameBoard applyEffectTo: ship at: (self squareOf: ship) from: self ]
 ]
 
 { #category : #private }
@@ -144,5 +145,6 @@ TrenchRunGameInstance >> squareOf: aShip [
 
 { #category : #'accessing - positions' }
 TrenchRunGameInstance >> winner [
-  ^state winner: self.
+
+	^ state winner: self
 ]

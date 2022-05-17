@@ -29,7 +29,7 @@ Position >> initializeOf: aSpaceship at: aSquare lap: lapNumber [
 
 	ship := aSpaceship.
 	square := aSquare.
-	lap := lapNumber.
+	lap := lapNumber
 ]
 
 { #category : #accessing }
@@ -40,10 +40,12 @@ Position >> lap [
 
 { #category : #accessing }
 Position >> ship [
-	^ ship.
+
+	^ ship
 ]
 
 { #category : #accessing }
 Position >> square [
-	^ square.
+
+	^ square
 ]

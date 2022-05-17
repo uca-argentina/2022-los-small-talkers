@@ -15,7 +15,8 @@ TrenchRunSequence class >> withAll: spaceships [
 
 { #category : #private }
 TrenchRunSequence >> counterAdd [
-	counter := counter + 1.
+
+	counter := counter + 1
 ]
 
 { #category : #initialization }
@@ -26,6 +27,7 @@ TrenchRunSequence >> initializeWithAll: spaceships [
 
 { #category : #accessing }
 TrenchRunSequence >> nextInSequence [
+
 	self counterAdd.
-	^elements at: (((counter -1) \\ elements size)+1) .
+	^ elements at: counter - 1 \\ elements size + 1
 ]

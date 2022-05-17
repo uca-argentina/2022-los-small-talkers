@@ -1,17 +1,11 @@
 Class {
 	#name : #WormHoleSlot,
-	#superclass : #Object,
+	#superclass : #BlankSlot,
 	#category : #'IngSoft2-Model'
 }
-
-{ #category : #'instance creation' }
-WormHoleSlot class >> with: parameterObject [
-
-	^self new.
-]
 
 { #category : #'executing effects' }
 WormHoleSlot >> applyEffectTo: spaceship from: game [
 
-	game move: spaceship anAmountOf: -4. 
+	game move: spaceship anAmountOf: -4
 ]

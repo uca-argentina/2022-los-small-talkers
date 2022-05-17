@@ -8,12 +8,6 @@ Class {
 }
 
 { #category : #'instance creation' }
-DiceCup class >> with: die [
-	
-	^self new initializeWithAll: { die }.
-]
-
-{ #category : #'instance creation' }
 DiceCup class >> withAll: givenDice [
 
 	^ self new initializeWithAll: givenDice

@@ -53,11 +53,10 @@ RandomSquaresGenerator >> generateSlot [
 	numberGenerated := fractionGenerator next.
 
 	probabilityRange do: [ :range | 
-		(numberGenerated >= (range at: 1) and: [ 
-			 numberGenerated <= (range at: 2) ]) ifTrue: [ 
+		(numberGenerated between: (range at: 1) and: (range at: 2)) ifTrue: [ 
 			slot := (range at: 3) with: { 
-					        ('M' -> (self generateM)).
-					        ('N' -> (self generateN)) } asDictionary ] ].
+					        ('M' -> self generateM).
+					        ('N' -> self generateN) } asDictionary ] ].
 
 	^ slot
 ]

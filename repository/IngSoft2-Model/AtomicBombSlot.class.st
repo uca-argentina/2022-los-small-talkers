@@ -1,11 +1,11 @@
 Class {
 	#name : #AtomicBombSlot,
-	#superclass : #Object,
+	#superclass : #BlankSlot,
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'instance creation' }
-AtomicBombSlot class >> with: parameterObject [
+{ #category : #'executing effects' }
+AtomicBombSlot >> applyEffectTo: spaceship from: game [
 
-	^self new.
+	game move: spaceship anAmountOf: 1 - (game squareOf: spaceship)
 ]
