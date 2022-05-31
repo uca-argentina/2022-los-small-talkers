@@ -17,40 +17,40 @@ PositionTrackerTest >> should: aBlock raise: anErrorType withMessage: anErrorMes
 { #category : #'tests - LeaderboardRecord' }
 PositionTrackerTest >> testAskingForLapOnRecordReturnsLap [
 
-	| aShip record |
-	aShip := Spaceship named: 'Enterprise'.
-	record := Position of: aShip at: 4 lap: 1.
+	| enterprise record |
+	enterprise := Spaceship named: 'Enterprise'.
+	record := Position of: enterprise at: 4 lap: 1.
 	self assert: record lap equals: 1
 ]
 
 { #category : #'tests - LeaderboardRecord' }
 PositionTrackerTest >> testAskingForShipOnRecordReturnsSameShip [
 
-	| aShip record |
-	aShip := Spaceship named: 'Enterprise'.
-	record := Position of: aShip at: 4 lap: 1.
-	self assert: record ship equals: aShip
+	| enterprise record |
+	enterprise := Spaceship named: 'Enterprise'.
+	record := Position of: enterprise at: 4 lap: 1.
+	self assert: record ship equals: enterprise
 ]
 
 { #category : #'tests - LeaderboardRecord' }
 PositionTrackerTest >> testAskingForSquareOnRecordReturnsSquare [
 
-	| aShip record |
-	aShip := Spaceship named: 'Enterprise'.
-	record := Position of: aShip at: 4 lap: 1.
+	| enterprise record |
+	enterprise := Spaceship named: 'Enterprise'.
+	record := Position of: enterprise at: 4 lap: 1.
 	self assert: record square equals: 4
 ]
 
 { #category : #'tests - Leaderboard' }
 PositionTrackerTest >> testDeletingARecordOfANonExistingShipIsInvalid [
 
-	| aSpaceship anotherSpaceship leaderboard |
-	aSpaceship := Spaceship named: 'Enterprise'.
-	anotherSpaceship := Spaceship named: 'PlanetExpress'.
-	leaderboard := PositionTracker withAll: { aSpaceship }.
+	| enterprise starfighter leaderboard |
+	enterprise := Spaceship named: 'Enterprise'.
+	starfighter := Spaceship named: 'Starfighter'.
+	leaderboard := PositionTracker withAll: { enterprise }.
 
 	self
-		should: [ leaderboard removePositionOf: anotherSpaceship ]
+		should: [ leaderboard removePositionOf: starfighter ]
 		raise: Error
 		withMessage: 'Cannot delete record of unknown ship'
 ]
@@ -58,35 +58,35 @@ PositionTrackerTest >> testDeletingARecordOfANonExistingShipIsInvalid [
 { #category : #'tests - Leaderboard' }
 PositionTrackerTest >> testMovingAShipForwardSquaresUpdatesRankings [
 
-	| leaderboard aSpaceship |
-	aSpaceship := Spaceship named: 'Enterprise'.
-	leaderboard := PositionTracker withAll: { aSpaceship }.
+	| leaderboard enterprise |
+	enterprise := Spaceship named: 'Enterprise'.
+	leaderboard := PositionTracker withAll: { enterprise }.
 
 	self
 		assert: leaderboard positions
 		equals:
 		(OrderedCollection newFrom:
-			 { (Position of: aSpaceship at: 1 lap: 1) }).
+			 { (Position of: enterprise at: 1 lap: 1) }).
 
-	leaderboard move: aSpaceship to: 6 lap: 1.
+	leaderboard move: enterprise to: 6 lap: 1.
 
 	self
 		assert: leaderboard positions
 		equals:
 		(OrderedCollection newFrom:
-			 { (Position of: aSpaceship at: 6 lap: 1) })
+			 { (Position of: enterprise at: 6 lap: 1) })
 ]
 
 { #category : #'tests - Leaderboard' }
 PositionTrackerTest >> testMovingAnUnknownShipForwardSquaresIsInvalid [
 
-	| leaderboard aSpaceship anotherSpaceship |
-	aSpaceship := Spaceship named: 'Enterprise'.
-	anotherSpaceship := Spaceship named: 'PlanetExpress'.
-	leaderboard := PositionTracker withAll: { aSpaceship }.
+	| leaderboard enterprise starfighter |
+	enterprise := Spaceship named: 'Enterprise'.
+	starfighter := Spaceship named: 'Starfighter'.
+	leaderboard := PositionTracker withAll: { enterprise }.
 
 	self
-		should: [ leaderboard move: anotherSpaceship to: 5 lap: 1 ]
+		should: [ leaderboard move: starfighter to: 5 lap: 1 ]
 		raise: Error
 		withMessage: 'Cannot move an unregistered ship'
 ]
@@ -94,35 +94,35 @@ PositionTrackerTest >> testMovingAnUnknownShipForwardSquaresIsInvalid [
 { #category : #'tests - Leaderboard' }
 PositionTrackerTest >> testObtainingAllSpaceshipsFromPositionTrackerReturnsCollectionWithShips [
 
-	| aFirstShip aSecondShip leaderboard |
-	aFirstShip := Spaceship named: 'Enterprise'.
-	aSecondShip := Spaceship named: 'PlanetExpress'.
+	| enterprise starfighter leaderboard |
+	enterprise := Spaceship named: 'Enterprise'.
+	starfighter := Spaceship named: 'Starfighter'.
 	leaderboard := PositionTracker withAll: { 
-			               aFirstShip.
-			               aSecondShip }.
+			               enterprise.
+			               starfighter }.
 
 	self
 		assert: leaderboard spaceships
 		equals: (OrderedCollection withAll: { 
-					 aFirstShip.
-					 aSecondShip })
+					 enterprise.
+					 starfighter })
 ]
 
 { #category : #'tests - Leaderboard' }
 PositionTrackerTest >> testObtainingPositionsFromLeaderboardReturnsDictionaryWithNamesOfShipsAndTheirPositions [
 
-	| aFirstShip aSecondShip leaderboard |
-	aFirstShip := Spaceship named: 'Enterprise'.
-	aSecondShip := Spaceship named: 'PlanetExpress'.
+	| enterprise starfighter leaderboard |
+	enterprise := Spaceship named: 'Enterprise'.
+	starfighter := Spaceship named: 'Starfighter'.
 	leaderboard := PositionTracker withAll: { 
-			               aFirstShip.
-			               aSecondShip }.
+			               enterprise.
+			               starfighter }.
 
 	self
 		assert: (leaderboard positions at: 1)
-		equals: (Position of: aFirstShip at: 1 lap: 1).
+		equals: (Position of: enterprise at: 1 lap: 1).
 
 	self
 		assert: (leaderboard positions at: 2)
-		equals: (Position of: aSecondShip at: 1 lap: 1)
+		equals: (Position of: starfighter at: 1 lap: 1)
 ]
