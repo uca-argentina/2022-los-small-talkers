@@ -1,5 +1,5 @@
 Class {
-	#name : #TrenchRunGameInstance,
+	#name : #TrenchRunGame,
 	#superclass : #Object,
 	#instVars : [
 		'dice',
@@ -13,7 +13,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-TrenchRunGameInstance class >> withParticipating: spaceships rolling: aDiceCup on: aBoard until: endLap [
+TrenchRunGame class >> withParticipating: spaceships rolling: aDiceCup on: aBoard until: endLap [
 
 	^ self new
 		  initializeWithParticipating: spaceships
@@ -23,12 +23,12 @@ TrenchRunGameInstance class >> withParticipating: spaceships rolling: aDiceCup o
 ]
 
 { #category : #accessing }
-TrenchRunGameInstance >> board [
+TrenchRunGame >> board [
 	^gameBoard.
 ]
 
 { #category : #'accessing - positions' }
-TrenchRunGameInstance >> currentLeader [
+TrenchRunGame >> currentLeader [
 
 	^ (self positions detectMax:
 		  [ :position | position lap * gameBoard length + position square ])
@@ -36,12 +36,12 @@ TrenchRunGameInstance >> currentLeader [
 ]
 
 { #category : #private }
-TrenchRunGameInstance >> end [
+TrenchRunGame >> end [
 	state := Finished new.
 ]
 
 { #category : #initialization }
-TrenchRunGameInstance >> initializeWithParticipating: spaceships rolling: aDiceCup on: aBoard until: endLap [
+TrenchRunGame >> initializeWithParticipating: spaceships rolling: aDiceCup on: aBoard until: endLap [
 
 	gameBoard := aBoard.
 	dice := aDiceCup.
@@ -52,25 +52,25 @@ TrenchRunGameInstance >> initializeWithParticipating: spaceships rolling: aDiceC
 ]
 
 { #category : #'asserting state' }
-TrenchRunGameInstance >> isFinished [
+TrenchRunGame >> isFinished [
 
 	^ state isFinished.
 ]
 
 { #category : #'asserting state' }
-TrenchRunGameInstance >> isStarted [
+TrenchRunGame >> isStarted [
 
 	^ state isStarted
 ]
 
 { #category : #'accessing - positions' }
-TrenchRunGameInstance >> lapOf: aShip [
+TrenchRunGame >> lapOf: aShip [
 
 	^ (self positionOf: aShip) lap
 ]
 
 { #category : #'turn related' }
-TrenchRunGameInstance >> move: ship anAmountOf: squares [
+TrenchRunGame >> move: ship anAmountOf: squares [
 
 	| currentLap nextLap currentSquare nextSquare |
 	currentSquare := self squareOf: ship.
@@ -92,7 +92,7 @@ TrenchRunGameInstance >> move: ship anAmountOf: squares [
 ]
 
 { #category : #'turn related' }
-TrenchRunGameInstance >> playNextTurn [
+TrenchRunGame >> playNextTurn [
 
 	| diceRollResult ship |
 	ship := sequence nextInSequence.
@@ -104,19 +104,19 @@ TrenchRunGameInstance >> playNextTurn [
 ]
 
 { #category : #private }
-TrenchRunGameInstance >> positionOf: aShip [
+TrenchRunGame >> positionOf: aShip [
 
 	^ positionTracker positionOf: aShip ifAbsent: [  ]
 ]
 
 { #category : #'accessing - positions' }
-TrenchRunGameInstance >> positions [ 
+TrenchRunGame >> positions [ 
 
 	^positionTracker positions.
 ]
 
 { #category : #'accessing - positions' }
-TrenchRunGameInstance >> ranking [
+TrenchRunGame >> ranking [
 
 	| sortedPositions rankingSize |
 	sortedPositions := SortedCollection sortUsing: [ :firstPosition :secondPosition | 
@@ -132,19 +132,19 @@ TrenchRunGameInstance >> ranking [
 ]
 
 { #category : #accessing }
-TrenchRunGameInstance >> spaceships [ 
+TrenchRunGame >> spaceships [ 
 
 	^ positionTracker spaceships.
 ]
 
 { #category : #'accessing - positions' }
-TrenchRunGameInstance >> squareOf: aShip [
+TrenchRunGame >> squareOf: aShip [
 
 	^ (self positionOf: aShip) square
 ]
 
 { #category : #'accessing - positions' }
-TrenchRunGameInstance >> winner [
+TrenchRunGame >> winner [
 
 	^ state winner: self
 ]

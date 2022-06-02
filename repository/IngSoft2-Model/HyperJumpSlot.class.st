@@ -1,6 +1,6 @@
 Class {
 	#name : #HyperJumpSlot,
-	#superclass : #BlankSlot,
+	#superclass : #SuperclassSlot,
 	#instVars : [
 		'jumpSequence'
 	],

@@ -1,6 +1,6 @@
 Class {
 	#name : #BlankSlot,
-	#superclass : #Object,
+	#superclass : #SuperclassSlot,
 	#category : #'IngSoft2-Model'
 }
 

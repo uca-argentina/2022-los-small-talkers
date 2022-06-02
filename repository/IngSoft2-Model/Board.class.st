@@ -16,14 +16,6 @@ Board class >> assertValid: aLength [
 ]
 
 { #category : #'instance creation' }
-Board class >> sized: someSquares dividedIn: someParsecs [
-
-	self assertValid: someParsecs.
-	self assertValid: someSquares.
-	^ self new initializeSized: someSquares dividedIn: someParsecs
-]
-
-{ #category : #'instance creation' }
 Board class >> sized: someSquares dividedIn: someParsecs from: slotSquareDictionary [
 
 	self assertValid: someParsecs.

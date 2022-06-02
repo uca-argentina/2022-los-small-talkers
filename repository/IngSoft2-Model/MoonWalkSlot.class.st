@@ -1,6 +1,6 @@
 Class {
 	#name : #MoonWalkSlot,
-	#superclass : #BlankSlot,
+	#superclass : #SuperclassSlot,
 	#instVars : [
 		'amountToMove'
 	],

@@ -17,7 +17,7 @@ BoardTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage [
 BoardTest >> testBoardCreationWhereLengthLowerOrEqualThanZeroIsInvalid [
 
 	self
-		should: [ Board sized: -5 dividedIn: 10 ]
+		should: [ Board sized: -5 dividedIn: 10 from: {  } ]
 		raise: Error
 		withMessage: 'Boards need a minimum length of 1'
 ]
@@ -40,7 +40,7 @@ BoardTest >> testBoardCreationWhereParsecsLowerOrEqualToZeroIsInvalid [
 BoardTest >> testRandomBoardCreationThrowsNoErrors [
 
 	| board |
-	board := Board sized: 100 dividedIn: 200.
+	board := Board sized: 100 dividedIn: 200 from: {  }.
 	
 	self assert: [ (board length) = 100  ]
 ]

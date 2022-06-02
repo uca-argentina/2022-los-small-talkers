@@ -1,6 +1,6 @@
 Class {
 	#name : #SpeedUpSlot,
-	#superclass : #BlankSlot,
+	#superclass : #SuperclassSlot,
 	#category : #'IngSoft2-Model'
 }
 
