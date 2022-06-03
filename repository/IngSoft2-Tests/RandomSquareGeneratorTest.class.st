@@ -15,78 +15,21 @@ RandomSquareGeneratorTest >> should: aBlock raise: anErrorType withMessage: anEr
 ]
 
 { #category : #tests }
-RandomSquareGeneratorTest >> testRandomSquareGeneratorCannotBeCreatedWithMAmountMissing [
-
-	| rsgBlock |
-	rsgBlock := [ 
-	            RandomSquaresGenerator
-		            creating: { BlankSlot }
-		            with: { 1 }
-		            sized: { 4 }
-		            accordingTo: { 
-				            ('Nmax' -> 1).
-				            ('Mmax' -> 1) } asDictionary ].
-
-	self
-		should: rsgBlock
-		raise: Error
-		withMessage: 'Missing Mamount on creation parameters'
-]
-
-{ #category : #tests }
-RandomSquareGeneratorTest >> testRandomSquareGeneratorCannotBeCreatedWithMMaxMissing [
-
-	| rsgBlock |
-	rsgBlock := [ 
-	            RandomSquaresGenerator
-		            creating: { BlankSlot }
-		            with: { 1 }
-		            sized: { 4 }
-		            accordingTo: { 
-				            ('Nmax' -> 1).
-				            ('Mamount' -> 1) } asDictionary ].
-
-	self
-		should: rsgBlock
-		raise: Error
-		withMessage: 'Missing Mmax on creation parameters'
-]
-
-{ #category : #tests }
-RandomSquareGeneratorTest >> testRandomSquareGeneratorCannotBeCreatedWithNMaxMissing [
-
-	| rsgBlock |
-	rsgBlock := [ 
-	            RandomSquaresGenerator
-		            creating: { BlankSlot }
-		            with: { 1 }
-		            sized: { 4 }
-		            accordingTo: { 
-				            ('Mmax' -> 1).
-				            ('Mamount' -> 1) } asDictionary ].
-
-	self
-		should: rsgBlock
-		raise: Error
-		withMessage: 'Missing Nmax on creation parameters'
-]
-
-{ #category : #tests }
 RandomSquareGeneratorTest >> testRandomSquareGeneratorCannotBeCreatedWithProbabilitiesSummingDifferentToOne [
 
-	| rsgBlock |
-	rsgBlock := [ 
-	            RandomSquaresGenerator
-		            creating: { BlankSlot }
-		            with: { 2 }
-		            sized: { 4 }
-		            accordingTo: { 
-				            ('Nmax' -> 1).
-				            ('Mmax' -> 1).
-				            ('Mamount' -> 1) } asDictionary ].
-
 	self
-		should: rsgBlock
+		should: [ RandomSquaresGenerator creating: 10 of: { BlankSquare } with: { 1.5 } ]
 		raise: Error
 		withMessage: 'Sum of probabilities differ from 1'
+]
+
+{ #category : #tests }
+RandomSquareGeneratorTest >> testRandomSquareGeneratorCreatesOneHundredBlankSquares [
+
+	|squareGenerator squares|
+	squareGenerator := RandomSquaresGenerator creating: 100 of: { BlankSquare } with: { 1 }.
+	squares := squareGenerator generateSquares.
+	
+	self assert: squares size equals: 100.
+	squares do: [ :square | self assert: (square className match: 'BlankSquare') ]
 ]

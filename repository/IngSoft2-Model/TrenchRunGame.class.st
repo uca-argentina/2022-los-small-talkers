@@ -30,9 +30,7 @@ TrenchRunGame >> board [
 { #category : #'accessing - positions' }
 TrenchRunGame >> currentLeader [
 
-	^ (self positions detectMax:
-		  [ :position | position lap * gameBoard length + position square ])
-			  ship
+	^ positionTracker currentLeader
 ]
 
 { #category : #private }
@@ -47,7 +45,7 @@ TrenchRunGame >> initializeWithParticipating: spaceships rolling: aDiceCup on: a
 	dice := aDiceCup.
 	state := Started new.
 	endingLap := endLap.
-	positionTracker := PositionTracker withAll: spaceships.
+	positionTracker := PositionTracker tracking: spaceships.
 	sequence := TrenchRunSequence withAll: spaceships
 ]
 
@@ -86,9 +84,9 @@ TrenchRunGame >> move: ship anAmountOf: squares [
 
 	nextLap > endingLap
 		ifTrue: [ 
-			positionTracker move: ship to: 1 lap: endingLap + 1.
+			positionTracker move: ship at: 1 after: endingLap + 1.
 			self end ]
-		ifFalse: [ positionTracker move: ship to: nextSquare lap: nextLap ]
+		ifFalse: [ positionTracker move: ship at: nextSquare after: nextLap ]
 ]
 
 { #category : #'turn related' }
@@ -100,7 +98,7 @@ TrenchRunGame >> playNextTurn [
 	diceRollResult := dice roll.
 	self move: ship anAmountOf: diceRollResult.
 	self isFinished ifFalse: [ 
-		gameBoard applyEffectTo: ship at: (self squareOf: ship) from: self ]
+		gameBoard applyEffectAt: (self squareOf: ship) to: ship on: self ]
 ]
 
 { #category : #private }
@@ -118,17 +116,16 @@ TrenchRunGame >> positions [
 { #category : #'accessing - positions' }
 TrenchRunGame >> ranking [
 
-	| sortedPositions rankingSize |
-	sortedPositions := SortedCollection sortUsing: [ :firstPosition :secondPosition | 
-		                   firstPosition lap * gameBoard length + firstPosition square >
-		                   (secondPosition lap * gameBoard length + secondPosition square) ].
-	sortedPositions addAll: self positions.
-	rankingSize := 3 min: sortedPositions size.
-	
-	^ Dictionary newFromKeys: (1 to: rankingSize by: 1) andValues: (sortedPositions
-			collect: [ :position | position ship name ]
-			from: 1
-			to: rankingSize ).
+	| rankingSize |
+
+	rankingSize := 3 min: (self positions size).
+
+	^ Dictionary
+		  newFromKeys: (1 to: rankingSize by: 1)
+		  andValues: (self positions
+				   collect: [ :position | position ship name ]
+				   from: 1
+				   to: rankingSize)
 ]
 
 { #category : #accessing }

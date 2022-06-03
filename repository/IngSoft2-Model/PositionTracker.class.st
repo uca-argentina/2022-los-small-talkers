@@ -8,21 +8,27 @@ Class {
 }
 
 { #category : #'instance creation' }
-PositionTracker class >> withAll: spaceships [
+PositionTracker class >> tracking: spaceships [
 
-	^ self new initializeWithAll: spaceships.
+	^ self new initializeTracking: spaceships.
+]
+
+{ #category : #'accessing - positions' }
+PositionTracker >> currentLeader [
+
+	^ (positions at: 1) ship.
 ]
 
 { #category : #initialization }
-PositionTracker >> initializeWithAll: spaceships [
+PositionTracker >> initializeTracking: spaceships [
 
-	positions := OrderedCollection newFrom:
-		             (spaceships collect: [ :ship | 
-			              Position of: ship at: 1 lap: 1 ])
+	positions := SortedCollection sortUsing: [ :positionOne :positionTwo | 
+		             positionOne > positionTwo ].
+	positions addAll: (spaceships collect: [ :spaceship | Position of: spaceship at: 1 after: 1]).
 ]
 
 { #category : #moving }
-PositionTracker >> move: aSpaceship to: nextPosition lap: nextLap [
+PositionTracker >> move: aSpaceship at: aSquare after: lap [
 
 	self
 		positionOf: aSpaceship
@@ -30,8 +36,7 @@ PositionTracker >> move: aSpaceship to: nextPosition lap: nextLap [
 
 	self removePositionOf: aSpaceship.
 
-	positions add:
-		(Position of: aSpaceship at: nextPosition lap: nextLap)
+	positions add: (Position of: aSpaceship at: aSquare after: lap)
 ]
 
 { #category : #accessing }
@@ -61,7 +66,7 @@ PositionTracker >> removePositionOf: aSpaceship [
 		               ifAbsent: [ 
 		               Error signal: 'Cannot delete record of unknown ship' ].
 
-	positions remove: foundRecord ifAbsent: [  ]
+	positions remove: foundRecord
 ]
 
 { #category : #accessing }

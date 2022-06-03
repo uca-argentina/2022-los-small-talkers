@@ -2,100 +2,83 @@ Class {
 	#name : #RandomSquaresGenerator,
 	#superclass : #Object,
 	#instVars : [
-		'probabilityRange',
 		'fractionGenerator',
-		'boardSize',
-		'nMax',
-		'mMax',
-		'mAmount'
+		'squareAmount',
+		'probabilityRanges'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
-RandomSquaresGenerator class >> creating: slots with: probabilities sized: aBoardSize accordingTo: creationParameters [
+RandomSquaresGenerator class >> creating: anAmount of: slots with: probabilities [
 
-	self verify: creationParameters.
-	
-	probabilities sum = 1 ifFalse: [ 
-		Error signal: 'Sum of probabilities differ from 1' ].
+	self verifySumOf: probabilities.
 	^ self new
-		  initializeCreating: slots
+		  initializeCreating: anAmount
+		  of: slots
 		  with: probabilities
-		  sized: aBoardSize
-		  accordingTo: creationParameters
 ]
 
-{ #category : #'data validation' }
-RandomSquaresGenerator class >> verify: creationParameters [
+{ #category : #'instance creation' }
+RandomSquaresGenerator class >> verifySumOf: probabilities [
 
-	creationParameters at: 'Mmax' ifAbsent: [ Error signal: 'Missing Mmax on creation parameters' ].
-	creationParameters at: 'Mamount' ifAbsent: [ Error signal: 'Missing Mamount on creation parameters' ].
-	creationParameters at: 'Nmax' ifAbsent: [ Error signal: 'Missing Nmax on creation parameters' ]
-]
-
-{ #category : #'random number generation' }
-RandomSquaresGenerator >> generateM [
-
-	^ (1 to: mAmount by: 1) collect: [ :i | mMax atRandom ].
-]
-
-{ #category : #'random number generation' }
-RandomSquaresGenerator >> generateN [
-
-	^ nMax atRandom.
+	probabilities sum = 1 ifFalse: [ 
+		Error signal: 'Sum of probabilities differ from 1' ]
 ]
 
 { #category : #'slot generation' }
-RandomSquaresGenerator >> generateSlot [
+RandomSquaresGenerator >> generateSquare [
 
 	| numberGenerated slot |
 	numberGenerated := fractionGenerator next.
 
-	probabilityRange do: [ :range | 
-		(numberGenerated between: (range at: 1) and: (range at: 2)) ifTrue: [ 
-			slot := (range at: 3) with: { 
-					        ('M' -> self generateM).
-					        ('N' -> self generateN) } asDictionary ] ].
+	probabilityRanges do: [ :range | 
+		|rangeFloor rangeCeiling square|
+		rangeFloor := range at: 1.
+		rangeCeiling := range at: 2.
+		square := range at: 3.
+		
+		(numberGenerated between: rangeFloor and: rangeCeiling ) 
+			ifTrue: [ slot := square createAtRandom ] 
+	].
 
 	^ slot
 ]
 
 { #category : #'slot generation' }
-RandomSquaresGenerator >> generateSlots [
-	|slots|
+RandomSquaresGenerator >> generateSquares [
+
+	| slots |
 	slots := OrderedCollection new.
-	
-	(1 to: boardSize by: 1) do: [ :i |
-		slots add: self generateSlot.
-	].
-
-	 ^ slots.
-]
-
-{ #category : #initialization }
-RandomSquaresGenerator >> initializeCreating: slots with: probabilities sized: aBoardSize accordingTo: creationParameters [
-
-	boardSize := aBoardSize.
-	probabilityRange := self rangeWith: probabilities and: slots.
-	fractionGenerator := Random seed: Time now asSeconds.
-	nMax := creationParameters at: 'Nmax'.
-	mMax := creationParameters at: 'Mmax'.
-	mAmount := creationParameters at: 'Mamount'.
+	squareAmount timesRepeat: [ slots add: self generateSquare ].
+	^ slots
 ]
 
 { #category : #auxiliary }
-RandomSquaresGenerator >> rangeWith: probabilities and: squares [
+RandomSquaresGenerator >> group: squares withTheirRangeOf: probabilities [
 
-	|startingRange ranges|
+	|rangeFloor ranges|
 	ranges := OrderedCollection new.
-	startingRange := 0.
-	(1 to: probabilities size by: 1) do: [ :i | 
-		ranges add: {startingRange . startingRange + (probabilities at: i). squares at: i} .
-		startingRange := startingRange + (probabilities at: i).
+	rangeFloor := 0.
+	(1 to: probabilities size by: 1) do: [ :i |
+		|rangeCeiling square squareProbability|
+		square := squares at: i.
+		squareProbability := probabilities at: i.
+		rangeCeiling := rangeFloor + squareProbability.
+		
+		ranges add: {rangeFloor . rangeCeiling . square}.
+		rangeFloor  := rangeFloor + (probabilities at: i).
 		].
 	
 	^ranges.
 
 	
+]
+
+{ #category : #initialization }
+RandomSquaresGenerator >> initializeCreating: anAmount of: slots with: probabilities [
+
+	squareAmount := anAmount.
+	probabilityRanges := self group: slots withTheirRangeOf: probabilities.
+	fractionGenerator := Random seed: Time now asSeconds
 ]

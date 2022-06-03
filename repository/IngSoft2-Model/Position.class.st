@@ -10,9 +10,22 @@ Class {
 }
 
 { #category : #'instance creation' }
-Position class >> of: aSpaceship at: square lap: lapNumber [
+Position class >> of: aSpaceship at: square after: lap [
 
-	^ self new initializeOf: aSpaceship at: square lap: lapNumber.
+	^ self new initializeOf: aSpaceship at: square after: lap
+]
+
+{ #category : #comparing }
+Position >> < anotherPosition [
+
+	(self lap > anotherPosition lap) ifTrue:
+	[ ^ false ].
+
+	(self lap = anotherPosition lap) ifTrue: [ 
+		^(self square < anotherPosition square)
+	].
+
+	^(self lap < anotherPosition lap).
 ]
 
 { #category : #comparing }
@@ -24,8 +37,27 @@ Position >> = anotherPosition [
 				  square = anotherPosition square ] ] ]
 ]
 
+{ #category : #comparing }
+Position >> > anotherPosition [
+
+	(self lap < anotherPosition lap) ifTrue:
+	[ ^ false ].
+
+	(self lap = anotherPosition lap) ifTrue: [ 
+		^(self square > anotherPosition square)
+	].
+
+	^(self lap > anotherPosition lap).
+]
+
+{ #category : #comparing }
+Position >> hash [ 
+	
+	^( (lap hash) bitXor: ( ship hash bitXor: ( square hash )))
+]
+
 { #category : #initialization }
-Position >> initializeOf: aSpaceship at: aSquare lap: lapNumber [
+Position >> initializeOf: aSpaceship at: aSquare after: lapNumber [
 
 	ship := aSpaceship.
 	square := aSquare.
