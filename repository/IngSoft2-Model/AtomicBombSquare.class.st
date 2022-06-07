@@ -13,5 +13,5 @@ AtomicBombSquare class >> createAtRandom [
 { #category : #'executing effects' }
 AtomicBombSquare >> applyEffectTo: spaceship from: game [
 
-	game move: spaceship anAmountOf: 1 - (game squareOf: spaceship)
+	game moveAllSpaceshipToSquareOne.
 ]

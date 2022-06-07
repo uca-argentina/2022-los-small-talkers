@@ -2,7 +2,7 @@ Class {
 	#name : #MoonWalkSquare,
 	#superclass : #Square,
 	#instVars : [
-		'amountToMove'
+		'someRetrogression'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -28,17 +28,11 @@ MoonWalkSquare class >> with: someRetrogression [
 { #category : #'executing effects' }
 MoonWalkSquare >> applyEffectTo: spaceship from: game [
 
-	| positions length spaceshipsToMove |
-	positions := game spaceships.
-	spaceshipsToMove := positions.
-	spaceshipsToMove remove: spaceship.
-	length := spaceshipsToMove size.
-	(1 to: length by: 1) do: [ :i | 
-		game move: (spaceshipsToMove at: i) anAmountOf: 0 - amountToMove ]
+	game moveAllSpaceshipsAnAmountOf: someRetrogression exceptFor: spaceship.
 ]
 
 { #category : #initialization }
-MoonWalkSquare >> initializeWith: n [
+MoonWalkSquare >> initializeWith: aNumberOfBackwardsJumps [
 
-	amountToMove := n
+	someRetrogression := aNumberOfBackwardsJumps
 ]

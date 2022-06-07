@@ -2,7 +2,7 @@ Class {
 	#name : #HyperJumpSquare,
 	#superclass : #Square,
 	#instVars : [
-		'jumpSequence'
+		'parsecSequence'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -20,23 +20,20 @@ HyperJumpSquare class >> randomizeParsecSequence [
 ]
 
 { #category : #'instance creation' }
-HyperJumpSquare class >> with: aParsecSequence [
+HyperJumpSquare class >> with: aNumberOfJumps [
 
-	^self new initializeWith: aParsecSequence 
+	^self new initializeWith: aNumberOfJumps 
 ]
 
 { #category : #'executing effects' }
 HyperJumpSquare >> applyEffectTo: spaceship from: game [
 
-	| amountToMove |
-	amountToMove := (jumpSequence nextInSequence
-	                 / (game board parsecsPerSquare)) floor.
-	game move: spaceship anAmountOf: amountToMove
+	game move: spaceship by: parsecSequence nextInSequence.
 ]
 
 { #category : #initialization }
 HyperJumpSquare >> initializeWith: someJumps [
 
-	jumpSequence := TrenchRunSequence withAll:
+	parsecSequence := TrenchRunSequence withAll:
 		                (someJumps sorted: [ :jumpA :jumpB | jumpA > jumpB ])
 ]

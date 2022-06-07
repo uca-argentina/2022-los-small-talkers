@@ -192,7 +192,6 @@ GameInstanceTest >> testMoonWalkSlotBackTracksEverySpaceshipAnAmountOfSquaresExc
 		         on: board
 		         until: 1.
 
-
 	aGame playNextTurn.
 	aGame playNextTurn.
 	aGame playNextTurn.

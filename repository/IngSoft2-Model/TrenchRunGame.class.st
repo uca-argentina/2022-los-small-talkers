@@ -90,6 +90,25 @@ TrenchRunGame >> move: ship anAmountOf: squares [
 ]
 
 { #category : #'turn related' }
+TrenchRunGame >> move: spaceship by: aNumberOfParsecs [
+
+	self move: spaceship anAmountOf: (aNumberOfParsecs / gameBoard parsecsPerSquare)
+]
+
+{ #category : #'turn related' }
+TrenchRunGame >> moveAllSpaceshipToSquareOne [
+	(self spaceships) do: [ :aSpaceship | self move: aSpaceship anAmountOf: (1 - (self squareOf: aSpaceship)) ]
+]
+
+{ #category : #'turn related' }
+TrenchRunGame >> moveAllSpaceshipsAnAmountOf: squares exceptFor: aSpaceship [
+	|spaceshipsToMove|
+	spaceshipsToMove := self spaceships.
+	spaceshipsToMove remove: aSpaceship.
+	spaceshipsToMove do: [ :spaceship | self move: spaceship anAmountOf: (0 - squares) ].
+]
+
+{ #category : #'turn related' }
 TrenchRunGame >> playNextTurn [
 
 	| diceRollResult ship |

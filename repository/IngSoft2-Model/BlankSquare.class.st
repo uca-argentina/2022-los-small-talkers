@@ -11,6 +11,7 @@ BlankSquare class >> createAtRandom [
 ]
 
 { #category : #'executing effects' }
-BlankSquare >> applyEffectTo: aSpaceship from: aTrenchRunGameInstance [ 
+BlankSquare >> applyEffectTo: spaceship from: game [ 
+
 	^self.
 ]
