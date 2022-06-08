@@ -7,17 +7,17 @@ Class {
 { #category : #tests }
 SequenceTest >> testSequenceHoldsACorrectfullyOrderedCollectionOfSpaceships [
 
-	| aFirstShip aSecondShip sequence |
-	aFirstShip := Spaceship named: 'Planet Express'.
-	aSecondShip := Spaceship named: 'Enterprise'.
+	| enterprise starfighter sequence |
+	enterprise := Spaceship named: 'Enterprise'.
+	starfighter := Spaceship named: 'Starfighter'.
 
 	sequence := TrenchRunSequence withAll: { 
-			            aFirstShip.
-			            aSecondShip }.
+			            enterprise.
+			            starfighter }.
 
 	self assert: [ 
-		sequence nextInSequence == aFirstShip and: [ 
-			sequence nextInSequence == aSecondShip ] ]
+		sequence nextInSequence == enterprise and: [ 
+			sequence nextInSequence == starfighter ] ]
 ]
 
 { #category : #tests }

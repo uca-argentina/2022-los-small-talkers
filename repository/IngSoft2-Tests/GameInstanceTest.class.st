@@ -17,12 +17,13 @@ GameInstanceTest >> should: aBlock raise: anErrorType withMessage: anErrorMessag
 { #category : #'tests - state asserting' }
 GameInstanceTest >> testAskingForGameStateWhenFinishedReturnsFinished [
 
-	| game aShip aDiceCup aBoard |
-	aShip := Spaceship named: 'Enterprise'.
-	aBoard := Board sized: 5 dividedIn: 5 from: {  }.
+	| game enterprise aDiceCup aBoard squareGenerator|
+	enterprise := Spaceship named: 'Enterprise'.
+	squareGenerator := RandomSquaresGenerator creating: 5 of: { BlankSquare } with: { 1 }. 
+	aBoard := Board sized: 5 dividedIn: 5 from: squareGenerator generateSquares.
 	aDiceCup := DiceCup withAll: { (LoadedDie with: 6) }.
-	game := TrenchRunGameInstance
-		        withParticipating: { aShip }
+	game := TrenchRunGame
+		        withParticipating: { enterprise }
 		        rolling: aDiceCup
 		        on: aBoard
 		        until: 1.
@@ -35,12 +36,13 @@ GameInstanceTest >> testAskingForGameStateWhenFinishedReturnsFinished [
 { #category : #'tests - state asserting' }
 GameInstanceTest >> testAskingForGameStateWhenStartedReturnsStarted [
 
-	| game aShip aDiceCup aBoard |
-	aShip := Spaceship new.
-	aBoard := Board sized: 10 dividedIn: 10 from: {  }.
+	| game enterprise aDiceCup aBoard squareGenerator|
+	enterprise := Spaceship named: 'Enterprise'.
+	squareGenerator := RandomSquaresGenerator creating: 10 of: { BlankSquare } with: { 1 }. 
+	aBoard := Board sized: 10 dividedIn: 10 from: squareGenerator generateSquares.
 	aDiceCup := DiceCup withAll: { (LoadedDie with: 7) }.
-	game := TrenchRunGameInstance
-		        withParticipating: { aShip }
+	game := TrenchRunGame
+		        withParticipating: { enterprise }
 		        rolling: aDiceCup
 		        on: aBoard
 		        until: 1.
@@ -53,14 +55,15 @@ GameInstanceTest >> testAskingForGameStateWhenStartedReturnsStarted [
 { #category : #'tests - winner' }
 GameInstanceTest >> testAskingForWinnerWhenGameStillHasNotFinishedIsInvalid [
 
-	| game board aSpaceship die |
-	board := Board sized: 10 dividedIn: 10 from: {  }.
-	aSpaceship := Spaceship named: 'Enterprise'.
+	| game aBoard enterprise die squareGenerator|
+	squareGenerator := RandomSquaresGenerator creating: 5 of: { BlankSquare } with: { 1 }. 
+	aBoard := Board sized: 5 dividedIn: 5 from: squareGenerator generateSquares.
+	enterprise := Spaceship named: 'Enterprise'.
 	die := LoadedDie with: 7.
-	game := TrenchRunGameInstance
-		        withParticipating: { aSpaceship }
+	game := TrenchRunGame
+		        withParticipating: { enterprise }
 		        rolling: die
-		        on: board
+		        on: aBoard
 		        until: 1.
 
 
@@ -73,23 +76,19 @@ GameInstanceTest >> testAskingForWinnerWhenGameStillHasNotFinishedIsInvalid [
 { #category : #'tests - slot functionality' }
 GameInstanceTest >> testAtomicBombSlotResetsPositionsToOneButMaintainsNumberOfLaps [
 
-	| aGame spaceship board aSpaceship anotherSpaceship aDie anAtomicBombSlot slots |
+	| aGame enterprise board starfighter explorer aDie squares|
 	aDie := LoadedDie with: 15.
-	anAtomicBombSlot := AtomicBombSlot new.
-	slots := Dictionary newFromPairs: { 
-			         6.
-			         anAtomicBombSlot.
-			         1.
-			         BlankSlot new }.
-	board := Board sized: 10 dividedIn: 10 from: slots.
-	spaceship := Spaceship named: 'Enterprise'.
-	aSpaceship := Spaceship named: 'Starfighter'.
-	anotherSpaceship := Spaceship named: 'Explorer'.
-	aGame := TrenchRunGameInstance
+	squares := (RandomSquaresGenerator creating: 10 of: { BlankSquare } with: { 1 }) generateSquares.
+	squares at: 6 put: AtomicBombSquare new. 
+	board := Board sized: 10 dividedIn: 10 from: squares.
+	enterprise := Spaceship named: 'Enterprise'.
+	starfighter := Spaceship named: 'Starfighter'.
+	explorer := Spaceship named: 'Explorer'.
+	aGame := TrenchRunGame
 		         withParticipating: { 
-				         spaceship.
-				         aSpaceship.
-				         anotherSpaceship }
+				         enterprise.
+				         starfighter.
+				         explorer }
 		         rolling: aDie
 		         on: board
 		         until: 3.
@@ -99,114 +98,128 @@ GameInstanceTest >> testAtomicBombSlotResetsPositionsToOneButMaintainsNumberOfLa
 	aGame playNextTurn.
 	aGame playNextTurn.
 
-	self assert: (aGame squareOf: spaceship) equals: 1.
-	self assert: (aGame lapOf: spaceship) equals: 2.
-	self assert: (aGame squareOf: aSpaceship) equals: 1.
-	self assert: (aGame lapOf: aSpaceship) equals: 2.
-	self assert: (aGame squareOf: anotherSpaceship) equals: 1.
-	self assert: (aGame lapOf: anotherSpaceship) equals: 2
+	self assert: (aGame squareOf: enterprise) equals: 1.
+	self assert: (aGame lapOf: enterprise) equals: 2.
+	self assert: (aGame squareOf: starfighter) equals: 1.
+	self assert: (aGame lapOf: starfighter) equals: 2.
+	self assert: (aGame squareOf: explorer) equals: 1.
+	self assert: (aGame lapOf: explorer) equals: 2
 ]
 
 { #category : #'tests - slot functionality' }
 GameInstanceTest >> testBlankSlotHasNoEffect [
 
-	| aGame spaceship dice board |
+	| aGame enterprise dice board squareGenerator|
 	dice := LoadedDie with: 5.
-	board := Board sized: 10 dividedIn: 10 from: {  }.
-	spaceship := Spaceship named: 'Enterprise'.
-	aGame := TrenchRunGameInstance
-		         withParticipating: { spaceship }
+	squareGenerator := RandomSquaresGenerator creating: 10 of: { BlankSquare } with: { 1 }. 
+	board := Board sized: 10 dividedIn: 10 from: squareGenerator generateSquares.
+	enterprise := Spaceship named: 'Enterprise'.
+	aGame := TrenchRunGame
+		         withParticipating: { enterprise }
 		         rolling: dice
 		         on: board
 		         until: 1.
 
 	aGame playNextTurn.
 
-	self assert: (aGame squareOf: spaceship) equals: 6.
-	self assert: (aGame lapOf: spaceship) equals: 1
+	self assert: (aGame squareOf: enterprise) equals: 6.
+	self assert: (aGame lapOf: enterprise) equals: 1
+]
+
+{ #category : #'tests - starting game checks' }
+GameInstanceTest >> testGameWithOneSpaceshipIsStartedOnceFirstHandIsPlayed [
+
+	| game enterprise aDiceCup aBoard squareGenerator|
+	enterprise := Spaceship named: 'Enterprise'.
+	squareGenerator := RandomSquaresGenerator creating: 10 of: { BlankSquare } with: { 1 }. 
+	aBoard := Board sized: 10 dividedIn: 10 from: squareGenerator generateSquares.
+	aDiceCup := DiceCup withAll: { (LoadedDie with: 7) }.
+	game := TrenchRunGame
+		        withParticipating: { enterprise }
+		        rolling: aDiceCup
+		        on: aBoard
+		        until: 1.
+
+	game playNextTurn.
+
+	self assert: game isStarted
 ]
 
 { #category : #'tests - slot functionality' }
 GameInstanceTest >> testHyperJumpMovesPlayersInDescendingOrderOfSequenceGiven [
 
-	| game ship die board |
-	ship := Spaceship named: 'Enterprise'.
+	| game enterprise die board blank squares|
+	enterprise := Spaceship named: 'Enterprise'.
 	die := LoadedDie with: 1.
-	board := Board sized: 10 dividedIn: 20 from: { 
-			         (2
-			          ->
-			          (HyperJumpSlot with: { ('M' -> { 3. 4 }) } asDictionary)).
-			         (5
-			          ->
-			          (HyperJumpSlot with: { ('M' -> { 1. 2 }) } asDictionary)) }
-			         asDictionary.
-	game := TrenchRunGameInstance
-		        withParticipating: { ship }
+	blank := BlankSquare new.
+	squares := (RandomSquaresGenerator creating: 10 of: { BlankSquare } with: { 1 }) generateSquares. 
+	squares at: 2 put: (HyperJumpSquare with: {3. 4}).
+	squares at: 5 put: (HyperJumpSquare with: {1. 2}).
+	board := Board sized: 10 dividedIn: 20 from: squares.
+	game := TrenchRunGame
+		        withParticipating: { enterprise }
 		        rolling: die
 		        on: board
 		        until: 1.
 
 	game playNextTurn.
 	self assert:
-		((game squareOf: ship) = 4 and: [ (game lapOf: ship) = 1 ]).
+		((game squareOf: enterprise) = 4 and: [ (game lapOf: enterprise) = 1 ]).
 
 	game playNextTurn.
 	self assert:
-		((game squareOf: ship) = 6 and: [ (game lapOf: ship) = 1 ])
+		((game squareOf: enterprise) = 6 and: [ (game lapOf: enterprise) = 1 ])
 ]
 
 { #category : #'tests - slot functionality' }
 GameInstanceTest >> testMoonWalkSlotBackTracksEverySpaceshipAnAmountOfSquaresExceptFromTheShipPlayingTheirTurn [
 
-	| aGame spaceship board aSpaceship anotherSpaceship aDie aMoonwalkSlot slots |
+	| aGame enterprise board starfighter explorer aDie squares blank|
 	aDie := LoadedDie with: 3.
-	aMoonwalkSlot := MoonWalkSlot with: { ('N' -> 1) } asDictionary.
-	slots := Dictionary newFromPairs: { 
-			         7.
-			         aMoonwalkSlot.
-			         4.
-			         BlankSlot new }.
-	board := Board sized: 10 dividedIn: 10 from: slots.
-	spaceship := Spaceship named: 'Enterprise'.
-	aSpaceship := Spaceship named: 'Starfighter'.
-	anotherSpaceship := Spaceship named: 'Explorer'.
-	aGame := TrenchRunGameInstance
+	blank := BlankSquare new.
+	squares := (RandomSquaresGenerator creating: 10 of: { BlankSquare } with: { 1 }) generateSquares.
+	squares at: 7 put: (MoonWalkSquare with: 1).
+	board := Board sized: 10 dividedIn: 10 from: squares.
+	enterprise := Spaceship named: 'Enterprise'.
+	starfighter := Spaceship named: 'Starfighter'.
+	explorer := Spaceship named: 'Explorer'.
+	aGame := TrenchRunGame
 		         withParticipating: { 
-				         spaceship.
-				         aSpaceship.
-				         anotherSpaceship }
+				         enterprise.
+				         starfighter.
+				         explorer }
 		         rolling: aDie
 		         on: board
 		         until: 1.
 
-
 	aGame playNextTurn.
 	aGame playNextTurn.
 	aGame playNextTurn.
 	aGame playNextTurn.
 
-	self assert: (aGame squareOf: spaceship) equals: 7.
-	self assert: (aGame lapOf: spaceship) equals: 1.
-	self assert: (aGame squareOf: aSpaceship) equals: 3.
-	self assert: (aGame lapOf: aSpaceship) equals: 1.
-	self assert: (aGame squareOf: anotherSpaceship) equals: 3.
-	self assert: (aGame lapOf: anotherSpaceship) equals: 1
+	self assert: (aGame squareOf: enterprise) equals: 7.
+	self assert: (aGame lapOf: enterprise) equals: 1.
+	self assert: (aGame squareOf: starfighter) equals: 3.
+	self assert: (aGame lapOf: starfighter) equals: 1.
+	self assert: (aGame squareOf: explorer) equals: 3.
+	self assert: (aGame lapOf: explorer) equals: 1
 ]
 
 { #category : #'tests - positions' }
 GameInstanceTest >> testMultipleShipsPositionsOnceGameIsFinished [
 
-	| aSpaceshipNamedJorge aSpaceshipNamedJulian aSpaceshipNamedHernan aBoard aLoadedDie aGame winner |
-	aSpaceshipNamedJorge := Spaceship named: 'Jorge'.
-	aSpaceshipNamedJulian := Spaceship named: 'Julian'.
-	aSpaceshipNamedHernan := Spaceship named: 'Hernan'.
+	| enterprise starfighter explorer aBoard aLoadedDie aGame winner squareGenerator|
+	enterprise := Spaceship named: 'Enterprise'.
+	starfighter := Spaceship named: 'Starfighter'.
+	explorer := Spaceship named: 'Explorer'.
 	aLoadedDie := LoadedDie with: 8.
-	aBoard := Board sized: 10 dividedIn: 10 from: {  }.
-	aGame := TrenchRunGameInstance
+	squareGenerator := RandomSquaresGenerator creating: 10 of: { BlankSquare } with: { 1 }. 
+	aBoard := Board sized: 10 dividedIn: 10 from: squareGenerator generateSquares.
+	aGame := TrenchRunGame
 		         withParticipating: { 
-				         aSpaceshipNamedJorge.
-				         aSpaceshipNamedJulian.
-				         aSpaceshipNamedHernan }
+				         enterprise.
+				         starfighter.
+				         explorer }
 		         rolling: aLoadedDie
 		         on: aBoard
 		         until: 1.
@@ -217,18 +230,19 @@ GameInstanceTest >> testMultipleShipsPositionsOnceGameIsFinished [
 	aGame playNextTurn.
 	winner := aGame winner.
 
-	self assert: [ aGame isFinished and: (winner name match: 'Jorge') ]
+	self assert: [ aGame isFinished and: (winner name match: 'Enterprise') ]
 ]
 
 { #category : #'tests - winner' }
 GameInstanceTest >> testOneShippedGameCanOnlyKnowWinnerOnceGameIsFinished [
 
-	| aShip aBoard aGame aLoadedDie winner |
-	aShip := Spaceship named: 'Enterprise'.
+	| enterprise aBoard aGame aLoadedDie winner squareGenerator|
+	enterprise := Spaceship named: 'Enterprise'.
 	aLoadedDie := LoadedDie with: 11.
-	aBoard := Board sized: 10 dividedIn: 10 from: {  }.
-	aGame := TrenchRunGameInstance
-		         withParticipating: { aShip }
+	squareGenerator := RandomSquaresGenerator creating: 10 of: { BlankSquare } with: { 1 }. 
+	aBoard := Board sized: 10 dividedIn: 10 from: squareGenerator generateSquares .
+	aGame := TrenchRunGame
+		         withParticipating: { enterprise }
 		         rolling: aLoadedDie
 		         on: aBoard
 		         until: 1.
@@ -243,17 +257,18 @@ GameInstanceTest >> testOneShippedGameCanOnlyKnowWinnerOnceGameIsFinished [
 { #category : #'tests - starting game checks' }
 GameInstanceTest >> testShipCannotStartAnotherTurnOnceGameHasFinished [
 
-	| aSpaceshipNamedJorge aSpaceshipNamedJulian aSpaceshipNamedHernan aBoard aLoadedDie aGame |
-	aSpaceshipNamedJorge := Spaceship named: 'Jorge'.
-	aSpaceshipNamedJulian := Spaceship named: 'Julian'.
-	aSpaceshipNamedHernan := Spaceship named: 'Hernan'.
+	| enterprise starfighter explorer aBoard aLoadedDie aGame squareGenerator|
+	enterprise := Spaceship named: 'Enterprise'.
+	starfighter := Spaceship named: 'Starfighter'.
+	explorer := Spaceship named: 'Explorer'.
 	aLoadedDie := LoadedDie with: 15.
-	aBoard := Board sized: 10 dividedIn: 10 from: {  }.
-	aGame := TrenchRunGameInstance
+	squareGenerator := RandomSquaresGenerator creating: 10 of: { BlankSquare } with: { 1 }. 
+	aBoard := Board sized: 10 dividedIn: 10 from: squareGenerator generateSquares.
+	aGame := TrenchRunGame
 		         withParticipating: { 
-				         aSpaceshipNamedJorge.
-				         aSpaceshipNamedJulian.
-				         aSpaceshipNamedHernan }
+				         enterprise.
+				         starfighter.
+				         explorer }
 		         rolling: aLoadedDie
 		         on: aBoard
 		         until: 1.
@@ -269,33 +284,36 @@ GameInstanceTest >> testShipCannotStartAnotherTurnOnceGameHasFinished [
 { #category : #tests }
 GameInstanceTest >> testSlotDoesNotActivateWhenSomeoneStepsOnFirstSlotOfMaximumLapPlusOne [
 
-	| game ship die board |
-	ship := Spaceship named: 'Enterprise'.
+	| game enterprise die board squares|
+	enterprise := Spaceship named: 'Enterprise'.
 	die := LoadedDie with: 500.
+	squares := (RandomSquaresGenerator creating: 10 of: { BlankSquare } with: { 1 }) generateSquares.
+	squares at: 10 put: WormHoleSquare new.
 	board := Board
 		         sized: 10
 		         dividedIn: 200
-		         from: { (1 -> WormHoleSlot new) } asDictionary.
-	game := TrenchRunGameInstance
-		        withParticipating: { ship }
+		         from: squares.
+	game := TrenchRunGame
+		        withParticipating: { enterprise }
 		        rolling: die
 		        on: board
 		        until: 1.
 	game playNextTurn.
 
-	self assert: (game winner name = ship name and: [ 
-			 (game squareOf: ship) = 1 and: [ (game lapOf: ship) = 2 ] ])
+	self assert: (game winner name = enterprise name and: [ 
+			 (game squareOf: enterprise) = 1 and: [ (game lapOf: enterprise) = 2 ] ])
 ]
 
 { #category : #'tests - positions' }
 GameInstanceTest >> testSpaceshipCompletingALapActuallyCountsIntoPositionTracker [
 
-	| game aShip aDiceCup aBoard |
-	aShip := Spaceship named: 'Enterprise'.
-	aBoard := Board sized: 5 dividedIn: 5 from: {  }.
+	| game enterprise aDiceCup aBoard squareGenerator|
+	enterprise := Spaceship named: 'Enterprise'.
+	squareGenerator := RandomSquaresGenerator creating: 5 of: { BlankSquare } with: { 1 }. 
+	aBoard := Board sized: 5 dividedIn: 5 from: squareGenerator generateSquares.
 	aDiceCup := DiceCup withAll: { (LoadedDie with: 8) }.
-	game := TrenchRunGameInstance
-		        withParticipating: { aShip }
+	game := TrenchRunGame
+		        withParticipating: { enterprise }
 		        rolling: aDiceCup
 		        on: aBoard
 		        until: 2.
@@ -303,45 +321,43 @@ GameInstanceTest >> testSpaceshipCompletingALapActuallyCountsIntoPositionTracker
 	game playNextTurn.
 
 	self assert:
-		((game lapOf: aShip) = 2 and: [ (game squareOf: aShip) = 4 ])
+		((game lapOf: enterprise) = 2 and: [ (game squareOf: enterprise) = 4 ])
 ]
 
 { #category : #'tests - slot functionality' }
 GameInstanceTest >> testSpeedUpSlotForwardTracksFourSquares [
 
-	| aGame spaceship dice board slots |
+	| aGame enterprise dice board squares|
 	dice := LoadedDie with: 3.
-	slots := Dictionary newFromPairs: { 
-			         4.
-			         SpeedUpSlot new.
-			         1.
-			         BlankSlot new }.
-	board := Board sized: 10 dividedIn: 10 from: slots.
-	spaceship := Spaceship named: 'Enterprise'.
-	aGame := TrenchRunGameInstance
-		         withParticipating: { spaceship }
+	squares := (RandomSquaresGenerator creating: 10 of: { BlankSquare } with: { 1 }) generateSquares.
+	squares at: 4 put: SpeedUpSquare new.
+	board := Board sized: 10 dividedIn: 10 from: squares.
+	enterprise := Spaceship named: 'Enterprise'.
+	aGame := TrenchRunGame
+		         withParticipating: { enterprise }
 		         rolling: dice
 		         on: board
 		         until: 1.
 
 	aGame playNextTurn.
 
-	self assert: (aGame squareOf: spaceship) equals: 8.
-	self assert: (aGame lapOf: spaceship) equals: 1
+	self assert: (aGame squareOf: enterprise) equals: 8.
+	self assert: (aGame lapOf: enterprise) equals: 1
 ]
 
 { #category : #'tests - starting game checks' }
 GameInstanceTest >> testStartedGamePlaysUntilOneSpaceshipWins [
 
-	| aSpaceshipNamedJorge aSpaceshipNamedJulian aBoard aLoadedDie aGame |
-	aSpaceshipNamedJorge := Spaceship named: 'Jorge'.
-	aSpaceshipNamedJulian := Spaceship named: 'Julian'.
+	| enterprise starfighter aBoard aLoadedDie aGame squares|
+	enterprise := Spaceship named: 'Enterprise'.
+	starfighter := Spaceship named: 'Starfighter'.
 	aLoadedDie := LoadedDie with: 4.
-	aBoard := Board sized: 10 dividedIn: 10 from: {  }.
-	aGame := TrenchRunGameInstance
+	squares := (RandomSquaresGenerator creating: 10 of: { BlankSquare } with: { 1 }) generateSquares. 
+	aBoard := Board sized: 10 dividedIn: 10 from: squares.
+	aGame := TrenchRunGame
 		         withParticipating: { 
-				         aSpaceshipNamedJorge.
-				         aSpaceshipNamedJulian }
+				         enterprise.
+				         starfighter }
 		         rolling: aLoadedDie
 		         on: aBoard
 		         until: 1.
@@ -351,39 +367,23 @@ GameInstanceTest >> testStartedGamePlaysUntilOneSpaceshipWins [
 		aGame isFinished ifFalse: [ aGame playNextTurn ] ].
 
 	self assert:
-		(aGame isFinished and: [ aGame winner name match: 'Jorge' ])
-]
-
-{ #category : #'tests - starting game checks' }
-GameInstanceTest >> testStartingGameWithOneSpaceshipIsValid [
-
-	| game aShip aDiceCup aBoard |
-	aShip := Spaceship new.
-	aBoard := Board sized: 10 dividedIn: 10 from: {  }.
-	aDiceCup := DiceCup withAll: { (LoadedDie with: 7) }.
-	game := TrenchRunGameInstance
-		        withParticipating: { aShip }
-		        rolling: aDiceCup
-		        on: aBoard
-		        until: 1.
-
-	game playNextTurn.
-
-	self assert: game isStarted
+		(aGame isFinished and: [ aGame winner name match: 'Enterprise' ])
 ]
 
 { #category : #'tests - starting game checks' }
 GameInstanceTest >> testStartingGameWithTwoOrMoreSpaceshipsIsValid [
 
-	| game aFirstShip aSecondShip aDiceCup aBoard |
-	aFirstShip := Spaceship named: 'Planet Express'.
-	aSecondShip := Spaceship named: 'Enterprise'.
+	| game starfighter enterprise aDiceCup aBoard squares|
+
+	enterprise := Spaceship named: 'Enterprise'.
+	starfighter := Spaceship named: 'Starfighter'.
 	aDiceCup := DiceCup withAll: { (LoadedDie with: 5) }.
-	aBoard := Board sized: 10 dividedIn: 10 from: {  }.
-	game := TrenchRunGameInstance
+	squares := (RandomSquaresGenerator creating: 10 of: { BlankSquare } with: { 1 }) generateSquares. 
+	aBoard := Board sized: 10 dividedIn: 10 from: squares.
+	game := TrenchRunGame
 		        withParticipating: { 
-				        aFirstShip.
-				        aSecondShip }
+				        starfighter.
+				        enterprise }
 		        rolling: aDiceCup
 		        on: aBoard
 		        until: 1.
@@ -397,15 +397,16 @@ GameInstanceTest >> testStartingGameWithTwoOrMoreSpaceshipsIsValid [
 { #category : #'tests - winner' }
 GameInstanceTest >> testTwoShippedGameCanOnlyKnowWinnerOnceGameIsFinished [
 
-	| aSpaceshipNamedJorge aSpaceshipNamedJulian aLoadedDie aGame aBoard winner |
-	aSpaceshipNamedJorge := Spaceship named: 'Jorge'.
-	aSpaceshipNamedJulian := Spaceship named: 'Julian'.
-	aBoard := Board sized: 10 dividedIn: 10 from: {  }.
+	| enterprise starfighter aLoadedDie aGame aBoard winner squares|
+	enterprise := Spaceship named: 'Enterprise'.
+	starfighter := Spaceship named: 'Starfighter'.
+	squares := (RandomSquaresGenerator creating: 10 of: { BlankSquare } with: { 1 }) generateSquares. 
+	aBoard := Board sized: 10 dividedIn: 10 from: squares.
 	aLoadedDie := LoadedDie with: 6.
-	aGame := TrenchRunGameInstance
+	aGame := TrenchRunGame
 		         withParticipating: { 
-				         aSpaceshipNamedJorge.
-				         aSpaceshipNamedJulian }
+				         enterprise.
+				         starfighter }
 		         rolling: aLoadedDie
 		         on: aBoard
 		         until: 1.
@@ -415,21 +416,22 @@ GameInstanceTest >> testTwoShippedGameCanOnlyKnowWinnerOnceGameIsFinished [
 	aGame playNextTurn.
 	winner := aGame winner.
 
-	self assert: (aGame isFinished and: (winner name match: 'Jorge'))
+	self assert: (aGame isFinished and: (winner name match: 'Enterprise'))
 ]
 
 { #category : #'tests - winner' }
 GameInstanceTest >> testWinnerOfFixedMatchMatchesPositionsTable [
 
-	| aSpaceshipNamedJorge aSpaceshipNamedJulian aBoard aLoadedDie aGame positions |
-	aSpaceshipNamedJorge := Spaceship named: 'Jorge'.
-	aSpaceshipNamedJulian := Spaceship named: 'Julian'.
+	| enterprise starfighter aBoard aLoadedDie aGame positions squares|
+	enterprise := Spaceship named: 'Enterprise'.
+	starfighter := Spaceship named: 'Starfighter'.
 	aLoadedDie := LoadedDie with: 6.
-	aBoard := Board sized: 10 dividedIn: 10 from: {  }.
-	aGame := TrenchRunGameInstance
+	squares := (RandomSquaresGenerator creating: 10 of: { BlankSquare } with: { 1 }) generateSquares. 
+	aBoard := Board sized: 10 dividedIn: 10 from: squares.
+	aGame := TrenchRunGame
 		         withParticipating: { 
-				         aSpaceshipNamedJorge.
-				         aSpaceshipNamedJulian }
+				         enterprise.
+				         starfighter }
 		         rolling: aLoadedDie
 		         on: aBoard
 		         until: 1.
@@ -441,23 +443,24 @@ GameInstanceTest >> testWinnerOfFixedMatchMatchesPositionsTable [
 	positions := aGame positions.
 
 	self assert: (aGame isFinished and: [ 
-			 (aGame winner name match: 'Jorge') and: [ 
-				 (aGame squareOf: aSpaceshipNamedJorge) = 1 and: [ 
-					 (aGame lapOf: aSpaceshipNamedJorge) = 2 ] ] ])
+			 (aGame winner name match: 'Enterprise') and: [ 
+				 (aGame squareOf: enterprise) = 1 and: [ 
+					 (aGame lapOf: enterprise) = 2 ] ] ])
 ]
 
 { #category : #'tests - winner' }
 GameInstanceTest >> testWinnerOfFixedMatchMatchesRanking [
 
-	| aSpaceshipNamedJorge aSpaceshipNamedJulian aBoard aLoadedDie aGame positions |
-	aSpaceshipNamedJorge := Spaceship named: 'Jorge'.
-	aSpaceshipNamedJulian := Spaceship named: 'Julian'.
+	| enterprise starfighter aBoard aLoadedDie aGame positions squares|
+	enterprise := Spaceship named: 'Enterprise'.
+	starfighter := Spaceship named: 'Starfighter'.
 	aLoadedDie := LoadedDie with: 6.
-	aBoard := Board sized: 10 dividedIn: 10 from: {  }.
-	aGame := TrenchRunGameInstance
+	squares := (RandomSquaresGenerator creating: 10 of: { BlankSquare } with: { 1 }) generateSquares. 
+	aBoard := Board sized: 10 dividedIn: 10 from: squares.
+	aGame := TrenchRunGame
 		         withParticipating: { 
-				         aSpaceshipNamedJorge.
-				         aSpaceshipNamedJulian }
+				         enterprise.
+				         starfighter }
 		         rolling: aLoadedDie
 		         on: aBoard
 		         until: 1.
@@ -469,54 +472,54 @@ GameInstanceTest >> testWinnerOfFixedMatchMatchesRanking [
 	positions := aGame positions.
 
 	self assert: (aGame isFinished and: [ 
-			 (aGame winner name match: 'Jorge') and: [ 
-				 (aGame ranking at: 1) match: 'Jorge' ] ])
+			 (aGame winner name match: 'Enterprise') and: [ 
+				 (aGame ranking at: 1) match: 'Enterprise' ] ])
 ]
 
 { #category : #'tests - slot functionality' }
 GameInstanceTest >> testWormHoleSlotBackTracksFourSquares [
 
-	| aGame spaceship dice board |
+	| aGame enterprise dice board squares|
 	dice := LoadedDie with: 8.
+	squares := (RandomSquaresGenerator creating: 10 of: { BlankSquare } with: { 1 }) generateSquares. 
+	squares at: 9 put: WormHoleSquare new.
 	board := Board
 		         sized: 10
 		         dividedIn: 10
-		         from: (Dictionary newFromPairs: { 
-					          9.
-					          WormHoleSlot new }).
-	spaceship := Spaceship named: 'Enterprise'.
-	aGame := TrenchRunGameInstance
-		         withParticipating: { spaceship }
+		         from: squares.
+	enterprise := Spaceship named: 'Enterprise'.
+	aGame := TrenchRunGame
+		         withParticipating: { enterprise }
 		         rolling: dice
 		         on: board
 		         until: 1.
 
 	aGame playNextTurn.
 
-	self assert: (aGame squareOf: spaceship) equals: 5.
-	self assert: (aGame lapOf: spaceship) equals: 1
+	self assert: (aGame squareOf: enterprise) equals: 5.
+	self assert: (aGame lapOf: enterprise) equals: 1
 ]
 
 { #category : #'tests - slot functionality' }
 GameInstanceTest >> testWormHoleSlotBackTracksToSquareOneIfSpaceshipIsOnLapOneAndSquareIsNotGreaterThanFour [
 
-	| aGame spaceship dice board |
+	| aGame enterprise dice board squares|
 	dice := LoadedDie with: 1.
+	enterprise := Spaceship named: 'Enterprise'.
+	squares := (RandomSquaresGenerator creating: 10 of: { BlankSquare } with: { 1 }) generateSquares. 
+	squares at: 2 put: WormHoleSquare new.
 	board := Board
 		         sized: 10
 		         dividedIn: 10
-		         from: (Dictionary newFromPairs: { 
-					          2.
-					          WormHoleSlot new }).
-	spaceship := Spaceship named: 'Enterprise'.
-	aGame := TrenchRunGameInstance
-		         withParticipating: { spaceship }
+		         from: squares .
+	aGame := TrenchRunGame
+		         withParticipating: { enterprise }
 		         rolling: dice
 		         on: board
 		         until: 1.
 
 	aGame playNextTurn.
 
-	self assert: (aGame squareOf: spaceship) equals: 1.
-	self assert: (aGame lapOf: spaceship) equals: 1
+	self assert: (aGame squareOf: enterprise) equals: 1.
+	self assert: (aGame lapOf: enterprise) equals: 1
 ]

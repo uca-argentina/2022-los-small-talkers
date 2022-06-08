@@ -9,8 +9,8 @@ Class {
 }
 
 { #category : #'instance creation' }
-TrenchRunSequence class >> withAll: spaceships [
-	^self new initializeWithAll: spaceships.
+TrenchRunSequence class >> withAll: sequenceableElements [
+	^self new initializeWithAll: sequenceableElements.
 ]
 
 { #category : #private }
@@ -20,8 +20,8 @@ TrenchRunSequence >> counterAdd [
 ]
 
 { #category : #initialization }
-TrenchRunSequence >> initializeWithAll: spaceships [
-	elements := spaceships.
+TrenchRunSequence >> initializeWithAll: sequenceableElements [
+	elements := sequenceableElements.
 	counter := 0
 ]
 
