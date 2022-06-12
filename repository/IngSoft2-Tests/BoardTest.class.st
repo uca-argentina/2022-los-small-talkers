@@ -39,12 +39,12 @@ BoardTest >> testBoardCreationWhereParsecsLowerOrEqualToZeroIsInvalid [
 { #category : #tests }
 BoardTest >> testRandomBoardCreationThrowsNoErrors [
 
-	| board squaresGenerator|
-	squaresGenerator := RandomSquaresGenerator 
+	| board squares|
+	squares := RandomObjectGenerator 
 								creating: 100 
 								of: { AtomicBombSquare . HyperJumpSquare . MoonWalkSquare . SpeedUpSquare . WormHoleSquare . BlankSquare } 
 								with: { 2/100. 8/100. 1/10. 2/10. 2/10. 4/10 }.
-	board := Board sized: 100 dividedIn: 200 from: squaresGenerator generateSquares.
+	board := Board sized: 100 dividedIn: 200 from: squares.
 
 	
 	self assert: [ (board length) = 100  ]

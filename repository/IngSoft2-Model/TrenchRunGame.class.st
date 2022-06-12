@@ -22,11 +22,6 @@ TrenchRunGame class >> withParticipating: spaceships rolling: aDiceCup on: aBoar
 		  until: endLap
 ]
 
-{ #category : #accessing }
-TrenchRunGame >> board [
-	^gameBoard.
-]
-
 { #category : #'accessing - positions' }
 TrenchRunGame >> currentLeader [
 
