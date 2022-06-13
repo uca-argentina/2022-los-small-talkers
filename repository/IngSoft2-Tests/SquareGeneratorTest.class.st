@@ -1,11 +1,11 @@
 Class {
-	#name : #RandomSquareGeneratorTest,
+	#name : #SquareGeneratorTest,
 	#superclass : #TestCase,
 	#category : #'IngSoft2-Tests'
 }
 
 { #category : #asserting }
-RandomSquareGeneratorTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage [
+SquareGeneratorTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage [
 
 	^ self
 		  should: aBlock
@@ -15,19 +15,19 @@ RandomSquareGeneratorTest >> should: aBlock raise: anErrorType withMessage: anEr
 ]
 
 { #category : #tests }
-RandomSquareGeneratorTest >> testRandomSquareGeneratorCannotBeCreatedWithProbabilitiesSummingDifferentToOne [
+SquareGeneratorTest >> testSquareGeneratorCannotBeCreatedWithProbabilitiesSummingDifferentToOne [
 
 	self
-		should: [ RandomObjectGenerator creating: 10 of: { BlankSquare } with: { 1.5 } ]
+		should: [ SquareGenerator creating: 10 of: { BlankSquare } with: { 1.5 } ]
 		raise: Error
 		withMessage: 'Sum of probabilities differ from 1'
 ]
 
 { #category : #tests }
-RandomSquareGeneratorTest >> testRandomSquareGeneratorCreatesOneHundredBlankSquares [
+SquareGeneratorTest >> testSquareGeneratorCreatesOneHundredBlankSquares [
 
 	|squares|
-	squares := RandomObjectGenerator creating: 100 of: { BlankSquare } with: { 1 }.
+	squares := SquareGenerator creating: 100 of: { BlankSquare } with: { 1 }.
 	
 	self assert: squares size equals: 100.
 	squares do: [ :square | self assert: (square className match: 'BlankSquare') ]

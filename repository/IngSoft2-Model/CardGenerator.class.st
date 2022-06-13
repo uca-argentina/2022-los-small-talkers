@@ -1,5 +1,5 @@
 Class {
-	#name : #RandomObjectGenerator,
+	#name : #CardGenerator,
 	#superclass : #Object,
 	#instVars : [
 		'fractionGenerator',
@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-RandomObjectGenerator class >> creating: anAmount of: objects with: probabilities [
+CardGenerator class >> creating: anAmount of: objects with: probabilities [
 
 	self verifySumOf: probabilities.
 	^ (self new
@@ -19,7 +19,7 @@ RandomObjectGenerator class >> creating: anAmount of: objects with: probabilitie
 ]
 
 { #category : #'instance creation' }
-RandomObjectGenerator class >> of: objects [ 
+CardGenerator class >> of: objects [ 
 
 	|probabilities|
 	probabilities := OrderedCollection new.
@@ -28,64 +28,63 @@ RandomObjectGenerator class >> of: objects [
 ]
 
 { #category : #'instance creation' }
-RandomObjectGenerator class >> verifySumOf: probabilities [
+CardGenerator class >> verifySumOf: probabilities [
 
 	probabilities sum = 1 ifFalse: [ 
 		Error signal: 'Sum of probabilities differ from 1' ]
 ]
 
 { #category : #auxiliary }
-RandomObjectGenerator >> group: objects withTheirRangeOf: probabilities [
+CardGenerator >> group: cards withTheirRangeOf: probabilities [
 
-	|rangeFloor ranges|
+	| rangeFloor ranges |
 	ranges := OrderedCollection new.
 	rangeFloor := 0.
-	(1 to: probabilities size by: 1) do: [ :i |
-		|rangeCeiling square objectProbability|
-		square := objects at: i.
+	(1 to: probabilities size by: 1) do: [ :i | 
+		| rangeCeiling card objectProbability |
+		card := cards at: i.
 		objectProbability := probabilities at: i.
 		rangeCeiling := rangeFloor + objectProbability.
-		
-		ranges add: {rangeFloor . rangeCeiling . square}.
-		rangeFloor  := rangeFloor + (probabilities at: i).
-		].
-	
-	^ranges.
 
-	
+		ranges add: { 
+				rangeFloor.
+				rangeCeiling.
+				card }.
+		rangeFloor := rangeFloor + (probabilities at: i) ].
+
+	^ ranges
 ]
 
 { #category : #initialization }
-RandomObjectGenerator >> initializeOf: objects with: probabilities [
+CardGenerator >> initializeOf: cards with: probabilities [
 
-	probabilityRanges := self group: objects withTheirRangeOf: probabilities.
+	probabilityRanges := self group: cards withTheirRangeOf: probabilities.
 	fractionGenerator := Random seed: Time now asSeconds
 ]
 
 { #category : #'slot generation' }
-RandomObjectGenerator >> next [
+CardGenerator >> next [
 
-	| numberGenerated slot |
+	| numberGenerated card |
 	numberGenerated := fractionGenerator next.
 
 	probabilityRanges do: [ :range | 
-		|rangeFloor rangeCeiling square|
+		| rangeFloor rangeCeiling cardClass |
 		rangeFloor := range at: 1.
 		rangeCeiling := range at: 2.
-		square := range at: 3.
-		
-		(numberGenerated between: rangeFloor and: rangeCeiling ) 
-			ifTrue: [ slot := square createAtRandom ] 
-	].
+		cardClass := range at: 3.
 
-	^ slot
+		(numberGenerated between: rangeFloor and: rangeCeiling) ifTrue: [ 
+			card := cardClass ] ].
+
+	^ card
 ]
 
 { #category : #'slot generation' }
-RandomObjectGenerator >> next: amountToGenerate [
+CardGenerator >> next: amountToGenerate [
 
-	| slots |
-	slots := OrderedCollection new.
-	amountToGenerate timesRepeat: [ slots add: self next ].
-	^ slots
+	| cards |
+	cards := OrderedCollection new.
+	amountToGenerate timesRepeat: [ cards add: self next ].
+	^ cards
 ]

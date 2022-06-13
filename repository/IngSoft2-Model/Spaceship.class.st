@@ -2,7 +2,8 @@ Class {
 	#name : #Spaceship,
 	#superclass : #Object,
 	#instVars : [
-		'name'
+		'name',
+		'cards'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -26,11 +27,19 @@ Spaceship >> hash [
 
 { #category : #initialization }
 Spaceship >> initializeNamed: aName [
+
 	name := aName.
+	cards := OrderedCollection new.
 ]
 
 { #category : #initialization }
 Spaceship >> name [
 
 	^ name
+]
+
+{ #category : #'taking cards' }
+Spaceship >> take: anAmountOfCards from: aDeck [
+
+	cards addAll: (aDeck take: anAmountOfCards).
 ]

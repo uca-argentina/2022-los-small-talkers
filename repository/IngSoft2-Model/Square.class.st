@@ -10,8 +10,20 @@ Square class >> createAtRandom [
 	self subclassResponsibility 
 ]
 
+{ #category : #comparing }
+Square >> = anotherSquare [
+
+	self subclassResponsibility
+]
+
 { #category : #'executing effects' }
 Square >> applyEffectTo: spaceship from: game [
+
+	self subclassResponsibility
+]
+
+{ #category : #comparing }
+Square >> hash [
 
 	self subclassResponsibility
 ]

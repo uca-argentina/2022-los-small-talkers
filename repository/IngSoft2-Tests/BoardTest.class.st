@@ -23,6 +23,12 @@ BoardTest >> testBoardCreationWhereLengthLowerOrEqualThanZeroIsInvalid [
 ]
 
 { #category : #tests }
+BoardTest >> testBoardCreationWhereLightYearsLowerOrEqualToZeroIsInvalid [
+
+	self shouldBeImplemented.
+]
+
+{ #category : #tests }
 BoardTest >> testBoardCreationWhereParsecsLowerOrEqualToZeroIsInvalid [
 
 	self
@@ -37,10 +43,16 @@ BoardTest >> testBoardCreationWhereParsecsLowerOrEqualToZeroIsInvalid [
 ]
 
 { #category : #tests }
+BoardTest >> testBoardDistanceInLightYearsIsThreeTimesAsMuchAsInParsecs [
+
+	self shouldBeImplemented
+]
+
+{ #category : #tests }
 BoardTest >> testRandomBoardCreationThrowsNoErrors [
 
 	| board squares|
-	squares := RandomObjectGenerator 
+	squares := SquareGenerator 
 								creating: 100 
 								of: { AtomicBombSquare . HyperJumpSquare . MoonWalkSquare . SpeedUpSquare . WormHoleSquare . BlankSquare } 
 								with: { 2/100. 8/100. 1/10. 2/10. 2/10. 4/10 }.

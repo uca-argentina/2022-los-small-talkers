@@ -7,7 +7,11 @@ Class {
 		'state',
 		'positionTracker',
 		'sequence',
-		'endingLap'
+		'endingLap',
+		'deck',
+		'cardEffectTracker',
+		'eventTracker',
+		'cardTracker'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -22,10 +26,33 @@ TrenchRunGame class >> withParticipating: spaceships rolling: aDiceCup on: aBoar
 		  until: endLap
 ]
 
+{ #category : #'instance creation' }
+TrenchRunGame class >> withParticipating: spaceships rolling: aDiceCup on: aBoard until: endLap using: aDeck [
+
+	^ self new
+		  initializeWithParticipating: spaceships
+		  rolling: aDiceCup
+		  on: aBoard
+		  until: endLap
+		  using: aDeck
+]
+
+{ #category : #'event recording' }
+TrenchRunGame >> add: event [
+
+	eventTracker add: event
+]
+
 { #category : #'accessing - positions' }
 TrenchRunGame >> currentLeader [
 
 	^ positionTracker currentLeader
+]
+
+{ #category : #accessing }
+TrenchRunGame >> deck [
+
+	^ deck 
 ]
 
 { #category : #private }
@@ -41,6 +68,22 @@ TrenchRunGame >> initializeWithParticipating: spaceships rolling: aDiceCup on: a
 	state := Started new.
 	endingLap := endLap.
 	positionTracker := PositionTracker tracking: spaceships.
+	eventTracker := TrenchRunEventList newGame.
+	sequence := TrenchRunSequence withAll: spaceships
+]
+
+{ #category : #initialization }
+TrenchRunGame >> initializeWithParticipating: spaceships rolling: aDiceCup on: aBoard until: endLap using: aDeck [
+
+	deck := aDeck.
+	gameBoard := aBoard.
+	dice := aDiceCup.
+	state := Started new.
+	endingLap := endLap.
+	positionTracker := PositionTracker tracking: spaceships.
+	cardTracker := CardTracker tracking: spaceships.
+	spaceships do: [ :spaceship | self take: 2 andAssignTo: spaceship].
+	eventTracker := TrenchRunEventList newGame.
 	sequence := TrenchRunSequence withAll: spaceships
 ]
 
@@ -106,11 +149,11 @@ TrenchRunGame >> moveAllSpaceshipsAnAmountOf: squares exceptFor: aSpaceship [
 { #category : #'turn related' }
 TrenchRunGame >> playNextTurn [
 
-	| diceRollResult ship |
-	ship := sequence nextInSequence.
+	| squaresForward ship |
+	ship := sequence next.
 	state update: self.
-	diceRollResult := dice roll.
-	self move: ship anAmountOf: diceRollResult.
+	squaresForward := dice roll.
+	self move: ship anAmountOf: squaresForward.
 	self isFinished ifFalse: [ 
 		gameBoard applyEffectAt: (self squareOf: ship) to: ship on: self ]
 ]
@@ -152,6 +195,14 @@ TrenchRunGame >> spaceships [
 TrenchRunGame >> squareOf: aShip [
 
 	^ (self positionOf: aShip) square
+]
+
+{ #category : #'turn related' }
+TrenchRunGame >> take: anAmountOfCards andAssignTo: aSpaceship [
+
+	cardTracker take: anAmountOfCards from: deck andAssignTo: aSpaceship.
+
+	
 ]
 
 { #category : #'accessing - positions' }

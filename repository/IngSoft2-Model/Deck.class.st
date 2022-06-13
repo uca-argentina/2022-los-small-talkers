@@ -7,7 +7,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 Deck class >> handingOver: someCards [
 
 	^self new initializeHandingOver: someCards.
@@ -16,12 +16,17 @@ Deck class >> handingOver: someCards [
 { #category : #initialization }
 Deck >> initializeHandingOver: someCards [
 
-	cardGenerator := RandomObjectGenerator of: someCards.
-	
+	cardGenerator := CardGenerator of: someCards
 ]
 
-{ #category : #'as yet unclassified' }
-Deck >> takeCard [
+{ #category : #'taking cards' }
+Deck >> take [
 
 	^ cardGenerator next.
+]
+
+{ #category : #'taking cards' }
+Deck >> take: anAmountOfCards [
+
+	^ cardGenerator next: anAmountOfCards.
 ]
