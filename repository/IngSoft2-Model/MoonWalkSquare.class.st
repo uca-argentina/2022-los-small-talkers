@@ -2,7 +2,7 @@ Class {
 	#name : #MoonWalkSquare,
 	#superclass : #Square,
 	#instVars : [
-		'someRetrogression'
+		'retrogression'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -25,14 +25,35 @@ MoonWalkSquare class >> with: someRetrogression [
 	^self new initializeWith: someRetrogression 
 ]
 
+{ #category : #comparing }
+MoonWalkSquare >> = anotherMoonWalkSquare [
+
+	^( retrogression = anotherMoonWalkSquare retrogression and: [ self className match: anotherMoonWalkSquare className ])
+]
+
 { #category : #'executing effects' }
 MoonWalkSquare >> applyEffectTo: spaceship from: game [
 
-	game moveAllSpaceshipsAnAmountOf: someRetrogression exceptFor: spaceship.
+	game
+		moveAllSpaceshipsAnAmountOf: retrogression
+		exceptFor: spaceship.
+	game add: (LandsOnSquareEvent from: spaceship landsOn: self)
+]
+
+{ #category : #comparing }
+MoonWalkSquare >> hash [ 
+
+	^ self className hash bitXor: [ retrogression hash ].
 ]
 
 { #category : #initialization }
 MoonWalkSquare >> initializeWith: aNumberOfBackwardsJumps [
 
-	someRetrogression := aNumberOfBackwardsJumps
+	retrogression := aNumberOfBackwardsJumps
+]
+
+{ #category : #accessing }
+MoonWalkSquare >> retrogression [
+
+	^ retrogression 
 ]

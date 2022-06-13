@@ -25,10 +25,23 @@ HyperJumpSquare class >> with: aNumberOfJumps [
 	^self new initializeWith: aNumberOfJumps 
 ]
 
+{ #category : #comparing }
+HyperJumpSquare >> = anotherHyperJumpSquare [
+
+	^(parsecSequence = anotherHyperJumpSquare parsecSequence and: [ anotherHyperJumpSquare className match: self className ])
+]
+
 { #category : #'executing effects' }
 HyperJumpSquare >> applyEffectTo: spaceship from: game [
 
-	game move: spaceship by: parsecSequence nextInSequence.
+	game move: spaceship by: parsecSequence next.
+	game add: (LandsOnSquareEvent from: spaceship landsOn: self)
+]
+
+{ #category : #comparing }
+HyperJumpSquare >> hash [ 
+
+	^( self className hash bitXor: [ parsecSequence hash ])
 ]
 
 { #category : #initialization }
@@ -36,4 +49,10 @@ HyperJumpSquare >> initializeWith: someJumps [
 
 	parsecSequence := TrenchRunSequence withAll:
 		                (someJumps sorted: [ :jumpA :jumpB | jumpA > jumpB ])
+]
+
+{ #category : #initialization }
+HyperJumpSquare >> parsecSequence [
+
+	^ parsecSequence 
 ]
