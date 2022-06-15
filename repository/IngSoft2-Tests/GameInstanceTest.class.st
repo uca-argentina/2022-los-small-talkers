@@ -95,6 +95,10 @@ GameInstanceTest >> testAtomicBombSlotResetsPositionsToOneButMaintainsNumberOfLa
 
 
 	aGame playNextTurn.
+	"aGame playSpeedUpCardOf: aSpaceship targetting: { anotherSpaceship }."
+	"checkea si la tiene"
+	"chequea si la puede jugar (isPLayableAtAnyTime) (inWhichSpaceshipsTurn)"
+	"playedCardStack addCard: x playedBy: y targetting: z"
 	aGame playNextTurn.
 	aGame playNextTurn.
 

@@ -44,7 +44,7 @@ CardTest >> testOverloadCardReducesInTwoTheNextPlayOfSelectedShip [
 		         until: 1
 		         using: overloadDeck.
 
-	aGame playOverloadCardOf: enterprise targetting: starfighter.
+	aGame playOverloadCardOf: enterprise aimedAt: {starfighter}.
 	aGame playNextTurn.
 	aGame playNextTurn.
 
