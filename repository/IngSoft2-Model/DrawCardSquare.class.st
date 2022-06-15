@@ -19,7 +19,7 @@ DrawCardSquare >> = anotherDrawCardSquare [
 { #category : #'executing effects' }
 DrawCardSquare >> applyEffectTo: spaceship from: game [
 
-	game take: 1 andAssignTo: spaceship.
+	game take: 1 andGiveToHandsOf: spaceship.
 	game add: (LandsOnSquareEvent from: spaceship landsOn: self)
 ]
 

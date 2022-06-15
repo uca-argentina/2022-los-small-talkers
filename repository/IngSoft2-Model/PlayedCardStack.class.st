@@ -7,39 +7,33 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'instance creation' }
-PlayedCardStack class >> create [
+{ #category : #accessing }
+PlayedCardStack >> add: aCard aimingAt: target [
 
-	^ self new initialization
-]
-
-{ #category : #'adding - removing effects' }
-PlayedCardStack >> addEffectPlayedBy: aSpaceship itShouldSum: anAmount to: targets [
-
-	stack add: (CardEffect playedBy: aSpaceship itShouldSum: anAmount to: targets)
+	stack add: (PlayedCard using: aCard aimingAt: target)
 ]
 
 { #category : #'calculating composed effects' }
-PlayedCardStack >> calculateComposedEffectFor: aSpaceship startingWith: aDiceRollResult [
+PlayedCardStack >> applyEffectsTo: spaceship using: anInitialValue [
 
-	| allEffectsAimedAtTarget composedEffectResult |
-	composedEffectResult := aDiceRollResult.
-	allEffectsAimedAtTarget := stack select: [ :effect | effect target includes: aSpaceship ].
-	allEffectsAimedAtTarget do: [ :effectAimedAtTarget | composedEffectResult := effectAimedAtTarget payload + composedEffectResult ].
-	^ composedEffectResult.
+	| resultingEffect |
+	resultingEffect := anInitialValue.
+	stack do: [ :playedCard | 
+		resultingEffect := playedCard
+			                   applyEffectsTo: spaceship
+			                   using: anInitialValue ].
+	^ resultingEffect
 ]
 
 { #category : #initialization }
-PlayedCardStack >> initialization [
-
+PlayedCardStack >> initialize [
+	
+	super initialize.
 	stack := OrderedCollection new.
 ]
 
-{ #category : #'adding - removing effects' }
-PlayedCardStack >> removeEffectPlayedBy: aSpaceship itShouldSum: anAmount to: targets [
+{ #category : #accessing }
+PlayedCardStack >> remove: cardType playedBy: spaceship aimingAt: target [
 
-	|selectedEffects|
-	selectedEffects := stack select: [ :effect | effect owner = aSpaceship and: [ effect payload = anAmount and: [ effect target = targets ] ] ] .
-	selectedEffects ifEmpty: [ Error signal: 'Cannot remove a nonexistent effect'].
-	stack remove: (selectedEffects at: 1).
+	stack remove: (PlayedCard using: (cardType ownedBy: spaceship) aimingAt: target) ifAbsent: [ Error signal: 'Cannot remove a nonexistent effect' ].
 ]
