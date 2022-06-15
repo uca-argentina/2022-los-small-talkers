@@ -20,7 +20,7 @@ TrenchRunEventListTest >> testFindingTheLastCardEventInACardOnlyEventListReturns
 	| trenchRunEventList enterprise planetExpress|
 	enterprise := Spaceship named: 'Enterprise'.
 	planetExpress := Spaceship named: 'Planet Express'.
-	trenchRunEventList := TrenchRunEventList newGame.
+	trenchRunEventList := TrenchRunEventList new.
 	trenchRunEventList add: (PlayCardEvent from: enterprise using: SpeedCard aimedAt: {enterprise}).
 	trenchRunEventList add: (PlayCardEvent from: enterprise using: CancellationCard aimedAt: {planetExpress. SpeedCard}).
 	trenchRunEventList add: (PlayCardEvent from: enterprise using: AccelerationCard aimedAt: {planetExpress. enterprise}).
@@ -37,7 +37,7 @@ TrenchRunEventListTest >> testFindingTheLastCardEventInALandsOnSquareOnlyEventLi
 	| trenchRunEventList enterprise planetExpress|
 	enterprise := Spaceship named: 'Enterprise'.
 	planetExpress := Spaceship named: 'Planet Express'.
-	trenchRunEventList := TrenchRunEventList newGame.
+	trenchRunEventList := TrenchRunEventList new.
 	trenchRunEventList add: (LandsOnSquareEvent from: enterprise landsOn: BlankSquare new).
 	trenchRunEventList add: (LandsOnSquareEvent from: enterprise landsOn: DrawCardSquare new).
 	trenchRunEventList add: (LandsOnSquareEvent from: enterprise landsOn: AtomicBombSquare new).
@@ -57,7 +57,7 @@ TrenchRunEventListTest >> testFindingTheLastCardEventInAMixedEventListReturnsThe
 	| trenchRunEventList enterprise planetExpress|
 	enterprise := Spaceship named: 'Enterprise'.
 	planetExpress := Spaceship named: 'Planet Express'.
-	trenchRunEventList := TrenchRunEventList newGame.
+	trenchRunEventList := TrenchRunEventList new.
 	trenchRunEventList add: (PlayCardEvent from: enterprise using: SpeedCard aimedAt: {enterprise}).
 	trenchRunEventList add: (PlayCardEvent from: enterprise using: CancellationCard aimedAt: {planetExpress. SpeedCard}).
 	trenchRunEventList add: (PlayCardEvent from: enterprise using: AccelerationCard aimedAt: {planetExpress. enterprise}).
@@ -80,7 +80,7 @@ TrenchRunEventListTest >> testFindingTheLastEventInACardOnlyEventListReturnsTheL
 	| trenchRunEventList enterprise planetExpress|
 	enterprise := Spaceship named: 'Enterprise'.
 	planetExpress := Spaceship named: 'Planet Express'.
-	trenchRunEventList := TrenchRunEventList newGame.
+	trenchRunEventList := TrenchRunEventList new.
 	trenchRunEventList add: (PlayCardEvent from: enterprise using: SpeedCard aimedAt: {enterprise}).
 	trenchRunEventList add: (PlayCardEvent from: enterprise using: CancellationCard aimedAt: {planetExpress. SpeedCard}).
 	trenchRunEventList add: (PlayCardEvent from: enterprise using: AccelerationCard aimedAt: {planetExpress. enterprise}).
@@ -99,7 +99,7 @@ TrenchRunEventListTest >> testFindingTheLastEventInALandsOnSquareOnlyEventListRe
 	| trenchRunEventList enterprise planetExpress|
 	enterprise := Spaceship named: 'Enterprise'.
 	planetExpress := Spaceship named: 'Planet Express'.
-	trenchRunEventList := TrenchRunEventList newGame.
+	trenchRunEventList := TrenchRunEventList new.
 	trenchRunEventList add: (LandsOnSquareEvent from: enterprise landsOn: BlankSquare new).
 	trenchRunEventList add: (LandsOnSquareEvent from: enterprise landsOn: DrawCardSquare new).
 	trenchRunEventList add: (LandsOnSquareEvent from: enterprise landsOn: AtomicBombSquare new).
@@ -116,7 +116,7 @@ TrenchRunEventListTest >> testFindingTheLastLandsOnSquareEventInACardOnlyEventLi
 	| trenchRunEventList enterprise planetExpress|
 	enterprise := Spaceship named: 'Enterprise'.
 	planetExpress := Spaceship named: 'Planet Express'.
-	trenchRunEventList := TrenchRunEventList newGame.
+	trenchRunEventList := TrenchRunEventList new.
 	trenchRunEventList add: (PlayCardEvent from: enterprise using: SpeedCard aimedAt: {enterprise}).
 	trenchRunEventList add: (PlayCardEvent from: enterprise using: CancellationCard aimedAt: {planetExpress. SpeedCard}).
 	trenchRunEventList add: (PlayCardEvent from: enterprise using: AccelerationCard aimedAt: {planetExpress. enterprise}).
@@ -136,7 +136,7 @@ TrenchRunEventListTest >> testFindingTheLastLandsOnSquareEventInALandsOnSquareOn
 	| trenchRunEventList enterprise planetExpress|
 	enterprise := Spaceship named: 'Enterprise'.
 	planetExpress := Spaceship named: 'Planet Express'.
-	trenchRunEventList := TrenchRunEventList newGame.
+	trenchRunEventList := TrenchRunEventList new.
 	trenchRunEventList add: (LandsOnSquareEvent from: enterprise landsOn: BlankSquare new).
 	trenchRunEventList add: (LandsOnSquareEvent from: enterprise landsOn: DrawCardSquare new).
 	trenchRunEventList add: (LandsOnSquareEvent from: enterprise landsOn: AtomicBombSquare new).
@@ -153,7 +153,7 @@ TrenchRunEventListTest >> testFindingTheLastLandsOnSquareEventInAMixedEventListR
 	| trenchRunEventList enterprise planetExpress|
 	enterprise := Spaceship named: 'Enterprise'.
 	planetExpress := Spaceship named: 'Planet Express'.
-	trenchRunEventList := TrenchRunEventList newGame.
+	trenchRunEventList := TrenchRunEventList new.
 	trenchRunEventList add: (LandsOnSquareEvent from: enterprise landsOn: BlankSquare new).
 	trenchRunEventList add: (LandsOnSquareEvent from: enterprise landsOn: DrawCardSquare new).
 	trenchRunEventList add: (LandsOnSquareEvent from: enterprise landsOn: AtomicBombSquare new).

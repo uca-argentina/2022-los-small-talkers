@@ -7,12 +7,6 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'instance creation' }
-TrenchRunEventList class >> newGame [
-
-	^ self new initializeNewGame
-]
-
 { #category : #adding }
 TrenchRunEventList >> add: event [
 
@@ -20,8 +14,9 @@ TrenchRunEventList >> add: event [
 ]
 
 { #category : #initialization }
-TrenchRunEventList >> initializeNewGame [
-
+TrenchRunEventList >> initialize [
+	
+	super initialize.
 	events := OrderedCollection new.
 	
 ]
