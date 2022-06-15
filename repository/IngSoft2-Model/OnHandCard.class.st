@@ -1,5 +1,5 @@
 Class {
-	#name : #TrackedCard,
+	#name : #OnHandCard,
 	#superclass : #Object,
 	#instVars : [
 		'type',
@@ -9,13 +9,13 @@ Class {
 }
 
 { #category : #'instance creation' }
-TrackedCard class >> of: cardType ownedBy: aSpaceship [
+OnHandCard class >> of: cardType ownedBy: aSpaceship [
 
 	^ self new initializeOf: cardType ownedBy: aSpaceship.
 ]
 
 { #category : #comparing }
-TrackedCard >> = anotherTrackedCard [
+OnHandCard >> = anotherTrackedCard [
 
 	^ (anotherTrackedCard className match: 'TrackedCard')
 	  and: [anotherTrackedCard owner = (self owner)
@@ -23,26 +23,26 @@ TrackedCard >> = anotherTrackedCard [
 ]
 
 { #category : #comparing }
-TrackedCard >> hash [ 
+OnHandCard >> hash [ 
 	
 	^ (self owner hash bitXor: [ self type hash]).
 ]
 
 { #category : #initialization }
-TrackedCard >> initializeOf: cardType ownedBy: aSpaceship [
+OnHandCard >> initializeOf: cardType ownedBy: aSpaceship [
 
 	type := cardType.
 	owner := aSpaceship.
 ]
 
 { #category : #accessing }
-TrackedCard >> owner [ 
+OnHandCard >> owner [ 
 
 	^ owner
 ]
 
 { #category : #accessing }
-TrackedCard >> type [
+OnHandCard >> type [
 
 	^ type
 ]

@@ -1,5 +1,5 @@
 Class {
-	#name : #EffectStack,
+	#name : #PlayedCardStack,
 	#superclass : #Object,
 	#instVars : [
 		'stack'
@@ -8,19 +8,19 @@ Class {
 }
 
 { #category : #'instance creation' }
-EffectStack class >> create [
+PlayedCardStack class >> create [
 
 	^ self new initialization
 ]
 
 { #category : #'adding - removing effects' }
-EffectStack >> addEffectPlayedBy: aSpaceship itShouldSum: anAmount to: targets [
+PlayedCardStack >> addEffectPlayedBy: aSpaceship itShouldSum: anAmount to: targets [
 
 	stack add: (CardEffect playedBy: aSpaceship itShouldSum: anAmount to: targets)
 ]
 
 { #category : #'calculating composed effects' }
-EffectStack >> calculateComposedEffectFor: aSpaceship startingWith: aDiceRollResult [
+PlayedCardStack >> calculateComposedEffectFor: aSpaceship startingWith: aDiceRollResult [
 
 	| allEffectsAimedAtTarget composedEffectResult |
 	composedEffectResult := aDiceRollResult.
@@ -30,13 +30,13 @@ EffectStack >> calculateComposedEffectFor: aSpaceship startingWith: aDiceRollRes
 ]
 
 { #category : #initialization }
-EffectStack >> initialization [
+PlayedCardStack >> initialization [
 
 	stack := OrderedCollection new.
 ]
 
 { #category : #'adding - removing effects' }
-EffectStack >> removeEffectPlayedBy: aSpaceship itShouldSum: anAmount to: targets [
+PlayedCardStack >> removeEffectPlayedBy: aSpaceship itShouldSum: anAmount to: targets [
 
 	|selectedEffects|
 	selectedEffects := stack select: [ :effect | effect owner = aSpaceship and: [ effect payload = anAmount and: [ effect target = targets ] ] ] .

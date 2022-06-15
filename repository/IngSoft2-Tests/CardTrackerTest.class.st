@@ -10,7 +10,7 @@ CardTrackerTest >> testGrabbingTenCardFromACancellationCardOnlyDeckAddsTenCancel
 	| cardTracker enterprise deck |
 	deck := Deck handingOver: { CancellationCard }.
 	enterprise := Spaceship named: 'Enterprise'.
-	cardTracker := CardTracker tracking: { enterprise }.
+	cardTracker := OnHandCardStack tracking: { enterprise }.
 	cardTracker take: 10 from: deck andAssignTo: enterprise.
 	self assert: cardTracker cards size equals: 10
 ]
@@ -21,7 +21,7 @@ CardTrackerTest >> testGrabbingTenCardFromARedoCardOnlyDeckAddsTenRedoCards [
 	| cardTracker enterprise deck |
 	deck := Deck handingOver: { RedoCard }.
 	enterprise := Spaceship named: 'Enterprise'.
-	cardTracker := CardTracker tracking: { enterprise }.
+	cardTracker := OnHandCardStack tracking: { enterprise }.
 	cardTracker take: 10 from: deck andAssignTo: enterprise.
 	self assert: cardTracker cards size equals: 10
 ]
@@ -32,7 +32,7 @@ CardTrackerTest >> testGrabbingTenCardFromARepeatCardOnlyDeckAddsTenRepeatCards 
 	| cardTracker enterprise deck |
 	deck := Deck handingOver: { RepeatCard }.
 	enterprise := Spaceship named: 'Enterprise'.
-	cardTracker := CardTracker tracking: { enterprise }.
+	cardTracker := OnHandCardStack tracking: { enterprise }.
 	cardTracker take: 10 from: deck andAssignTo: enterprise.
 	self assert: cardTracker cards size equals: 10
 ]
@@ -43,7 +43,7 @@ CardTrackerTest >> testGrabbingTenCardFromASpeedCardOnlyDeckAddsTenSpeedCards [
 	| cardTracker enterprise deck |
 	deck := Deck handingOver: { SpeedCard }.
 	enterprise := Spaceship named: 'Enterprise'.
-	cardTracker := CardTracker tracking: { enterprise }.
+	cardTracker := OnHandCardStack tracking: { enterprise }.
 	cardTracker take: 10 from: deck andAssignTo: enterprise.
 	self assert: cardTracker cards size equals: 10
 ]
@@ -54,7 +54,7 @@ CardTrackerTest >> testGrabbingTenCardFromAnAccelerationCardOnlyDeckAddsTenAccel
 	| cardTracker enterprise deck |
 	deck := Deck handingOver: { AccelerationCard }.
 	enterprise := Spaceship named: 'Enterprise'.
-	cardTracker := CardTracker tracking: { enterprise }.
+	cardTracker := OnHandCardStack tracking: { enterprise }.
 	cardTracker take: 10 from: deck andAssignTo: enterprise.
 	self assert: cardTracker cards size equals: 10
 ]
@@ -65,7 +65,7 @@ CardTrackerTest >> testGrabbingTenCardFromAnOverloadCardOnlyDeckAddsTenOverloadC
 	| cardTracker enterprise deck |
 	deck := Deck handingOver: { OverloadCard }.
 	enterprise := Spaceship named: 'Enterprise'.
-	cardTracker := CardTracker tracking: { enterprise }.
+	cardTracker := OnHandCardStack tracking: { enterprise }.
 	cardTracker take: 10 from: deck andAssignTo: enterprise.
 	self assert: cardTracker cards size equals: 10.
 ]
@@ -76,7 +76,7 @@ CardTrackerTest >> testPlayingACancellationCardFromAHandOfManyOnlyRemovesOneFrom
 	| cardTracker enterprise deck|
 	deck := Deck handingOver: { CancellationCard }.
 	enterprise := Spaceship named: 'Enterprise'.
-	cardTracker := CardTracker tracking: { enterprise }.
+	cardTracker := OnHandCardStack tracking: { enterprise }.
 	cardTracker take: 10 from: deck andAssignTo: enterprise.
 	self assert: cardTracker cards size equals: 10.
 	cardTracker play: CancellationCard ownedBy: enterprise.

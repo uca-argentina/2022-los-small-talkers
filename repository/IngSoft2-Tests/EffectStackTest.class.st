@@ -10,7 +10,7 @@ EffectStackTest >> testAddingOneMovementEffectToEmptyStackReturnsOneOfEffectOnAl
 	|effectStack enterprise starfighter|
 	enterprise := Spaceship named: 'Enterprise'.
 	starfighter := Spaceship named: 'Starfighter'.
-	effectStack := EffectStack create.
+	effectStack := PlayedCardStack create.
 	effectStack addEffectPlayedBy: enterprise itShouldSum: 1 to: {starfighter. enterprise }.
 	self assert: (effectStack calculateComposedEffectFor: starfighter startingWith: 1) equals: 2.
 	self assert: (effectStack calculateComposedEffectFor: enterprise startingWith: 1) equals: 2.
@@ -22,7 +22,7 @@ EffectStackTest >> testAddingOneMovementEffectToExistingStackAugmentsTheEffectIn
 	|effectStack enterprise starfighter|
 	enterprise := Spaceship named: 'Enterprise'.
 	starfighter := Spaceship named: 'Starfighter'.
-	effectStack := EffectStack create.
+	effectStack := PlayedCardStack create.
 	effectStack addEffectPlayedBy: enterprise itShouldSum: 2 to: {enterprise}.
 	effectStack addEffectPlayedBy: enterprise itShouldSum: 1 to: {starfighter. enterprise }.
 	self assert: (effectStack calculateComposedEffectFor: starfighter startingWith: 1) equals: 2.
@@ -35,7 +35,7 @@ EffectStackTest >> testCancellingAnEffectRemovesItFromTheCompoundEffectCalculati
 	|effectStack enterprise starfighter|
 	enterprise := Spaceship named: 'Enterprise'.
 	starfighter := Spaceship named: 'Starfighter'.
-	effectStack := EffectStack create.
+	effectStack := PlayedCardStack create.
 	effectStack addEffectPlayedBy: enterprise itShouldSum: 1 to: {starfighter}.
 	self assert: (effectStack calculateComposedEffectFor: starfighter startingWith: 1) equals: 2.
 	self assert: (effectStack calculateComposedEffectFor: enterprise startingWith: 1) equals: 1.
