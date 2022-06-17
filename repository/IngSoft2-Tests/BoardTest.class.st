@@ -17,7 +17,21 @@ BoardTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage [
 BoardTest >> testBoardCreationWhereLengthLowerOrEqualThanZeroIsInvalid [
 
 	self
-		should: [ Board sized: -5 dividedIn: 10 from: {  } ]
+		should: [ Board madeUpBy: {  } stretchedIntoParsecs: 10 ]
+		raise: Error
+		withMessage: 'Boards need a minimum length of 1'
+]
+
+{ #category : #tests }
+BoardTest >> testBoardCreationWhereLightYearsLowerOrEqualToZeroIsInvalid [
+
+	self
+		should: [ Board madeUpBy: { BlankSquare } stretchedIntoLightYears: 0 ]
+		raise: Error
+		withMessage: 'Boards need a minimum length of 1'.
+
+	self
+		should: [ Board madeUpBy: { BlankSquare } stretchedIntoLightYears: -10 ]
 		raise: Error
 		withMessage: 'Boards need a minimum length of 1'
 ]
@@ -26,26 +40,48 @@ BoardTest >> testBoardCreationWhereLengthLowerOrEqualThanZeroIsInvalid [
 BoardTest >> testBoardCreationWhereParsecsLowerOrEqualToZeroIsInvalid [
 
 	self
-		should: [ Board sized: 10 dividedIn: 0 from: {  } ]
+		should: [ Board madeUpBy: { BlankSquare } stretchedIntoParsecs: 0 ]
 		raise: Error
 		withMessage: 'Boards need a minimum length of 1'.
 
 	self
-		should: [ Board sized: 10 dividedIn: -10 from: {  } ]
+		should: [ Board madeUpBy: { BlankSquare } stretchedIntoParsecs: -10 ]
 		raise: Error
 		withMessage: 'Boards need a minimum length of 1'
 ]
 
 { #category : #tests }
-BoardTest >> testRandomBoardCreationThrowsNoErrors [
+BoardTest >> testBoardDistanceInLightYearsIsThreeTimesAsMuchAsInParsecs [
 
-	| board squaresGenerator|
-	squaresGenerator := RandomSquaresGenerator 
-								creating: 100 
-								of: { AtomicBombSquare . HyperJumpSquare . MoonWalkSquare . SpeedUpSquare . WormHoleSquare . BlankSquare } 
-								with: { 2/100. 8/100. 1/10. 2/10. 2/10. 4/10 }.
-	board := Board sized: 100 dividedIn: 200 from: squaresGenerator generateSquares.
+	| board |
+	board := Board madeUpBy: { BlankSquare } stretchedIntoLightYears: 10.
+	self
+		assert: board lightYearsPerSquare
+		equals: board parsecsPerSquare * 3
+]
 
-	
-	self assert: [ (board length) = 100  ]
+{ #category : #tests }
+BoardTest >> testCreatingABoardFromSomeRandomlyGeneratedSquaresSetsItsAmountOfSquaresCorrectly [
+
+	| board squares |
+	squares := SquareGenerator
+		           creating: 100
+		           of: { 
+				           AtomicBombSquare.
+				           HyperJumpSquare.
+				           MoonWalkSquare.
+				           SpeedUpSquare.
+				           WormHoleSquare.
+				           BlankSquare }
+		           with: { 
+				           (2 / 100).
+				           (8 / 100).
+				           (1 / 10).
+				           (2 / 10).
+				           (2 / 10).
+				           (4 / 10) }.
+	board := Board madeUpBy: squares stretchedIntoLightYears: 200.
+
+
+	self assert: [ board length = 100 ]
 ]

@@ -4,14 +4,20 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #operations }
-Square class >> createAtRandom [
+{ #category : #comparing }
+Square >> = anotherSquare [
 
-	self subclassResponsibility 
+	self subclassResponsibility
 ]
 
 { #category : #'executing effects' }
 Square >> applyEffectTo: spaceship from: game [
+
+	self subclassResponsibility
+]
+
+{ #category : #comparing }
+Square >> hash [
 
 	self subclassResponsibility
 ]

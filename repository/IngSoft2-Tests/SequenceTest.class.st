@@ -8,16 +8,15 @@ Class {
 SequenceTest >> testSequenceHoldsACorrectfullyOrderedCollectionOfSpaceships [
 
 	| enterprise starfighter sequence |
-	enterprise := Spaceship named: 'Enterprise'.
-	starfighter := Spaceship named: 'Starfighter'.
+	enterprise := 'Enterprise'.
+	starfighter := 'Starfighter'.
 
 	sequence := TrenchRunSequence withAll: { 
 			            enterprise.
 			            starfighter }.
 
 	self assert: [ 
-		sequence nextInSequence == enterprise and: [ 
-			sequence nextInSequence == starfighter ] ]
+		sequence next == enterprise and: [ sequence next == starfighter ] ]
 ]
 
 { #category : #tests }
@@ -26,7 +25,7 @@ SequenceTest >> testSequenceResetsWhenGoesOverAllElements [
 	| sequence |
 	sequence := TrenchRunSequence withAll: { 1. 2 }.
 
-	self assert: sequence nextInSequence equals: 1.
-	self assert: sequence nextInSequence equals: 2.
-	self assert: sequence nextInSequence equals: 1
+	self assert: sequence next equals: 1.
+	self assert: sequence next equals: 2.
+	self assert: sequence next equals: 1
 ]

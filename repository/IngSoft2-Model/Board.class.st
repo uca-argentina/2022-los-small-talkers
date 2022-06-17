@@ -4,37 +4,43 @@ Class {
 	#instVars : [
 		'squares',
 		'totalParsecs',
-		'totalSquares'
+		'totalSquares',
+		'totalLightYears'
 	],
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #asserting }
-Board class >> assert: aNumberOfSquares coincidesWith: actualSquareAmount [
-
-	(aNumberOfSquares = actualSquareAmount) ifFalse: [ 
-		Error signal:
-			'Number of squares declared does not coincide with actual square amount' ]
-]
-
-{ #category : #asserting }
+{ #category : #'input validation' }
 Board class >> assertValid: aLength [
-	aLength > 1 ifFalse: [ 
+	aLength >= 1 ifFalse: [ 
 		Error signal: 'Boards need a minimum length of 1' ].
 ]
 
 { #category : #'instance creation' }
-Board class >> sized: aNumberOfSquares dividedIn: aNumberOfParsecs from: someSquares [
+Board class >> madeUpBy: someSquares stretchedIntoLightYears: anAmountOfLightYears [
 
-	self assertValid: aNumberOfParsecs.
-	self assertValid: aNumberOfSquares.
-		self
-		assert: aNumberOfSquares
-		coincidesWith: someSquares size.
+	self assertValid: anAmountOfLightYears.
+	self validateSizeOf: someSquares.
 	^ self new
-		  initializeSized: aNumberOfSquares
-		  dividedIn: aNumberOfParsecs
-		  from: someSquares
+		  initializeMadeUpBy: someSquares
+		  stretchedInto: anAmountOfLightYears / 3
+]
+
+{ #category : #'instance creation' }
+Board class >> madeUpBy: someSquares stretchedIntoParsecs: anAmountOfParsecs [
+
+	self assertValid: anAmountOfParsecs.
+	self validateSizeOf: someSquares.
+	^ self new
+		  initializeMadeUpBy: someSquares
+		  stretchedInto: anAmountOfParsecs
+]
+
+{ #category : #'input validation' }
+Board class >> validateSizeOf: someSquares [
+
+		someSquares ifEmpty: [ 
+		Error signal: 'Boards need a minimum length of 1' ].
 ]
 
 { #category : #'executing effects' }
@@ -44,17 +50,24 @@ Board >> applyEffectAt: aSquare to: aSpaceship on: aGame [
 ]
 
 { #category : #initialization }
-Board >> initializeSized: aNumberOfSquares dividedIn: aNumberOfParsecs from: someSquares [
+Board >> initializeMadeUpBy: someSquares stretchedInto: anAmountOfParsecs [
 
-	totalSquares := aNumberOfSquares.
-	totalParsecs := aNumberOfParsecs.
 	squares := someSquares.
+	totalParsecs := anAmountOfParsecs.
+	totalLightYears := anAmountOfParsecs * 3.
+	totalSquares := squares size.
 ]
 
 { #category : #'accessing - attributes' }
 Board >> length [
 
 	^ totalSquares
+]
+
+{ #category : #accessing }
+Board >> lightYearsPerSquare [
+
+	^ totalLightYears / squares size
 ]
 
 { #category : #accessing }

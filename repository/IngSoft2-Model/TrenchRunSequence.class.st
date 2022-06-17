@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'elements',
-		'counter'
+		'counter',
+		'previous'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -13,10 +14,28 @@ TrenchRunSequence class >> withAll: sequenceableElements [
 	^self new initializeWithAll: sequenceableElements.
 ]
 
+{ #category : #comparing }
+TrenchRunSequence >> = anotherTrenchRunSequence [
+
+	^ elements = (anotherTrenchRunSequence elements)
+]
+
 { #category : #private }
 TrenchRunSequence >> counterAdd [
 
 	counter := counter + 1
+]
+
+{ #category : #accessing }
+TrenchRunSequence >> elements [
+
+	^ elements
+]
+
+{ #category : #comparing }
+TrenchRunSequence >> hash [ 
+	
+	^ elements hash
 ]
 
 { #category : #initialization }
@@ -26,8 +45,17 @@ TrenchRunSequence >> initializeWithAll: sequenceableElements [
 ]
 
 { #category : #accessing }
-TrenchRunSequence >> nextInSequence [
-
+TrenchRunSequence >> next [
+	
 	self counterAdd.
-	^ elements at: counter - 1 \\ elements size + 1
+	previous := elements at: counter - 1 \\ elements size + 1.
+	^previous
+]
+
+{ #category : #accessing }
+TrenchRunSequence >> previous [
+
+	previous ifNil: [ Error signal: 'Trying to access previous element in sequence when inexistent' ].
+	^ previous 
+	
 ]

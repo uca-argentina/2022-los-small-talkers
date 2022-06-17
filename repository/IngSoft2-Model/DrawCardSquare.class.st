@@ -1,24 +1,24 @@
 Class {
-	#name : #SpeedUpSquare,
+	#name : #DrawCardSquare,
 	#superclass : #Square,
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #comparing }
-SpeedUpSquare >> = anotherSpeedUpSquare [
+DrawCardSquare >> = anotherDrawCardSquare [
 
-	^(self className match: anotherSpeedUpSquare className)
+	^(self className match: anotherDrawCardSquare className)
 ]
 
 { #category : #'executing effects' }
-SpeedUpSquare >> applyEffectTo: spaceship from: game [
+DrawCardSquare >> applyEffectTo: spaceship from: game [
 
-	game move: spaceship anAmountOf: 4.
+	game take: 1 andGiveToHandsOf: spaceship.
 	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
 ]
 
 { #category : #comparing }
-SpeedUpSquare >> hash [ 
+DrawCardSquare >> hash [ 
 
 	^ self className hash
 ]

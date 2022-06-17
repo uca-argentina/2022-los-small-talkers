@@ -4,14 +4,20 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #operations }
-BlankSquare class >> createAtRandom [
+{ #category : #comparing }
+BlankSquare >> = anotherBlankSquare [
 
-	^self new
+	^(self className match: anotherBlankSquare className).
 ]
 
 { #category : #'executing effects' }
-BlankSquare >> applyEffectTo: spaceship from: game [ 
+BlankSquare >> applyEffectTo: spaceship from: game [
 
-	^self.
+	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
+]
+
+{ #category : #comparing }
+BlankSquare >> hash [ 
+
+	self className hash
 ]
