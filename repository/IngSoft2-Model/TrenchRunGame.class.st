@@ -17,16 +17,6 @@ Class {
 }
 
 { #category : #'instance creation' }
-TrenchRunGame class >> withParticipating: spaceships rolling: aDiceCup on: aBoard until: endLap [
-
-	^ self new
-		  initializeWithParticipating: spaceships
-		  rolling: aDiceCup
-		  on: aBoard
-		  until: endLap
-]
-
-{ #category : #'instance creation' }
 TrenchRunGame class >> withParticipating: spaceships rolling: aDiceCup on: aBoard until: endLap using: aDeck [
 
 	^ self new
@@ -64,20 +54,6 @@ TrenchRunGame >> give: cardType toHandsOf: spaceship [
 TrenchRunGame >> history [
 
 	^history
-]
-
-{ #category : #initialization }
-TrenchRunGame >> initializeWithParticipating: spaceships rolling: aDiceCup on: aBoard until: endLap [
-
-	gameBoard := aBoard.
-	dice := aDiceCup.
-	state := Started new.
-	endingLap := endLap.
-	positionTracker := PositionTracker tracking: spaceships.
-	onHandCardStack := OnHandCardStack new.
-	playedCardStack := PlayedPermanentCardStack new.
-	history := TrenchRunEventList new.
-	spaceshipSequence := TrenchRunSequence withAll: spaceships
 ]
 
 { #category : #initialization }
@@ -258,13 +234,12 @@ TrenchRunGame >> positions [
 TrenchRunGame >> ranking [
 
 	| rankingSize |
-
-	rankingSize := 3 min: (self positions size).
+	rankingSize := 3 min: self positions size.
 
 	^ Dictionary
 		  newFromKeys: (1 to: rankingSize by: 1)
 		  andValues: (self positions
-				   collect: [ :position | position ship name ]
+				   collect: [ :position | position ship ]
 				   from: 1
 				   to: rankingSize)
 ]

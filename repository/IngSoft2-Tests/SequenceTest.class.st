@@ -8,16 +8,15 @@ Class {
 SequenceTest >> testSequenceHoldsACorrectfullyOrderedCollectionOfSpaceships [
 
 	| enterprise starfighter sequence |
-	enterprise := Spaceship named: 'Enterprise'.
-	starfighter := Spaceship named: 'Starfighter'.
+	enterprise := 'Enterprise'.
+	starfighter := 'Starfighter'.
 
 	sequence := TrenchRunSequence withAll: { 
 			            enterprise.
 			            starfighter }.
 
 	self assert: [ 
-		sequence next == enterprise and: [ 
-			sequence next == starfighter ] ]
+		sequence next == enterprise and: [ sequence next == starfighter ] ]
 ]
 
 { #category : #tests }

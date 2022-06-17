@@ -19,11 +19,11 @@ PositionTrackerTest >> testAPositionIsEqualToAnotherEvenThoughItsNotTheSameInsta
 
 	| instanceA instanceB |
 	instanceA := Position
-		             of: (Spaceship named: 'Enterprise')
+		             of: 'Enterprise'
 		             at: 1
 		             after: 2.
 	instanceB := Position
-		             of: (Spaceship named: 'Enterprise')
+		             of: 'Enterprise'
 		             at: 1
 		             after: 2.
 	self assert: instanceA equals: instanceB.
@@ -33,19 +33,18 @@ PositionTrackerTest >> testAPositionIsEqualToAnotherEvenThoughItsNotTheSameInsta
 { #category : #tests }
 PositionTrackerTest >> testAPositionIsGreaterThanAnotherWhenIsALapAhead [
 
-	|positionA positionB|
-	positionA := Position of: (Spaceship new) at: 2 after: 1.
-	positionB := Position of: (Spaceship new) at: 1 after: 2.
-	
-	self assert: ((positionA < positionB) and: [positionB > positionA]).
-	
+	| positionA positionB |
+	positionA := Position of: 'Enterprise' at: 2 after: 1.
+	positionB := Position of: 'Enterprise' at: 1 after: 2.
+
+	self assert: (positionA < positionB and: [ positionB > positionA ])
 ]
 
 { #category : #'tests - LeaderboardRecord' }
 PositionTrackerTest >> testAskingForLapOnRecordReturnsLap [
 
 	| enterprise record |
-	enterprise := Spaceship named: 'Enterprise'.
+	enterprise := 'Enterprise'.
 	record := Position of: enterprise at: 4 after: 1.
 	self assert: record lap equals: 1
 ]
@@ -54,7 +53,7 @@ PositionTrackerTest >> testAskingForLapOnRecordReturnsLap [
 PositionTrackerTest >> testAskingForShipOnRecordReturnsSameShip [
 
 	| enterprise record |
-	enterprise := Spaceship named: 'Enterprise'.
+	enterprise := 'Enterprise'.
 	record := Position of: enterprise at: 4 after: 1.
 	self assert: record ship equals: enterprise
 ]
@@ -63,7 +62,7 @@ PositionTrackerTest >> testAskingForShipOnRecordReturnsSameShip [
 PositionTrackerTest >> testAskingForSquareOnRecordReturnsSquare [
 
 	| enterprise record |
-	enterprise := Spaceship named: 'Enterprise'.
+	enterprise := 'Enterprise'.
 	record := Position of: enterprise at: 4 after: 1.
 	self assert: record square equals: 4
 ]
@@ -72,8 +71,8 @@ PositionTrackerTest >> testAskingForSquareOnRecordReturnsSquare [
 PositionTrackerTest >> testDeletingARecordOfANonExistingShipIsInvalid [
 
 	| enterprise starfighter leaderboard |
-	enterprise := Spaceship named: 'Enterprise'.
-	starfighter := Spaceship named: 'Starfighter'.
+	enterprise := 'Enterprise'.
+	starfighter := 'Starfighter'.
 	leaderboard := PositionTracker tracking: { enterprise }.
 
 	self
@@ -86,7 +85,7 @@ PositionTrackerTest >> testDeletingARecordOfANonExistingShipIsInvalid [
 PositionTrackerTest >> testMovingAShipForwardSquaresUpdatesRankings [
 
 	| leaderboard enterprise |
-	enterprise := Spaceship named: 'Enterprise'.
+	enterprise := 'Enterprise'.
 	leaderboard := PositionTracker tracking: { enterprise }.
 
 	self
@@ -104,8 +103,8 @@ PositionTrackerTest >> testMovingAShipForwardSquaresUpdatesRankings [
 PositionTrackerTest >> testMovingAnUnknownShipForwardSquaresIsInvalid [
 
 	| leaderboard enterprise starfighter |
-	enterprise := Spaceship named: 'Enterprise'.
-	starfighter := Spaceship named: 'Starfighter'.
+	enterprise := 'Enterprise'.
+	starfighter := 'Starfighter'.
 	leaderboard := PositionTracker tracking: { enterprise }.
 
 	self
@@ -118,8 +117,8 @@ PositionTrackerTest >> testMovingAnUnknownShipForwardSquaresIsInvalid [
 PositionTrackerTest >> testObtainingAllSpaceshipsFromPositionTrackerReturnsCollectionWithShips [
 
 	| enterprise starfighter leaderboard |
-	enterprise := Spaceship named: 'Enterprise'.
-	starfighter := Spaceship named: 'Starfighter'.
+	enterprise := 'Enterprise'.
+	starfighter := 'Starfighter'.
 	leaderboard := PositionTracker tracking: { 
 			               enterprise.
 			               starfighter }.
@@ -135,8 +134,8 @@ PositionTrackerTest >> testObtainingAllSpaceshipsFromPositionTrackerReturnsColle
 PositionTrackerTest >> testObtainingPositionsFromLeaderboardReturnsDictionaryWithNamesOfShipsAndTheirPositions [
 
 	| enterprise starfighter leaderboard |
-	enterprise := Spaceship named: 'Enterprise'.
-	starfighter := Spaceship named: 'Starfighter'.
+	enterprise := 'Enterprise'.
+	starfighter := 'Starfighter'.
 	leaderboard := PositionTracker tracking: { 
 			               enterprise.
 			               starfighter }.

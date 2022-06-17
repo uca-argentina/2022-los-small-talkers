@@ -7,9 +7,9 @@ Class {
 { #category : #tests }
 OnHandCardStackTest >> testGrabbingTenCardFromACancellationCardOnlyDeckAddsTenCancellationCards [
 
-	| onHandCardStack enterprise deck cards|
+	| onHandCardStack enterprise deck cards |
 	deck := Deck handingOver: { CancellationCard }.
-	enterprise := Spaceship named: 'Enterprise'.
+	enterprise := 'Enterprise'.
 	onHandCardStack := OnHandCardStack new.
 	cards := deck take: 10.
 	cards do: [ :card | onHandCardStack give: card toHandsOf: enterprise ].
@@ -19,9 +19,9 @@ OnHandCardStackTest >> testGrabbingTenCardFromACancellationCardOnlyDeckAddsTenCa
 { #category : #tests }
 OnHandCardStackTest >> testGrabbingTenCardFromARedoCardOnlyDeckAddsTenRedoCards [
 
-	| onHandCardStack enterprise deck cards|
+	| onHandCardStack enterprise deck cards |
 	deck := Deck handingOver: { RedoCard }.
-	enterprise := Spaceship named: 'Enterprise'.
+	enterprise := 'Enterprise'.
 	onHandCardStack := OnHandCardStack new.
 	cards := deck take: 10.
 	cards do: [ :card | onHandCardStack give: card toHandsOf: enterprise ].
@@ -31,9 +31,9 @@ OnHandCardStackTest >> testGrabbingTenCardFromARedoCardOnlyDeckAddsTenRedoCards 
 { #category : #tests }
 OnHandCardStackTest >> testGrabbingTenCardFromARepeatCardOnlyDeckAddsTenRepeatCards [
 
-	| onHandCardStack enterprise deck cards|
+	| onHandCardStack enterprise deck cards |
 	deck := Deck handingOver: { RepeatCard }.
-	enterprise := Spaceship named: 'Enterprise'.
+	enterprise := 'Enterprise'.
 	onHandCardStack := OnHandCardStack new.
 	cards := deck take: 10.
 	cards do: [ :card | onHandCardStack give: card toHandsOf: enterprise ].
@@ -43,9 +43,9 @@ OnHandCardStackTest >> testGrabbingTenCardFromARepeatCardOnlyDeckAddsTenRepeatCa
 { #category : #tests }
 OnHandCardStackTest >> testGrabbingTenCardFromASpeedCardOnlyDeckAddsTenSpeedCards [
 
-	| onHandCardStack enterprise deck cards|
+	| onHandCardStack enterprise deck cards |
 	deck := Deck handingOver: { SpeedCard }.
-	enterprise := Spaceship named: 'Enterprise'.
+	enterprise := 'Enterprise'.
 	onHandCardStack := OnHandCardStack new.
 	cards := deck take: 10.
 	cards do: [ :card | onHandCardStack give: card toHandsOf: enterprise ].
@@ -55,9 +55,9 @@ OnHandCardStackTest >> testGrabbingTenCardFromASpeedCardOnlyDeckAddsTenSpeedCard
 { #category : #tests }
 OnHandCardStackTest >> testGrabbingTenCardFromAnAccelerationCardOnlyDeckAddsTenAccelerationCards [
 
-	| onHandCardStack enterprise deck cards|
+	| onHandCardStack enterprise deck cards |
 	deck := Deck handingOver: { AccelerationCard }.
-	enterprise := Spaceship named: 'Enterprise'.
+	enterprise := 'Enterprise'.
 	onHandCardStack := OnHandCardStack new.
 	cards := deck take: 10.
 	cards do: [ :card | onHandCardStack give: card toHandsOf: enterprise ].
@@ -67,25 +67,25 @@ OnHandCardStackTest >> testGrabbingTenCardFromAnAccelerationCardOnlyDeckAddsTenA
 { #category : #tests }
 OnHandCardStackTest >> testGrabbingTenCardFromAnOverloadCardOnlyDeckAddsTenOverloadCards [
 
-	| onHandCardStack enterprise deck cards|
+	| onHandCardStack enterprise deck cards |
 	deck := Deck handingOver: { OverloadCard }.
-	enterprise := Spaceship named: 'Enterprise'.
+	enterprise := 'Enterprise'.
 	onHandCardStack := OnHandCardStack new.
 	cards := deck take: 10.
 	cards do: [ :card | onHandCardStack give: card toHandsOf: enterprise ].
-	self assert: onHandCardStack cards size equals: 10.
+	self assert: onHandCardStack cards size equals: 10
 ]
 
 { #category : #tests }
 OnHandCardStackTest >> testPlayingACancellationCardFromAHandOfManyOnlyRemovesOneFromList [
 
-	| onHandCardStack enterprise deck cards|
+	| onHandCardStack enterprise deck cards |
 	deck := Deck handingOver: { CancellationCard }.
-	enterprise := Spaceship named: 'Enterprise'.
+	enterprise := 'Enterprise'.
 	onHandCardStack := OnHandCardStack new.
 	cards := deck take: 10.
 	cards do: [ :card | onHandCardStack give: card toHandsOf: enterprise ].
 	self assert: onHandCardStack cards size equals: 10.
 	onHandCardStack take: CancellationCard fromHandsOf: enterprise.
-	self assert: onHandCardStack cards size equals: 9.
+	self assert: onHandCardStack cards size equals: 9
 ]

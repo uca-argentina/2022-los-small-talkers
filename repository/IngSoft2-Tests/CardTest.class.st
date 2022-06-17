@@ -18,32 +18,29 @@ CardTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage [
 CardTest >> testAccelerationCardEqualsAnotherAccelerationCardWithSameValues [
 
 	self
-		assert: (AccelerationCard ownedBy: (Spaceship named: 'Enterprise'))
-		equals: (AccelerationCard  ownedBy: (Spaceship named: 'Enterprise')).
+		assert: (AccelerationCard ownedBy: 'Enterprise')
+		equals: (AccelerationCard ownedBy: 'Enterprise').
 	self
-		assert: (AccelerationCard  ownedBy: (Spaceship named: 'Enterprise')) hash
-		equals: (AccelerationCard  ownedBy: (Spaceship named: 'Enterprise')) hash
+		assert:
+		(AccelerationCard ownedBy: 'Enterprise') hash
+		equals:
+		(AccelerationCard ownedBy: 'Enterprise') hash
 ]
 
 { #category : #tests }
 CardTest >> testAccelerationCardIncreasesInOneTheThrowOfAllShips [
 
-	| game enterprise planetExpress starfighter aDie aBoard squares deck |
-	enterprise := Spaceship named: 'Enterprise'.
-	planetExpress := Spaceship named: 'PlanetExpress'.
-	starfighter := Spaceship named: 'StarFighter'.
+	| game aDie aBoard squares deck |
 	squares := SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
 	deck := Deck handingOver: { AccelerationCard }.
-	aBoard := Board sized: 5 dividedInParsecs: 5 from: squares.
+	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
-		        withParticipating: { 
-				        enterprise.
-				        planetExpress.
-				        starfighter }
+		        withParticipating:
+		        { 'Enterprise'. 'PlanetExpress'. 'StarFighter' }
 		        rolling: aDie
 		        on: aBoard
 		        until: 1
@@ -52,33 +49,33 @@ CardTest >> testAccelerationCardIncreasesInOneTheThrowOfAllShips [
 	game playNextTurn.
 	game playNextTurn.
 	game playNextTurn.
-	self assert: (game squareOf: enterprise) equals: 2.
-	self assert: (game squareOf: planetExpress) equals: 2.
-	self assert: (game squareOf: starfighter) equals: 2.
+	self assert: (game squareOf: 'Enterprise') equals: 2.
+	self assert: (game squareOf: 'PlanetExpress') equals: 2.
+	self assert: (game squareOf: 'StarFighter') equals: 2.
 
-	game playAccelerationCardOwnedBy: starfighter.
+	game playAccelerationCardOwnedBy: 'StarFighter'.
 
 	game playNextTurn.
 	game playNextTurn.
 	game playNextTurn.
-	self assert: (game squareOf: enterprise) equals: 4.
-	self assert: (game squareOf: planetExpress) equals: 4.
-	self assert: (game squareOf: starfighter) equals: 4
+	self assert: (game squareOf: 'Enterprise') equals: 4.
+	self assert: (game squareOf: 'PlanetExpress') equals: 4.
+	self assert: (game squareOf: 'StarFighter') equals: 4
 ]
 
 { #category : #tests }
 CardTest >> testCancellationCardCannotBeUsedWhenNoPermanentCardsAreActive [
 
 	| game enterprise planetExpress starfighter aDie aBoard squares deck |
-	enterprise := Spaceship named: 'Enterprise'.
-	planetExpress := Spaceship named: 'PlanetExpress'.
-	starfighter := Spaceship named: 'StarFighter'.
+	enterprise := 'Enterprise'.
+	planetExpress := 'PlanetExpress'.
+	starfighter := 'StarFighter'.
 	squares := SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board sized: 5 dividedInParsecs: 5 from: squares.
+	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -105,26 +102,28 @@ CardTest >> testCancellationCardCannotBeUsedWhenNoPermanentCardsAreActive [
 CardTest >> testCancellationCardEqualsAnotherCancellationCardWithSameValues [
 
 	self
-		assert: (CancellationCard ownedBy: (Spaceship named: 'Enterprise'))
-		equals: (CancellationCard  ownedBy: (Spaceship named: 'Enterprise')).
+		assert: (CancellationCard ownedBy: 'Enterprise')
+		equals: (CancellationCard ownedBy: 'Enterprise').
 	self
-		assert: (CancellationCard  ownedBy: (Spaceship named: 'Enterprise')) hash
-		equals: (CancellationCard  ownedBy: (Spaceship named: 'Enterprise')) hash
+		assert:
+		(CancellationCard ownedBy: 'Enterprise') hash
+		equals:
+		(CancellationCard ownedBy: 'Enterprise') hash
 ]
 
 { #category : #tests }
 CardTest >> testCancellationCardRemovesAnActiveAccelerationCard [
 
 	| game enterprise planetExpress starfighter aDie aBoard squares deck |
-	enterprise := Spaceship named: 'Enterprise'.
-	planetExpress := Spaceship named: 'PlanetExpress'.
-	starfighter := Spaceship named: 'StarFighter'.
+	enterprise := 'Enterprise'.
+	planetExpress := 'PlanetExpress'.
+	starfighter := 'StarFighter'.
 	squares := SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board sized: 5 dividedInParsecs: 5 from: squares.
+	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -145,9 +144,9 @@ CardTest >> testCancellationCardRemovesAnActiveAccelerationCard [
 		aimingAt: (PlayedPermanentCard
 				 using: (AccelerationCard ownedBy: enterprise)
 				 aimingAt: { 
-						 	enterprise.
-				        planetExpress.
-				        starfighter }).
+						 enterprise.
+						 planetExpress.
+						 starfighter }).
 	game playNextTurn.
 	game playNextTurn.
 	game playNextTurn.
@@ -160,28 +159,26 @@ CardTest >> testCancellationCardRemovesAnActiveAccelerationCard [
 CardTest >> testOverloadCardEqualsAnotherOverloadCardWithSameValues [
 
 	self
-		assert: (OverloadCard  ownedBy: (Spaceship named: 'Enterprise'))
-		equals: (OverloadCard  ownedBy: (Spaceship named: 'Enterprise')).
+		assert: (OverloadCard ownedBy:  'Enterprise')
+		equals: (OverloadCard ownedBy:  'Enterprise').
 	self
-		assert:
-		(OverloadCard  ownedBy: (Spaceship named: 'Enterprise')) hash
-		equals:
-		(OverloadCard  ownedBy: (Spaceship named: 'Enterprise')) hash
+		assert: (OverloadCard ownedBy: 'Enterprise') hash
+		equals: (OverloadCard ownedBy: 'Enterprise') hash
 ]
 
 { #category : #tests }
 CardTest >> testOverloadCardReducesInTwoTheNextPlayOfSelectedShip [
 
 	| game enterprise planetExpress starfighter aDie aBoard squares deck |
-	enterprise := Spaceship named: 'Enterprise'.
-	planetExpress := Spaceship named: 'PlanetExpress'.
-	starfighter := Spaceship named: 'StarFighter'.
+	enterprise := 'Enterprise'.
+	planetExpress := 'PlanetExpress'.
+	starfighter := 'StarFighter'.
 	squares := SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
 	deck := Deck handingOver: { OverloadCard }.
-	aBoard := Board sized: 5 dividedInParsecs: 5 from: squares.
+	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -214,16 +211,16 @@ CardTest >> testOverloadCardReducesInTwoTheNextPlayOfSelectedShip [
 CardTest >> testPlayingAPermanentCardOutOfTurnIsInvalid [
 
 	| game enterprise planetExpress starfighter aDie aBoard squares deck |
-	enterprise := Spaceship named: 'Enterprise'.
-	planetExpress := Spaceship named: 'PlanetExpress'.
-	starfighter := Spaceship named: 'StarFighter'.
+	enterprise := 'Enterprise'.
+	planetExpress := 'PlanetExpress'.
+	starfighter := 'StarFighter'.
 	squares := SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
 	squares at: 2 put: DrawCardSquare new.
 	deck := Deck handingOver: { AccelerationCard }.
-	aBoard := Board sized: 5 dividedInParsecs: 5 from: squares.
+	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -234,28 +231,29 @@ CardTest >> testPlayingAPermanentCardOutOfTurnIsInvalid [
 		        on: aBoard
 		        until: 1
 		        using: deck.
-	
+
 	game playNextTurn.
-	
+
 	self
 		should: [ game playAccelerationCardOwnedBy: planetExpress ]
 		raise: Error
-		withMessage: 	'Cannot play permanent card when not in the spaceships turn'
+		withMessage:
+		'Cannot play permanent card when not in the spaceships turn'
 ]
 
 { #category : #tests }
 CardTest >> testRedoCardAppliesTheEffectOfACancellationCard [
 
 	| game enterprise planetExpress starfighter aDie aBoard squares deck |
-	enterprise := Spaceship named: 'Enterprise'.
-	planetExpress := Spaceship named: 'PlanetExpress'.
-	starfighter := Spaceship named: 'StarFighter'.
+	enterprise := 'Enterprise'.
+	planetExpress := 'PlanetExpress'.
+	starfighter := 'StarFighter'.
 	squares := SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board sized: 5 dividedInParsecs: 5 from: squares.
+	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -299,15 +297,15 @@ CardTest >> testRedoCardAppliesTheEffectOfACancellationCard [
 CardTest >> testRedoCardAppliesTheEffectOfACancellationCardButAimedAtADifferentTarget [
 
 	| game enterprise planetExpress starfighter aDie aBoard squares deck |
-	enterprise := Spaceship named: 'Enterprise'.
-	planetExpress := Spaceship named: 'PlanetExpress'.
-	starfighter := Spaceship named: 'StarFighter'.
+	enterprise := 'Enterprise'.
+	planetExpress := 'PlanetExpress'.
+	starfighter := 'StarFighter'.
 	squares := SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board sized: 5 dividedInParsecs: 5 from: squares.
+	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -352,15 +350,15 @@ CardTest >> testRedoCardAppliesTheEffectOfACancellationCardButAimedAtADifferentT
 CardTest >> testRedoCardAppliesTheEffectOfARedoCard [
 
 	| game enterprise planetExpress starfighter aDie aBoard squares deck |
-	enterprise := Spaceship named: 'Enterprise'.
-	planetExpress := Spaceship named: 'PlanetExpress'.
-	starfighter := Spaceship named: 'StarFighter'.
+	enterprise := 'Enterprise'.
+	planetExpress := 'PlanetExpress'.
+	starfighter := 'StarFighter'.
 	squares := SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board sized: 5 dividedInParsecs: 5 from: squares.
+	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -382,9 +380,7 @@ CardTest >> testRedoCardAppliesTheEffectOfARedoCard [
 	game playAccelerationCardOwnedBy: enterprise.
 
 	game playNextTurn.
-	game
-		playSpeedCardOwnedBy: planetExpress
-		aimingAt: { planetExpress }.
+	game playSpeedCardOwnedBy: planetExpress aimingAt: { planetExpress }.
 
 	game playNextTurn.
 	game playSpeedCardOwnedBy: starfighter aimingAt: { starfighter }.
@@ -397,18 +393,14 @@ CardTest >> testRedoCardAppliesTheEffectOfARedoCard [
 						 enterprise.
 						 starfighter.
 						 planetExpress }).
-	game
-		playRedoCardOwnedBy: starfighter
-		aimingAt: (PlayedPermanentCard
-				 using: (SpeedCard ownedBy: planetExpress)
-				 aimingAt: { planetExpress }).
+	game playRedoCardOwnedBy: starfighter aimingAt: (PlayedPermanentCard
+			 using: (SpeedCard ownedBy: planetExpress)
+			 aimingAt: { planetExpress }).
 
 	game playNextTurn.
-	game
-		playRedoCardOwnedBy: enterprise
-		aimingAt: (PlayedPermanentCard
-				 using: (SpeedCard ownedBy: starfighter)
-				 aimingAt: { starfighter }).
+	game playRedoCardOwnedBy: enterprise aimingAt: (PlayedPermanentCard
+			 using: (SpeedCard ownedBy: starfighter)
+			 aimingAt: { starfighter }).
 
 	game playNextTurn.
 	self assert: (game squareOf: enterprise) equals: 3.
@@ -420,16 +412,16 @@ CardTest >> testRedoCardAppliesTheEffectOfARedoCard [
 CardTest >> testRedoCardAppliesTheEffectOfARepeatCard [
 
 	| game enterprise planetExpress starfighter aDie aBoard squares deck |
-	enterprise := Spaceship named: 'Enterprise'.
-	planetExpress := Spaceship named: 'PlanetExpress'.
-	starfighter := Spaceship named: 'StarFighter'.
+	enterprise := 'Enterprise'.
+	planetExpress := 'PlanetExpress'.
+	starfighter := 'StarFighter'.
 	squares := SquareGenerator
 		           creating: 20
 		           of: { BlankSquare }
 		           with: { 1 }.
 	squares at: 2 put: SpeedUpSquare new.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board sized: 20 dividedInParsecs: 20 from: squares.
+	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 20.
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -479,15 +471,15 @@ CardTest >> testRedoCardAppliesTheEffectOfARepeatCard [
 CardTest >> testRedoCardAppliesTheEffectOfASpeedCard [
 
 	| game enterprise planetExpress starfighter aDie aBoard squares deck |
-	enterprise := Spaceship named: 'Enterprise'.
-	planetExpress := Spaceship named: 'PlanetExpress'.
-	starfighter := Spaceship named: 'StarFighter'.
+	enterprise := 'Enterprise'.
+	planetExpress := 'PlanetExpress'.
+	starfighter := 'StarFighter'.
 	squares := SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board sized: 5 dividedInParsecs: 5 from: squares.
+	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -505,9 +497,7 @@ CardTest >> testRedoCardAppliesTheEffectOfASpeedCard [
 	game playSpeedCardOwnedBy: enterprise aimingAt: { enterprise }.
 
 	game playNextTurn.
-	game
-		playRedoCardOwnedBy: planetExpress
-		aimingAt: { planetExpress }.
+	game playRedoCardOwnedBy: planetExpress aimingAt: { planetExpress }.
 
 	game playNextTurn.
 	game playNextTurn.
@@ -522,15 +512,15 @@ CardTest >> testRedoCardAppliesTheEffectOfASpeedCard [
 CardTest >> testRedoCardAppliesTheEffectOfAnAccelerationCard [
 
 	| game enterprise planetExpress starfighter aDie aBoard squares deck |
-	enterprise := Spaceship named: 'Enterprise'.
-	planetExpress := Spaceship named: 'PlanetExpress'.
-	starfighter := Spaceship named: 'StarFighter'.
+	enterprise := 'Enterprise'.
+	planetExpress := 'PlanetExpress'.
+	starfighter := 'StarFighter'.
 	squares := SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board sized: 5 dividedInParsecs: 5 from: squares.
+	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -545,7 +535,7 @@ CardTest >> testRedoCardAppliesTheEffectOfAnAccelerationCard [
 	game give: AccelerationCard toHandsOf: enterprise.
 
 	game playNextTurn.
-	game playAccelerationCardOwnedBy: enterprise .
+	game playAccelerationCardOwnedBy: enterprise.
 
 	game playNextTurn.
 	game playRedoCardOwnedBy: planetExpress aimingAt: { starfighter }.
@@ -561,15 +551,15 @@ CardTest >> testRedoCardAppliesTheEffectOfAnAccelerationCard [
 CardTest >> testRedoCardAppliesTheEffectOfAnOverloadCard [
 
 	| game enterprise planetExpress starfighter aDie aBoard squares deck |
-	enterprise := Spaceship named: 'Enterprise'.
-	planetExpress := Spaceship named: 'PlanetExpress'.
-	starfighter := Spaceship named: 'StarFighter'.
+	enterprise := 'Enterprise'.
+	planetExpress := 'PlanetExpress'.
+	starfighter := 'StarFighter'.
 	squares := SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board sized: 5 dividedInParsecs: 5 from: squares.
+	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -584,9 +574,7 @@ CardTest >> testRedoCardAppliesTheEffectOfAnOverloadCard [
 	game give: OverloadCard toHandsOf: enterprise.
 
 	game playNextTurn.
-	game
-		playOverloadCardOwnedBy: enterprise
-		aimingAt: { planetExpress }.
+	game playOverloadCardOwnedBy: enterprise aimingAt: { planetExpress }.
 
 	game playNextTurn.
 	game playRedoCardOwnedBy: planetExpress aimingAt: { starfighter }.
@@ -602,28 +590,26 @@ CardTest >> testRedoCardAppliesTheEffectOfAnOverloadCard [
 CardTest >> testRedoCardEqualsAnotherRedoCardWithSameValues [
 
 	self
-		assert: (RedoCard ownedBy: (Spaceship named: 'Enterprise'))
-		equals: (RedoCard ownedBy: (Spaceship named: 'Enterprise')).
+		assert: (RedoCard ownedBy: 'Enterprise')
+		equals: (RedoCard ownedBy: 'Enterprise').
 	self
-		assert:
-		(RedoCard ownedBy: (Spaceship named: 'Enterprise')) hash
-		equals:
-		(RedoCard ownedBy: (Spaceship named: 'Enterprise')) hash
+		assert: (RedoCard ownedBy: 'Enterprise') hash
+		equals: (RedoCard ownedBy: 'Enterprise') hash
 ]
 
 { #category : #tests }
 CardTest >> testRepeatCardAppliesTheEffectOfABlankSquare [
 
 	| game enterprise planetExpress starfighter aDie aBoard squares deck |
-	enterprise := Spaceship named: 'Enterprise'.
-	planetExpress := Spaceship named: 'PlanetExpress'.
-	starfighter := Spaceship named: 'StarFighter'.
+	enterprise := 'Enterprise'.
+	planetExpress := 'PlanetExpress'.
+	starfighter := 'StarFighter'.
 	squares := SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board sized: 5 dividedInParsecs: 5 from: squares.
+	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -651,16 +637,16 @@ CardTest >> testRepeatCardAppliesTheEffectOfABlankSquare [
 CardTest >> testRepeatCardAppliesTheEffectOfADrawCardSquare [
 
 	| game enterprise planetExpress starfighter aDie aBoard squares deck |
-	enterprise := Spaceship named: 'Enterprise'.
-	planetExpress := Spaceship named: 'PlanetExpress'.
-	starfighter := Spaceship named: 'StarFighter'.
+	enterprise := 'Enterprise'.
+	planetExpress := 'PlanetExpress'.
+	starfighter := 'StarFighter'.
 	squares := SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
 	squares at: 2 put: DrawCardSquare new.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board sized: 5 dividedInParsecs: 5 from: squares.
+	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -688,16 +674,16 @@ CardTest >> testRepeatCardAppliesTheEffectOfADrawCardSquare [
 CardTest >> testRepeatCardAppliesTheEffectOfAHyperJumpSquare [
 
 	| game enterprise planetExpress starfighter aDie aBoard squares deck |
-	enterprise := Spaceship named: 'Enterprise'.
-	planetExpress := Spaceship named: 'PlanetExpress'.
-	starfighter := Spaceship named: 'StarFighter'.
+	enterprise := 'Enterprise'.
+	planetExpress := 'PlanetExpress'.
+	starfighter := 'StarFighter'.
 	squares := SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
 	squares at: 2 put: (HyperJumpSquare withParsecs: { 3 }).
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board sized: 10 dividedInParsecs: 10 from: squares.
+	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 10.
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -711,7 +697,7 @@ CardTest >> testRepeatCardAppliesTheEffectOfAHyperJumpSquare [
 	game give: RepeatCard toHandsOf: enterprise.
 
 	game playNextTurn.
-	game playRepeatCardOwnedBy: enterprise aimingAt: enterprise .
+	game playRepeatCardOwnedBy: enterprise aimingAt: enterprise.
 
 	game playNextTurn.
 	game playNextTurn.
@@ -725,16 +711,16 @@ CardTest >> testRepeatCardAppliesTheEffectOfAHyperJumpSquare [
 CardTest >> testRepeatCardAppliesTheEffectOfAMoonWalkSquare [
 
 	| game enterprise planetExpress starfighter aDie aBoard squares deck |
-	enterprise := Spaceship named: 'Enterprise'.
-	planetExpress := Spaceship named: 'PlanetExpress'.
-	starfighter := Spaceship named: 'StarFighter'.
+	enterprise := 'Enterprise'.
+	planetExpress := 'PlanetExpress'.
+	starfighter := 'StarFighter'.
 	squares := SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
 	squares at: 2 put: (MoonWalkSquare with: 1).
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board sized: 10 dividedInParsecs: 10 from: squares.
+	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 10.
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -748,7 +734,7 @@ CardTest >> testRepeatCardAppliesTheEffectOfAMoonWalkSquare [
 	game give: RepeatCard toHandsOf: enterprise.
 
 	game playNextTurn.
-	game playRepeatCardOwnedBy: enterprise aimingAt: enterprise .
+	game playRepeatCardOwnedBy: enterprise aimingAt: enterprise.
 
 	game playNextTurn.
 	game playNextTurn.
@@ -762,16 +748,16 @@ CardTest >> testRepeatCardAppliesTheEffectOfAMoonWalkSquare [
 CardTest >> testRepeatCardAppliesTheEffectOfASpeedUpSquare [
 
 	| game enterprise planetExpress starfighter aDie aBoard squares deck |
-	enterprise := Spaceship named: 'Enterprise'.
-	planetExpress := Spaceship named: 'PlanetExpress'.
-	starfighter := Spaceship named: 'StarFighter'.
+	enterprise := 'Enterprise'.
+	planetExpress := 'PlanetExpress'.
+	starfighter := 'StarFighter'.
 	squares := SquareGenerator
 		           creating: 11
 		           of: { BlankSquare }
 		           with: { 1 }.
 	squares at: 2 put: SpeedUpSquare new.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board sized: 11 dividedInParsecs: 11 from: squares.
+	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 11.
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -785,7 +771,7 @@ CardTest >> testRepeatCardAppliesTheEffectOfASpeedUpSquare [
 	game give: RepeatCard toHandsOf: enterprise.
 
 	game playNextTurn.
-	game playRepeatCardOwnedBy: enterprise aimingAt: enterprise .
+	game playRepeatCardOwnedBy: enterprise aimingAt: enterprise.
 
 	game playNextTurn.
 	game playNextTurn.
@@ -799,16 +785,16 @@ CardTest >> testRepeatCardAppliesTheEffectOfASpeedUpSquare [
 CardTest >> testRepeatCardAppliesTheEffectOfAWormHoleSquare [
 
 	| game enterprise planetExpress starfighter aDie aBoard squares deck |
-	enterprise := Spaceship named: 'Enterprise'.
-	planetExpress := Spaceship named: 'PlanetExpress'.
-	starfighter := Spaceship named: 'StarFighter'.
+	enterprise := 'Enterprise'.
+	planetExpress := 'PlanetExpress'.
+	starfighter := 'StarFighter'.
 	squares := SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
 	squares at: 2 put: WormHoleSquare new.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board sized: 10 dividedInParsecs: 10 from: squares.
+	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 10.
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -836,16 +822,16 @@ CardTest >> testRepeatCardAppliesTheEffectOfAWormHoleSquare [
 CardTest >> testRepeatCardAppliesTheEffectOfAnAtomicBombSquare [
 
 	| game enterprise planetExpress starfighter aDie aBoard squares deck |
-	enterprise := Spaceship named: 'Enterprise'.
-	planetExpress := Spaceship named: 'PlanetExpress'.
-	starfighter := Spaceship named: 'StarFighter'.
+	enterprise := 'Enterprise'.
+	planetExpress := 'PlanetExpress'.
+	starfighter := 'StarFighter'.
 	squares := SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
 	squares at: 2 put: AtomicBombSquare new.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board sized: 10 dividedInParsecs: 10 from: squares.
+	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 10.
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -873,33 +859,37 @@ CardTest >> testRepeatCardAppliesTheEffectOfAnAtomicBombSquare [
 CardTest >> testRepeatCardEqualsAnotherRepeatCardWithSameValues [
 
 	self
-		assert: (RepeatCard ownedBy: (Spaceship named: 'Enterprise'))
-		equals: (RepeatCard ownedBy: (Spaceship named: 'Enterprise')).
+		assert: (RepeatCard ownedBy: 'Enterprise')
+		equals: (RepeatCard ownedBy: 'Enterprise').
 	self
-		assert: (RepeatCard ownedBy: (Spaceship named: 'Enterprise')) hash
-		equals: (RepeatCard ownedBy: (Spaceship named: 'Enterprise')) hash
+		assert: (RepeatCard ownedBy: 'Enterprise') hash
+		equals: (RepeatCard ownedBy: 'Enterprise') hash
 ]
 
 { #category : #accessing }
 CardTest >> testSpeedCardEqualsAnotherSpeedCardWithSameValues [
 
-	self assert: (SpeedCard ownedBy: (Spaceship named: 'Enterprise')) equals: (SpeedCard ownedBy: (Spaceship named: 'Enterprise')).
-	self assert: (SpeedCard ownedBy: (Spaceship named: 'Enterprise')) hash equals: (SpeedCard ownedBy: (Spaceship named: 'Enterprise')) hash.
+	self
+		assert: (SpeedCard ownedBy: 'Enterprise')
+		equals: (SpeedCard ownedBy: 'Enterprise').
+	self
+		assert: (SpeedCard ownedBy: 'Enterprise') hash
+		equals: (SpeedCard ownedBy: 'Enterprise') hash
 ]
 
 { #category : #tests }
 CardTest >> testSpeedCardIncreasesInOneThePlayOfSelectedShip [
 
 	| game enterprise planetExpress starfighter aDie aBoard squares deck |
-	enterprise := Spaceship named: 'Enterprise'.
-	planetExpress := Spaceship named: 'PlanetExpress'.
-	starfighter := Spaceship named: 'StarFighter'.
+	enterprise := 'Enterprise'.
+	planetExpress := 'PlanetExpress'.
+	starfighter := 'StarFighter'.
 	squares := SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
 	deck := Deck handingOver: { SpeedCard }.
-	aBoard := Board sized: 10 dividedInParsecs: 10 from: squares.
+	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 10.
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
