@@ -7,7 +7,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 RedoCard class >> ownedBy: aSpaceship [
 
 	^ self new initializeOwnedBy: aSpaceship.
@@ -18,6 +18,12 @@ RedoCard >> = anotherCard [
 
 	^ (self className match: anotherCard className) and: [ 
 		  owner = anotherCard owner ]
+]
+
+{ #category : #accessing }
+RedoCard >> a: spaceship playsCardIn: game aimingAt: target [
+
+	game lastPlayedCard a: spaceship playsCardIn: game aimingAt: target
 ]
 
 { #category : #comparing }

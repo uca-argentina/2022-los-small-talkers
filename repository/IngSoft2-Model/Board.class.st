@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'squares',
 		'totalParsecs',
-		'totalSquares'
+		'totalSquares',
+		'totalLightYears'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -19,21 +20,31 @@ Board class >> assert: aNumberOfSquares coincidesWith: actualSquareAmount [
 
 { #category : #asserting }
 Board class >> assertValid: aLength [
-	aLength > 1 ifFalse: [ 
+	aLength >= 1 ifFalse: [ 
 		Error signal: 'Boards need a minimum length of 1' ].
 ]
 
 { #category : #'instance creation' }
-Board class >> sized: aNumberOfSquares dividedIn: aNumberOfParsecs from: someSquares [
+Board class >> sized: aNumberOfSquares dividedInLightYears: amount from: someSquares [
 
-	self assertValid: aNumberOfParsecs.
+	self assertValid: amount.
 	self assertValid: aNumberOfSquares.
-		self
-		assert: aNumberOfSquares
-		coincidesWith: someSquares size.
+	self assert: aNumberOfSquares coincidesWith: someSquares size.
 	^ self new
 		  initializeSized: aNumberOfSquares
-		  dividedIn: aNumberOfParsecs
+		  dividedIn: amount / 3
+		  from: someSquares
+]
+
+{ #category : #'instance creation' }
+Board class >> sized: aNumberOfSquares dividedInParsecs: amount from: someSquares [
+
+	self assertValid: amount.
+	self assertValid: aNumberOfSquares.
+	self assert: aNumberOfSquares coincidesWith: someSquares size.
+	^ self new
+		  initializeSized: aNumberOfSquares
+		  dividedIn: amount
 		  from: someSquares
 ]
 
@@ -48,13 +59,20 @@ Board >> initializeSized: aNumberOfSquares dividedIn: aNumberOfParsecs from: som
 
 	totalSquares := aNumberOfSquares.
 	totalParsecs := aNumberOfParsecs.
-	squares := someSquares.
+	totalLightYears := totalParsecs *3.
+	squares := someSquares
 ]
 
 { #category : #'accessing - attributes' }
 Board >> length [
 
 	^ totalSquares
+]
+
+{ #category : #accessing }
+Board >> lightYearsPerSquare [
+
+	^ totalLightYears / squares size
 ]
 
 { #category : #accessing }

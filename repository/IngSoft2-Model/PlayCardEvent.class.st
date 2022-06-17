@@ -2,7 +2,6 @@ Class {
 	#name : #PlayCardEvent,
 	#superclass : #Object,
 	#instVars : [
-		'spaceship',
 		'card',
 		'target'
 	],
@@ -10,15 +9,16 @@ Class {
 }
 
 { #category : #accessing }
-PlayCardEvent class >> from: aSpaceship using: aCard aimedAt: someTarget [
+PlayCardEvent class >> using: aCard aimedAt: someTarget [
 
-	^ self new initializeFrom: aSpaceship using: aCard aimedAt: someTarget .
+	^ self new initializeUsing: aCard aimedAt: someTarget .
 ]
 
 { #category : #comparing }
 PlayCardEvent >> = anotherPlayCardEvent [
 
-	^ self card = anotherPlayCardEvent card and: [ self spaceship = anotherPlayCardEvent spaceship and: [ self target = anotherPlayCardEvent target ] ]
+	^ self card = anotherPlayCardEvent card and: [ 
+		  self target = anotherPlayCardEvent target ]
 ]
 
 { #category : #accessing }
@@ -30,21 +30,14 @@ PlayCardEvent >> card [
 { #category : #comparing }
 PlayCardEvent >> hash [ 
 
-	^ card hash bitXor: [ spaceship hash bitXor: [ target hash ] ]
+	^( card hash bitXor: ( target hash ))
 ]
 
 { #category : #accessing }
-PlayCardEvent >> initializeFrom: aSpaceship using: aCard aimedAt: someTarget [
+PlayCardEvent >> initializeUsing: aCard aimedAt: someTarget [
 
-	spaceship := aSpaceship.
 	card := aCard.
 	target := someTarget.
-]
-
-{ #category : #accessing }
-PlayCardEvent >> spaceship [ 
-
-	^ spaceship.
 ]
 
 { #category : #accessing }

@@ -20,12 +20,6 @@ Deck >> initializeHandingOver: someCards [
 ]
 
 { #category : #'taking cards' }
-Deck >> take [
-
-	^ cardGenerator next.
-]
-
-{ #category : #'taking cards' }
 Deck >> take: anAmountOfCards [
 
 	^ cardGenerator next: anAmountOfCards.

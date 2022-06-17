@@ -8,9 +8,9 @@ Class {
 }
 
 { #category : #operations }
-HyperJumpSquare class >> createAtRandom [
+HyperJumpSquare class >> new [
 
-	^self new initializeWith: self randomizeParsecSequence
+	^ super new initializeWith: self randomizeParsecSequence
 ]
 
 { #category : #'parameter randomization' }
@@ -20,9 +20,17 @@ HyperJumpSquare class >> randomizeParsecSequence [
 ]
 
 { #category : #'instance creation' }
-HyperJumpSquare class >> with: aNumberOfJumps [
+HyperJumpSquare class >> withLightYears: aNumberOfJumps [
 
-	^self new initializeWith: aNumberOfJumps 
+	|jumpsInParsecs|
+	jumpsInParsecs := aNumberOfJumps collect: [ :jumpInLightYears | jumpInLightYears /3 ].
+	^ self new initializeWith: jumpsInParsecs 
+]
+
+{ #category : #'instance creation' }
+HyperJumpSquare class >> withParsecs: aNumberOfJumps [
+
+	^ self new initializeWith: aNumberOfJumps
 ]
 
 { #category : #comparing }
@@ -35,13 +43,13 @@ HyperJumpSquare >> = anotherHyperJumpSquare [
 HyperJumpSquare >> applyEffectTo: spaceship from: game [
 
 	game move: spaceship by: parsecSequence next.
-	game add: (LandsOnSquareEvent from: spaceship landsOn: self)
+	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
 ]
 
 { #category : #comparing }
 HyperJumpSquare >> hash [ 
 
-	^( self className hash bitXor: [ parsecSequence hash ])
+	^( self className hash bitXor: ( parsecSequence hash ))
 ]
 
 { #category : #initialization }

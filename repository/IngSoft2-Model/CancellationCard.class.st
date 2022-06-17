@@ -7,7 +7,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 CancellationCard class >> ownedBy: aSpaceship [
 
 	^ self new initializeOwnedBy: aSpaceship.
@@ -18,6 +18,15 @@ CancellationCard >> = anotherCard [
 
 	^ (self className match: anotherCard className) and: [ 
 		  owner = anotherCard owner ]
+]
+
+{ #category : #accessing }
+CancellationCard >> a: spaceship playsCardIn: game aimingAt: aPlayedPermanentCard [
+
+	game playedCardStack remove: aPlayedPermanentCard.
+	game history add: (PlayCardEvent
+			 using: (CancellationCard ownedBy: spaceship)
+			 aimedAt: aPlayedPermanentCard)
 ]
 
 { #category : #comparing }

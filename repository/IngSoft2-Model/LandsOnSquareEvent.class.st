@@ -17,13 +17,14 @@ LandsOnSquareEvent class >> from: spaceship landsOn: square [
 { #category : #comparing }
 LandsOnSquareEvent >> = anotherLandsOnSquareEvent [
 
-	^ ( square = anotherLandsOnSquareEvent square and: [ spaceship = anotherLandsOnSquareEvent spaceship ]).
+	^ (square = anotherLandsOnSquareEvent square) and: [ 
+		  spaceship = anotherLandsOnSquareEvent spaceship ]
 ]
 
 { #category : #comparing }
 LandsOnSquareEvent >> hash [ 
 
-	^ square hash bitXor: [ spaceship hash ]
+	^ square hash bitXor: ( spaceship hash )
 ]
 
 { #category : #initialization }

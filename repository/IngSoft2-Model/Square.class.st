@@ -4,12 +4,6 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #operations }
-Square class >> createAtRandom [
-
-	self subclassResponsibility 
-]
-
 { #category : #comparing }
 Square >> = anotherSquare [
 

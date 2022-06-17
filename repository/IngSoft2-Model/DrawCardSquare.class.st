@@ -4,12 +4,6 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #operations }
-DrawCardSquare class >> createAtRandom [
-
-	^ self new.
-]
-
 { #category : #comparing }
 DrawCardSquare >> = anotherDrawCardSquare [
 
@@ -20,7 +14,7 @@ DrawCardSquare >> = anotherDrawCardSquare [
 DrawCardSquare >> applyEffectTo: spaceship from: game [
 
 	game take: 1 andGiveToHandsOf: spaceship.
-	game add: (LandsOnSquareEvent from: spaceship landsOn: self)
+	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
 ]
 
 { #category : #comparing }

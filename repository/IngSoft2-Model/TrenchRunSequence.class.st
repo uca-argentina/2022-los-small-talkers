@@ -14,10 +14,28 @@ TrenchRunSequence class >> withAll: sequenceableElements [
 	^self new initializeWithAll: sequenceableElements.
 ]
 
+{ #category : #comparing }
+TrenchRunSequence >> = anotherTrenchRunSequence [
+
+	^ elements = (anotherTrenchRunSequence elements)
+]
+
 { #category : #private }
 TrenchRunSequence >> counterAdd [
 
 	counter := counter + 1
+]
+
+{ #category : #accessing }
+TrenchRunSequence >> elements [
+
+	^ elements
+]
+
+{ #category : #comparing }
+TrenchRunSequence >> hash [ 
+	
+	^ elements hash
 ]
 
 { #category : #initialization }

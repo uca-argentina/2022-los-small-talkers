@@ -19,15 +19,6 @@ SquareGenerator class >> creating: anAmount of: objects with: probabilities [
 ]
 
 { #category : #'instance creation' }
-SquareGenerator class >> of: objects [ 
-
-	|probabilities|
-	probabilities := OrderedCollection new.
-	objects size timesRepeat: [ probabilities add: (1 / (objects size)) ].
-	^ self new initializeOf: objects with: probabilities.
-]
-
-{ #category : #'instance creation' }
 SquareGenerator class >> verifySumOf: probabilities [
 
 	probabilities sum = 1 ifFalse: [ 
@@ -69,14 +60,13 @@ SquareGenerator >> next [
 	numberGenerated := fractionGenerator next.
 
 	probabilityRanges do: [ :range | 
-		|rangeFloor rangeCeiling square|
+		| rangeFloor rangeCeiling square |
 		rangeFloor := range at: 1.
 		rangeCeiling := range at: 2.
 		square := range at: 3.
-		
-		(numberGenerated between: rangeFloor and: rangeCeiling ) 
-			ifTrue: [ slot := square createAtRandom ] 
-	].
+
+		(numberGenerated between: rangeFloor and: rangeCeiling) ifTrue: [ 
+			slot := square new ] ].
 
 	^ slot
 ]

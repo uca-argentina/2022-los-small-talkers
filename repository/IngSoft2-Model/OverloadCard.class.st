@@ -7,7 +7,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 OverloadCard class >> ownedBy: aSpaceship [
 
 	^ self new initializeOwnedBy: aSpaceship.
@@ -18,6 +18,26 @@ OverloadCard >> = anotherCard [
 
 	^ (self className match: anotherCard className) and: [ 
 		  owner = anotherCard owner ]
+]
+
+{ #category : #accessing }
+OverloadCard >> a: spaceship playsCardIn: game aimingAt: target [
+
+	game currentPlayer = spaceship ifFalse: [ 
+		Error signal:
+			'Cannot play permanent card when not in the spaceships turn' ].
+	game playedCardStack
+		add: (OverloadCard ownedBy: spaceship)
+		aimingAt: target.
+	game history add: (PlayCardEvent
+			 using: (OverloadCard ownedBy: spaceship)
+			 aimedAt: target)
+]
+
+{ #category : #'applying effects' }
+OverloadCard >> applyEffectsUsing: anInitialValue [
+
+	^ anInitialValue - 2
 ]
 
 { #category : #comparing }
@@ -36,11 +56,4 @@ OverloadCard >> initializeOwnedBy: aSpaceship [
 OverloadCard >> owner [ 
 
 	^ owner
-]
-
-{ #category : #'playing card' }
-OverloadCard >> playCardIn: game aimingAt: target [
-
-	game onHandCardStack take: self class fromHandsOf: owner.
-	game playedCardStack add: self aimingAt: target.
 ]

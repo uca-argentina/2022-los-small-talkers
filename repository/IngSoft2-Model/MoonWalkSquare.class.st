@@ -8,9 +8,9 @@ Class {
 }
 
 { #category : #operations }
-MoonWalkSquare class >> createAtRandom [
+MoonWalkSquare class >> new [
 
-	^self new initializeWith: (self randomizeRetrogression).
+	^ super new initializeWith: self randomizeRetrogression
 ]
 
 { #category : #'parameter randomization' }
@@ -37,13 +37,13 @@ MoonWalkSquare >> applyEffectTo: spaceship from: game [
 	game
 		moveAllSpaceshipsAnAmountOf: retrogression
 		exceptFor: spaceship.
-	game add: (LandsOnSquareEvent from: spaceship landsOn: self)
+	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
 ]
 
 { #category : #comparing }
 MoonWalkSquare >> hash [ 
 
-	^ self className hash bitXor: [ retrogression hash ].
+	^ self className hash bitXor: ( retrogression hash ).
 ]
 
 { #category : #initialization }

@@ -7,7 +7,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 RepeatCard class >> ownedBy: aSpaceship [
 
 	^ self new initializeOwnedBy: aSpaceship.
@@ -20,10 +20,17 @@ RepeatCard >> = anotherCard [
 		  owner = anotherCard owner ]
 ]
 
+{ #category : #accessing }
+RepeatCard >> a: spaceship playsCardIn: game aimingAt: target [
+
+	game lastLandsOnSquareEvent applyEffectTo: target from: game.
+	game history add: (PlayCardEvent using: (RepeatCard ownedBy: spaceship) aimedAt: target)
+]
+
 { #category : #comparing }
 RepeatCard >> hash [
 
-	self className hash bitXor:  self owner hash 
+	^ self className hash bitXor:  self owner hash 
 ]
 
 { #category : #initialization }

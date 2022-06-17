@@ -4,12 +4,6 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #operations }
-BlankSquare class >> createAtRandom [
-
-	^self new
-]
-
 { #category : #comparing }
 BlankSquare >> = anotherBlankSquare [
 
@@ -19,7 +13,7 @@ BlankSquare >> = anotherBlankSquare [
 { #category : #'executing effects' }
 BlankSquare >> applyEffectTo: spaceship from: game [
 
-	game add: (LandsOnSquareEvent from: spaceship landsOn: self)
+	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
 ]
 
 { #category : #comparing }

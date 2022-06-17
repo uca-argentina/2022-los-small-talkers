@@ -37,27 +37,33 @@ TrenchRunGame class >> withParticipating: spaceships rolling: aDiceCup on: aBoar
 		  using: aDeck
 ]
 
-{ #category : #'event recording' }
-TrenchRunGame >> add: event [
-
-	history add: event
-]
-
 { #category : #'accessing - positions' }
 TrenchRunGame >> currentLeader [
 
 	^ positionTracker currentLeader
 ]
 
-{ #category : #accessing }
-TrenchRunGame >> deck [
+{ #category : #'card playing' }
+TrenchRunGame >> currentPlayer [
 
-	^ deck 
+	^ spaceshipSequence previous
 ]
 
 { #category : #private }
 TrenchRunGame >> end [
 	state := Finished new.
+]
+
+{ #category : #'card playing' }
+TrenchRunGame >> give: cardType toHandsOf: spaceship [
+
+	onHandCardStack give: cardType toHandsOf: spaceship
+]
+
+{ #category : #'event recording' }
+TrenchRunGame >> history [
+
+	^history
 ]
 
 { #category : #initialization }
@@ -69,7 +75,7 @@ TrenchRunGame >> initializeWithParticipating: spaceships rolling: aDiceCup on: a
 	endingLap := endLap.
 	positionTracker := PositionTracker tracking: spaceships.
 	onHandCardStack := OnHandCardStack new.
-	playedCardStack := PlayedCardStack new.
+	playedCardStack := PlayedPermanentCardStack new.
 	history := TrenchRunEventList new.
 	spaceshipSequence := TrenchRunSequence withAll: spaceships
 ]
@@ -84,7 +90,7 @@ TrenchRunGame >> initializeWithParticipating: spaceships rolling: aDiceCup on: a
 	endingLap := endLap.
 	positionTracker := PositionTracker tracking: spaceships.
 	onHandCardStack := OnHandCardStack new.
-	playedCardStack := PlayedCardStack new.
+	playedCardStack := PlayedPermanentCardStack new.
 	spaceships do: [ :spaceship | self take: 2 andGiveToHandsOf: spaceship].
 	history := TrenchRunEventList new.
 	spaceshipSequence := TrenchRunSequence withAll: spaceships
@@ -108,6 +114,17 @@ TrenchRunGame >> lapOf: aShip [
 	^ (self positionOf: aShip) lap
 ]
 
+{ #category : #'applying effects' }
+TrenchRunGame >> lastLandsOnSquareEvent [
+	^ history lastLandsOnSquareEvent square.
+]
+
+{ #category : #accessing }
+TrenchRunGame >> lastPlayedCard [
+
+	^ history lastPlayCardEvent card
+]
+
 { #category : #'turn related' }
 TrenchRunGame >> move: ship anAmountOf: squares [
 
@@ -115,6 +132,7 @@ TrenchRunGame >> move: ship anAmountOf: squares [
 	currentSquare := self squareOf: ship.
 	currentLap := self lapOf: ship.
 	nextSquare := currentSquare + squares \\ gameBoard length.
+	nextSquare = 0 ifTrue: [ nextSquare := 1 ].
 	nextLap := currentLap
 	           +
 	           (currentSquare + squares - nextSquare / gameBoard length).
@@ -149,16 +167,24 @@ TrenchRunGame >> moveAllSpaceshipsAnAmountOf: squares exceptFor: aSpaceship [
 	spaceshipsToMove do: [ :spaceship | self move: spaceship anAmountOf: (0 - squares) ].
 ]
 
-{ #category : #accessing }
-TrenchRunGame >> onHandCardStack [
+{ #category : #'card playing' }
+TrenchRunGame >> playAccelerationCardOwnedBy: aSpaceship [
 
-	^onHandCardStack 
+	onHandCardStack take: AccelerationCard fromHandsOf: aSpaceship.
+	(AccelerationCard ownedBy: aSpaceship)
+		a: aSpaceship
+		playsCardIn: self
+		aimingAt: self spaceships
 ]
 
-{ #category : #accessing }
-TrenchRunGame >> play: cardType OwnedBy: spaceship aimingAt: target [
+{ #category : #'card playing' }
+TrenchRunGame >> playCancellationCardOwnedBy: aSpaceship aimingAt: aPlayedPermanentCard [
 
-	(cardType ownedBy: spaceship) playCardIn: self aimingAt: target.
+	onHandCardStack take: CancellationCard fromHandsOf: aSpaceship.
+	(CancellationCard ownedBy: aSpaceship)
+		a: aSpaceship
+		playsCardIn: self
+		aimingAt: aPlayedPermanentCard
 ]
 
 { #category : #'turn related' }
@@ -174,15 +200,40 @@ TrenchRunGame >> playNextTurn [
 ]
 
 { #category : #'card playing' }
-TrenchRunGame >> playOverloadCardOf: aSpaceship targetting: target [ 
-	self shouldBeImplemented.
+TrenchRunGame >> playOverloadCardOwnedBy: aSpaceship aimingAt: anotherSpaceship [
+
+	onHandCardStack take: OverloadCard fromHandsOf: aSpaceship.
+	(OverloadCard ownedBy: aSpaceship)
+		a: aSpaceship
+		playsCardIn: self
+		aimingAt: anotherSpaceship
 ]
 
-{ #category : #accessing }
-TrenchRunGame >> playSpeedCardOwnedBy: spaceship aimingAt: target [
+{ #category : #'card playing' }
+TrenchRunGame >> playRedoCardOwnedBy: aSpaceship aimingAt: anotherSpaceship [
 
-	onHandCardStack take: SpeedCard fromHandsOf: spaceship.
-	playedCardStack add: (SpeedCard ownedBy: spaceship) aimingAt: target.
+	onHandCardStack take: RedoCard fromHandsOf: aSpaceship.
+	(RedoCard ownedBy: aSpaceship ) a: aSpaceship playsCardIn: self aimingAt: anotherSpaceship
+]
+
+{ #category : #'card playing' }
+TrenchRunGame >> playRepeatCardOwnedBy: aSpaceship aimingAt: anotherSpaceship [
+
+	onHandCardStack take: RepeatCard fromHandsOf: aSpaceship.
+	(RepeatCard ownedBy: aSpaceship)
+		a: aSpaceship
+		playsCardIn: self
+		aimingAt: anotherSpaceship
+]
+
+{ #category : #'card playing' }
+TrenchRunGame >> playSpeedCardOwnedBy: aSpaceship aimingAt: anotherSpaceship [
+
+	onHandCardStack take: SpeedCard fromHandsOf: aSpaceship.
+	(SpeedCard ownedBy: aSpaceship)
+		a: aSpaceship
+		playsCardIn: self
+		aimingAt: anotherSpaceship
 ]
 
 { #category : #accessing }
