@@ -1,5 +1,5 @@
 Class {
-	#name : #CardGenerator,
+	#name : #'Gen_CardGenerator',
 	#superclass : #Object,
 	#instVars : [
 		'fractionGenerator',
@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-CardGenerator class >> creating: anAmount of: objects with: probabilities [
+Gen_CardGenerator class >> creating: anAmount of: objects with: probabilities [
 
 	self verifySumOf: probabilities.
 	^ (self new
@@ -19,7 +19,7 @@ CardGenerator class >> creating: anAmount of: objects with: probabilities [
 ]
 
 { #category : #'instance creation' }
-CardGenerator class >> of: objects [ 
+Gen_CardGenerator class >> of: objects [ 
 
 	|probabilities|
 	probabilities := OrderedCollection new.
@@ -28,14 +28,14 @@ CardGenerator class >> of: objects [
 ]
 
 { #category : #'instance creation' }
-CardGenerator class >> verifySumOf: probabilities [
+Gen_CardGenerator class >> verifySumOf: probabilities [
 
 	probabilities sum = 1 ifFalse: [ 
 		Error signal: 'Sum of probabilities differ from 1' ]
 ]
 
 { #category : #auxiliary }
-CardGenerator >> group: cards withTheirRangeOf: probabilities [
+Gen_CardGenerator >> group: cards withTheirRangeOf: probabilities [
 
 	| rangeFloor ranges |
 	ranges := OrderedCollection new.
@@ -56,14 +56,14 @@ CardGenerator >> group: cards withTheirRangeOf: probabilities [
 ]
 
 { #category : #initialization }
-CardGenerator >> initializeOf: cards with: probabilities [
+Gen_CardGenerator >> initializeOf: cards with: probabilities [
 
 	probabilityRanges := self group: cards withTheirRangeOf: probabilities.
 	fractionGenerator := Random seed: Time now asSeconds
 ]
 
 { #category : #'slot generation' }
-CardGenerator >> next [
+Gen_CardGenerator >> next [
 
 	| numberGenerated card |
 	numberGenerated := fractionGenerator next.
@@ -81,7 +81,7 @@ CardGenerator >> next [
 ]
 
 { #category : #'slot generation' }
-CardGenerator >> next: amountToGenerate [
+Gen_CardGenerator >> next: amountToGenerate [
 
 	| cards |
 	cards := OrderedCollection new.

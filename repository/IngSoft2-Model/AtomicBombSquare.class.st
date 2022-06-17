@@ -14,7 +14,7 @@ AtomicBombSquare >> = anotherAtomicBombSquare [
 AtomicBombSquare >> applyEffectTo: spaceship from: game [
 
 	game moveAllSpaceshipToSquareOne.
-	game history add: (LandsOnSquareEvent from: spaceship landsOn: self).
+	game history add: (Event_LandsOnSquare from: spaceship landsOn: self).
 ]
 
 { #category : #comparing }

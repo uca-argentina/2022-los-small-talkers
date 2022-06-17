@@ -10,7 +10,7 @@ PlayedCardStackTest >> testAddingOneMovementEffectToEmptyStackReturnsOneOfEffect
 	| playedCardStack enterprise starfighter |
 	enterprise := 'Enterprise'.
 	starfighter := 'Starfighter'.
-	playedCardStack := PlayedPermanentCardStack new.
+	playedCardStack := Stack_PlayedPermanentCardStack new.
 	playedCardStack
 		add: (AccelerationCard ownedBy: enterprise)
 		aimingAt: { 
@@ -30,7 +30,7 @@ PlayedCardStackTest >> testAddingOneMovementEffectToExistingStackAugmentsTheEffe
 	| playedCardStack enterprise starfighter |
 	enterprise := 'Enterprise'.
 	starfighter := 'Starfighter'.
-	playedCardStack := PlayedPermanentCardStack new.
+	playedCardStack := Stack_PlayedPermanentCardStack new.
 	playedCardStack
 		add: (SpeedCard ownedBy: enterprise)
 		aimingAt: { enterprise }.
@@ -53,7 +53,7 @@ PlayedCardStackTest >> testCancellingAnEffectRemovesItFromTheCompoundEffectCalcu
 	| playedCardStack enterprise starfighter |
 	enterprise := 'Enterprise'.
 	starfighter := 'Starfighter'.
-	playedCardStack := PlayedPermanentCardStack new.
+	playedCardStack := Stack_PlayedPermanentCardStack new.
 	playedCardStack
 		add: (SpeedCard ownedBy: enterprise)
 		aimingAt: { starfighter }.

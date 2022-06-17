@@ -20,20 +20,6 @@ SpeedCard >> = anotherCard [
 		  owner = anotherCard owner ]
 ]
 
-{ #category : #accessing }
-SpeedCard >> a: spaceship playsCardIn: game aimingAt: target [
-
-	game currentPlayer = spaceship ifFalse: [ 
-		Error signal:
-			'Cannot play permanent card when not in the spaceships turn' ].
-	game playedCardStack
-		add: (SpeedCard  ownedBy: spaceship)
-		aimingAt: target.
-	game history add: (PlayCardEvent
-			 using: (SpeedCard ownedBy: spaceship)
-			 aimedAt: target)
-]
-
 { #category : #'applying effects' }
 SpeedCard >> applyEffectsUsing: anInitialValue [
 
@@ -56,4 +42,18 @@ SpeedCard >> initializeOwnedBy: aSpaceship [
 SpeedCard >> owner [ 
 
 	^ owner
+]
+
+{ #category : #accessing }
+SpeedCard >> playedBy: spaceship playedIn: game aimingAt: target [
+
+	game currentPlayer = spaceship ifFalse: [ 
+		Error signal:
+			'Cannot play permanent card when not in the spaceships turn' ].
+	game playedCardStack
+		add: (SpeedCard  ownedBy: spaceship)
+		aimingAt: target.
+	game history add: (Event_CardIsPlayed
+			 using: (SpeedCard ownedBy: spaceship)
+			 aimedAt: target)
 ]

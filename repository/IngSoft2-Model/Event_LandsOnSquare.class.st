@@ -1,5 +1,5 @@
 Class {
-	#name : #LandsOnSquareEvent,
+	#name : #'Event_LandsOnSquare',
 	#superclass : #Object,
 	#instVars : [
 		'spaceship',
@@ -9,39 +9,39 @@ Class {
 }
 
 { #category : #'instance creation' }
-LandsOnSquareEvent class >> from: spaceship landsOn: square [
+Event_LandsOnSquare class >> from: spaceship landsOn: square [
 
 	^ self new initializeFrom: spaceship landsOn: square.
 ]
 
 { #category : #comparing }
-LandsOnSquareEvent >> = anotherLandsOnSquareEvent [
+Event_LandsOnSquare >> = anotherLandsOnSquareEvent [
 
 	^ (square = anotherLandsOnSquareEvent square) and: [ 
 		  spaceship = anotherLandsOnSquareEvent spaceship ]
 ]
 
 { #category : #comparing }
-LandsOnSquareEvent >> hash [ 
+Event_LandsOnSquare >> hash [ 
 
 	^ square hash bitXor: ( spaceship hash )
 ]
 
 { #category : #initialization }
-LandsOnSquareEvent >> initializeFrom: aSpaceship landsOn: aSquare [
+Event_LandsOnSquare >> initializeFrom: aSpaceship landsOn: aSquare [
 
 	spaceship := aSpaceship.
 	square := aSquare.
 ]
 
 { #category : #accessing }
-LandsOnSquareEvent >> spaceship [
+Event_LandsOnSquare >> spaceship [
 
 	^ spaceship
 ]
 
 { #category : #accessing }
-LandsOnSquareEvent >> square [
+Event_LandsOnSquare >> square [
 
 	^ square
 ]

@@ -65,10 +65,10 @@ TrenchRunGame >> initializeWithParticipating: spaceships rolling: aDiceCup on: a
 	state := Started new.
 	endingLap := endLap.
 	positionTracker := PositionTracker tracking: spaceships.
-	onHandCardStack := OnHandCardStack new.
-	playedCardStack := PlayedPermanentCardStack new.
+	onHandCardStack := Stack_OnHandCardStack new.
+	playedCardStack := Stack_PlayedPermanentCardStack new.
 	spaceships do: [ :spaceship | self take: 2 andGiveToHandsOf: spaceship].
-	history := TrenchRunEventList new.
+	history := Event_TrenchRunEventList new.
 	spaceshipSequence := TrenchRunSequence withAll: spaceships
 ]
 
@@ -98,7 +98,7 @@ TrenchRunGame >> lastLandsOnSquareEvent [
 { #category : #accessing }
 TrenchRunGame >> lastPlayedCard [
 
-	^ history lastPlayCardEvent card
+	^ history lastCardIsPlayedEvent card
 ]
 
 { #category : #'turn related' }
@@ -148,8 +148,8 @@ TrenchRunGame >> playAccelerationCardOwnedBy: aSpaceship [
 
 	onHandCardStack take: AccelerationCard fromHandsOf: aSpaceship.
 	(AccelerationCard ownedBy: aSpaceship)
-		a: aSpaceship
-		playsCardIn: self
+		playedBy: aSpaceship
+		playedIn: self
 		aimingAt: self spaceships
 ]
 
@@ -158,8 +158,8 @@ TrenchRunGame >> playCancellationCardOwnedBy: aSpaceship aimingAt: aPlayedPerman
 
 	onHandCardStack take: CancellationCard fromHandsOf: aSpaceship.
 	(CancellationCard ownedBy: aSpaceship)
-		a: aSpaceship
-		playsCardIn: self
+		playedBy: aSpaceship
+		playedIn: self
 		aimingAt: aPlayedPermanentCard
 ]
 
@@ -180,8 +180,8 @@ TrenchRunGame >> playOverloadCardOwnedBy: aSpaceship aimingAt: anotherSpaceship 
 
 	onHandCardStack take: OverloadCard fromHandsOf: aSpaceship.
 	(OverloadCard ownedBy: aSpaceship)
-		a: aSpaceship
-		playsCardIn: self
+		playedBy: aSpaceship
+		playedIn: self
 		aimingAt: anotherSpaceship
 ]
 
@@ -189,7 +189,7 @@ TrenchRunGame >> playOverloadCardOwnedBy: aSpaceship aimingAt: anotherSpaceship 
 TrenchRunGame >> playRedoCardOwnedBy: aSpaceship aimingAt: anotherSpaceship [
 
 	onHandCardStack take: RedoCard fromHandsOf: aSpaceship.
-	(RedoCard ownedBy: aSpaceship ) a: aSpaceship playsCardIn: self aimingAt: anotherSpaceship
+	(RedoCard ownedBy: aSpaceship ) playedBy: aSpaceship playedIn: self aimingAt: anotherSpaceship
 ]
 
 { #category : #'card playing' }
@@ -197,8 +197,8 @@ TrenchRunGame >> playRepeatCardOwnedBy: aSpaceship aimingAt: anotherSpaceship [
 
 	onHandCardStack take: RepeatCard fromHandsOf: aSpaceship.
 	(RepeatCard ownedBy: aSpaceship)
-		a: aSpaceship
-		playsCardIn: self
+		playedBy: aSpaceship
+		playedIn: self
 		aimingAt: anotherSpaceship
 ]
 
@@ -207,8 +207,8 @@ TrenchRunGame >> playSpeedCardOwnedBy: aSpaceship aimingAt: anotherSpaceship [
 
 	onHandCardStack take: SpeedCard fromHandsOf: aSpaceship.
 	(SpeedCard ownedBy: aSpaceship)
-		a: aSpaceship
-		playsCardIn: self
+		playedBy: aSpaceship
+		playedIn: self
 		aimingAt: anotherSpaceship
 ]
 

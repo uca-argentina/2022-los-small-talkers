@@ -1,6 +1,6 @@
 Class {
 	#name : #RedoCard,
-	#superclass : #InstantCard,
+	#superclass : #Card,
 	#instVars : [
 		'owner'
 	],
@@ -20,12 +20,6 @@ RedoCard >> = anotherCard [
 		  owner = anotherCard owner ]
 ]
 
-{ #category : #accessing }
-RedoCard >> a: spaceship playsCardIn: game aimingAt: target [
-
-	game lastPlayedCard a: spaceship playsCardIn: game aimingAt: target
-]
-
 { #category : #comparing }
 RedoCard >> hash [
 
@@ -42,4 +36,10 @@ RedoCard >> initializeOwnedBy: aSpaceship [
 RedoCard >> owner [ 
 
 	^ owner
+]
+
+{ #category : #accessing }
+RedoCard >> playedBy: spaceship playedIn: game aimingAt: target [
+
+	game lastPlayedCard playedBy: spaceship playedIn: game aimingAt: target
 ]

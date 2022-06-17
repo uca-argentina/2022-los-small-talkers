@@ -1,5 +1,5 @@
 Class {
-	#name : #PlayCardEvent,
+	#name : #'Event_CardIsPlayed',
 	#superclass : #Object,
 	#instVars : [
 		'card',
@@ -9,39 +9,39 @@ Class {
 }
 
 { #category : #accessing }
-PlayCardEvent class >> using: aCard aimedAt: someTarget [
+Event_CardIsPlayed class >> using: aCard aimedAt: someTarget [
 
 	^ self new initializeUsing: aCard aimedAt: someTarget .
 ]
 
 { #category : #comparing }
-PlayCardEvent >> = anotherPlayCardEvent [
+Event_CardIsPlayed >> = anotherPlayCardEvent [
 
 	^ self card = anotherPlayCardEvent card and: [ 
 		  self target = anotherPlayCardEvent target ]
 ]
 
 { #category : #accessing }
-PlayCardEvent >> card [
+Event_CardIsPlayed >> card [
 
 	^ card
 ]
 
 { #category : #comparing }
-PlayCardEvent >> hash [ 
+Event_CardIsPlayed >> hash [ 
 
 	^( card hash bitXor: ( target hash ))
 ]
 
 { #category : #accessing }
-PlayCardEvent >> initializeUsing: aCard aimedAt: someTarget [
+Event_CardIsPlayed >> initializeUsing: aCard aimedAt: someTarget [
 
 	card := aCard.
 	target := someTarget.
 ]
 
 { #category : #accessing }
-PlayCardEvent >> target [
+Event_CardIsPlayed >> target [
 
 	^ target
 ]

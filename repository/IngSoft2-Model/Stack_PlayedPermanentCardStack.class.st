@@ -1,5 +1,5 @@
 Class {
-	#name : #PlayedPermanentCardStack,
+	#name : #'Stack_PlayedPermanentCardStack',
 	#superclass : #Object,
 	#instVars : [
 		'stack'
@@ -8,13 +8,13 @@ Class {
 }
 
 { #category : #accessing }
-PlayedPermanentCardStack >> add: aCard aimingAt: target [
+Stack_PlayedPermanentCardStack >> add: aCard aimingAt: target [
 
 	stack add: (PlayedPermanentCard using: aCard aimingAt: target)
 ]
 
 { #category : #'calculating composed effects' }
-PlayedPermanentCardStack >> applyEffectsTo: spaceship using: anInitialValue [
+Stack_PlayedPermanentCardStack >> applyEffectsTo: spaceship using: anInitialValue [
 
 	| resultingEffect |
 	resultingEffect := anInitialValue.
@@ -26,14 +26,14 @@ PlayedPermanentCardStack >> applyEffectsTo: spaceship using: anInitialValue [
 ]
 
 { #category : #initialization }
-PlayedPermanentCardStack >> initialize [
+Stack_PlayedPermanentCardStack >> initialize [
 	
 	super initialize.
 	stack := OrderedCollection new.
 ]
 
 { #category : #accessing }
-PlayedPermanentCardStack >> remove: aPlayedPermanentCard [
+Stack_PlayedPermanentCardStack >> remove: aPlayedPermanentCard [
 
 	stack
 		remove: aPlayedPermanentCard
