@@ -90,15 +90,15 @@ TrenchRunGame >> lapOf: aShip [
 	^ (self positionOf: aShip) lap
 ]
 
+{ #category : #accessing }
+TrenchRunGame >> lastCardIsPlayedEvent [
+
+	^ history lastCardIsPlayedEvent card
+]
+
 { #category : #'applying effects' }
 TrenchRunGame >> lastLandsOnSquareEvent [
 	^ history lastLandsOnSquareEvent square.
-]
-
-{ #category : #accessing }
-TrenchRunGame >> lastPlayedCard [
-
-	^ history lastCardIsPlayedEvent card
 ]
 
 { #category : #'turn related' }
@@ -125,7 +125,7 @@ TrenchRunGame >> move: ship anAmountOf: squares [
 ]
 
 { #category : #'turn related' }
-TrenchRunGame >> move: spaceship by: aNumberOfParsecs [
+TrenchRunGame >> move: spaceship byParsecs: aNumberOfParsecs [
 
 	self move: spaceship anAmountOf: (aNumberOfParsecs / gameBoard parsecsPerSquare)
 ]

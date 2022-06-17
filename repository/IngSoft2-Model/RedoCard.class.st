@@ -41,5 +41,5 @@ RedoCard >> owner [
 { #category : #accessing }
 RedoCard >> playedBy: spaceship playedIn: game aimingAt: target [
 
-	game lastPlayedCard playedBy: spaceship playedIn: game aimingAt: target
+	game lastCardIsPlayedEvent playedBy: spaceship playedIn: game aimingAt: target
 ]
