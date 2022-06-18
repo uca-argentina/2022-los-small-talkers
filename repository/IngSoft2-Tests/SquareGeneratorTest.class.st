@@ -18,7 +18,7 @@ SquareGeneratorTest >> should: aBlock raise: anErrorType withMessage: anErrorMes
 SquareGeneratorTest >> testSquareGeneratorCannotBeCreatedWithProbabilitiesSummingDifferentToOne [
 
 	self
-		should: [ Gen_SquareGenerator creating: 10 of: { BlankSquare } with: { 1.5 } ]
+		should: [ SquareGenerator creating: 10 of: { BlankSquare } with: { 1.5 } ]
 		raise: Error
 		withMessage: 'Sum of probabilities differ from 1'
 ]
@@ -27,7 +27,7 @@ SquareGeneratorTest >> testSquareGeneratorCannotBeCreatedWithProbabilitiesSummin
 SquareGeneratorTest >> testSquareGeneratorCreatesOneHundredBlankSquares [
 
 	|squares|
-	squares := Gen_SquareGenerator creating: 100 of: { BlankSquare } with: { 1 }.
+	squares := SquareGenerator creating: 100 of: { BlankSquare } with: { 1 }.
 	
 	self assert: squares size equals: 100.
 	squares do: [ :square | self assert: (square className match: 'BlankSquare') ]

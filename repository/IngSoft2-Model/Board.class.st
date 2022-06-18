@@ -23,7 +23,7 @@ Board class >> madeUpBy: someSquares stretchedIntoLightYears: anAmountOfLightYea
 	self validateSizeOf: someSquares.
 	^ self new
 		  initializeMadeUpBy: someSquares
-		  and: anAmountOfLightYears / 3
+		  stretchedInto: anAmountOfLightYears / 3
 ]
 
 { #category : #'instance creation' }
@@ -33,7 +33,7 @@ Board class >> madeUpBy: someSquares stretchedIntoParsecs: anAmountOfParsecs [
 	self validateSizeOf: someSquares.
 	^ self new
 		  initializeMadeUpBy: someSquares
-		  and: anAmountOfParsecs
+		  stretchedInto: anAmountOfParsecs
 ]
 
 { #category : #'input validation' }
@@ -50,12 +50,12 @@ Board >> applyEffectAt: aSquare to: aSpaceship on: aGame [
 ]
 
 { #category : #initialization }
-Board >> initializeMadeUpBy: someSquares and: someParsecs [
+Board >> initializeMadeUpBy: someSquares stretchedInto: anAmountOfParsecs [
 
 	squares := someSquares.
-	totalParsecs := someParsecs.
-	totalLightYears := someParsecs * 3.
-	totalSquares := squares size
+	totalParsecs := anAmountOfParsecs.
+	totalLightYears := anAmountOfParsecs * 3.
+	totalSquares := squares size.
 ]
 
 { #category : #'accessing - attributes' }

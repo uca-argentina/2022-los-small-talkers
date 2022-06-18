@@ -1,5 +1,5 @@
 Class {
-	#name : #'Gen_SquareGenerator',
+	#name : #SquareGenerator,
 	#superclass : #Object,
 	#instVars : [
 		'fractionGenerator',
@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-Gen_SquareGenerator class >> creating: anAmount of: objects with: probabilities [
+SquareGenerator class >> creating: anAmount of: objects with: probabilities [
 
 	self verifySumOf: probabilities.
 	^ (self new
@@ -19,14 +19,14 @@ Gen_SquareGenerator class >> creating: anAmount of: objects with: probabilities 
 ]
 
 { #category : #'instance creation' }
-Gen_SquareGenerator class >> verifySumOf: probabilities [
+SquareGenerator class >> verifySumOf: probabilities [
 
 	probabilities sum = 1 ifFalse: [ 
 		Error signal: 'Sum of probabilities differ from 1' ]
 ]
 
 { #category : #auxiliary }
-Gen_SquareGenerator >> group: objects withTheirRangeOf: probabilities [
+SquareGenerator >> group: objects withTheirRangeOf: probabilities [
 
 	|rangeFloor ranges|
 	ranges := OrderedCollection new.
@@ -47,14 +47,14 @@ Gen_SquareGenerator >> group: objects withTheirRangeOf: probabilities [
 ]
 
 { #category : #initialization }
-Gen_SquareGenerator >> initializeOf: objects with: probabilities [
+SquareGenerator >> initializeOf: objects with: probabilities [
 
 	probabilityRanges := self group: objects withTheirRangeOf: probabilities.
 	fractionGenerator := Random seed: Time now asSeconds
 ]
 
 { #category : #'slot generation' }
-Gen_SquareGenerator >> next [
+SquareGenerator >> next [
 
 	| numberGenerated slot |
 	numberGenerated := fractionGenerator next.
@@ -72,7 +72,7 @@ Gen_SquareGenerator >> next [
 ]
 
 { #category : #'slot generation' }
-Gen_SquareGenerator >> next: amountToGenerate [
+SquareGenerator >> next: amountToGenerate [
 
 	| slots |
 	slots := OrderedCollection new.

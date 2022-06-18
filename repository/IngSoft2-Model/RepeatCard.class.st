@@ -20,6 +20,13 @@ RepeatCard >> = anotherCard [
 		  owner = anotherCard owner ]
 ]
 
+{ #category : #accessing }
+RepeatCard >> a: spaceship playsCardIn: game aimingAt: target [
+
+	game lastLandsOnSquareEvent applyEffectTo: target from: game.
+	game history add: (PlayCardEvent using: (RepeatCard ownedBy: spaceship) aimedAt: target)
+]
+
 { #category : #comparing }
 RepeatCard >> hash [
 
@@ -36,11 +43,4 @@ RepeatCard >> initializeOwnedBy: aSpaceship [
 RepeatCard >> owner [ 
 
 	^ owner
-]
-
-{ #category : #accessing }
-RepeatCard >> playedBy: spaceship playedIn: game aimingAt: target [
-
-	game lastLandsOnSquareEvent applyEffectTo: target from: game.
-	game history add: (Event_CardIsPlayed using: (RepeatCard ownedBy: spaceship) aimedAt: target)
 ]

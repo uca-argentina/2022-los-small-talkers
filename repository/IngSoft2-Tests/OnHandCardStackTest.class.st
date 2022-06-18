@@ -10,7 +10,7 @@ OnHandCardStackTest >> testGrabbingTenCardFromACancellationCardOnlyDeckAddsTenCa
 	| onHandCardStack enterprise deck cards |
 	deck := Deck handingOver: { CancellationCard }.
 	enterprise := 'Enterprise'.
-	onHandCardStack := Stack_OnHandCardStack new.
+	onHandCardStack := OnHandCardStack new.
 	cards := deck take: 10.
 	cards do: [ :card | onHandCardStack give: card toHandsOf: enterprise ].
 	self assert: onHandCardStack cards size equals: 10
@@ -22,7 +22,7 @@ OnHandCardStackTest >> testGrabbingTenCardFromARedoCardOnlyDeckAddsTenRedoCards 
 	| onHandCardStack enterprise deck cards |
 	deck := Deck handingOver: { RedoCard }.
 	enterprise := 'Enterprise'.
-	onHandCardStack := Stack_OnHandCardStack new.
+	onHandCardStack := OnHandCardStack new.
 	cards := deck take: 10.
 	cards do: [ :card | onHandCardStack give: card toHandsOf: enterprise ].
 	self assert: onHandCardStack cards size equals: 10
@@ -34,7 +34,7 @@ OnHandCardStackTest >> testGrabbingTenCardFromARepeatCardOnlyDeckAddsTenRepeatCa
 	| onHandCardStack enterprise deck cards |
 	deck := Deck handingOver: { RepeatCard }.
 	enterprise := 'Enterprise'.
-	onHandCardStack := Stack_OnHandCardStack new.
+	onHandCardStack := OnHandCardStack new.
 	cards := deck take: 10.
 	cards do: [ :card | onHandCardStack give: card toHandsOf: enterprise ].
 	self assert: onHandCardStack cards size equals: 10
@@ -46,7 +46,7 @@ OnHandCardStackTest >> testGrabbingTenCardFromASpeedCardOnlyDeckAddsTenSpeedCard
 	| onHandCardStack enterprise deck cards |
 	deck := Deck handingOver: { SpeedCard }.
 	enterprise := 'Enterprise'.
-	onHandCardStack := Stack_OnHandCardStack new.
+	onHandCardStack := OnHandCardStack new.
 	cards := deck take: 10.
 	cards do: [ :card | onHandCardStack give: card toHandsOf: enterprise ].
 	self assert: onHandCardStack cards size equals: 10
@@ -58,7 +58,7 @@ OnHandCardStackTest >> testGrabbingTenCardFromAnAccelerationCardOnlyDeckAddsTenA
 	| onHandCardStack enterprise deck cards |
 	deck := Deck handingOver: { AccelerationCard }.
 	enterprise := 'Enterprise'.
-	onHandCardStack := Stack_OnHandCardStack new.
+	onHandCardStack := OnHandCardStack new.
 	cards := deck take: 10.
 	cards do: [ :card | onHandCardStack give: card toHandsOf: enterprise ].
 	self assert: onHandCardStack cards size equals: 10
@@ -70,7 +70,7 @@ OnHandCardStackTest >> testGrabbingTenCardFromAnOverloadCardOnlyDeckAddsTenOverl
 	| onHandCardStack enterprise deck cards |
 	deck := Deck handingOver: { OverloadCard }.
 	enterprise := 'Enterprise'.
-	onHandCardStack := Stack_OnHandCardStack new.
+	onHandCardStack := OnHandCardStack new.
 	cards := deck take: 10.
 	cards do: [ :card | onHandCardStack give: card toHandsOf: enterprise ].
 	self assert: onHandCardStack cards size equals: 10
@@ -82,7 +82,7 @@ OnHandCardStackTest >> testPlayingACancellationCardFromAHandOfManyOnlyRemovesOne
 	| onHandCardStack enterprise deck cards |
 	deck := Deck handingOver: { CancellationCard }.
 	enterprise := 'Enterprise'.
-	onHandCardStack := Stack_OnHandCardStack new.
+	onHandCardStack := OnHandCardStack new.
 	cards := deck take: 10.
 	cards do: [ :card | onHandCardStack give: card toHandsOf: enterprise ].
 	self assert: onHandCardStack cards size equals: 10.

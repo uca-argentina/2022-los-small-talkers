@@ -1,5 +1,5 @@
 Class {
-	#name : #'Stack_OnHandCardStack',
+	#name : #OnHandCardStack,
 	#superclass : #Object,
 	#instVars : [
 		'cards'
@@ -8,26 +8,26 @@ Class {
 }
 
 { #category : #accessing }
-Stack_OnHandCardStack >> cards [
+OnHandCardStack >> cards [
 
 	^ cards
 ]
 
 { #category : #'assigning card to player' }
-Stack_OnHandCardStack >> give: aCardType toHandsOf: aSpaceship [
+OnHandCardStack >> give: aCardType toHandsOf: aSpaceship [
 
 	cards add: (aCardType ownedBy: aSpaceship)
 ]
 
 { #category : #initialization }
-Stack_OnHandCardStack >> initialize [ 
+OnHandCardStack >> initialize [ 
 
 	super initialize.
 	cards := OrderedCollection new.
 ]
 
 { #category : #'removing card from player' }
-Stack_OnHandCardStack >> take: cardType fromHandsOf: spaceship [
+OnHandCardStack >> take: cardType fromHandsOf: spaceship [
 
 	cards
 		remove: (cardType ownedBy: spaceship)

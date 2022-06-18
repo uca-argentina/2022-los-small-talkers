@@ -20,6 +20,20 @@ OverloadCard >> = anotherCard [
 		  owner = anotherCard owner ]
 ]
 
+{ #category : #accessing }
+OverloadCard >> a: spaceship playsCardIn: game aimingAt: target [
+
+	game currentPlayer = spaceship ifFalse: [ 
+		Error signal:
+			'Cannot play permanent card when not in the spaceships turn' ].
+	game playedCardStack
+		add: (OverloadCard ownedBy: spaceship)
+		aimingAt: target.
+	game history add: (PlayCardEvent
+			 using: (OverloadCard ownedBy: spaceship)
+			 aimedAt: target)
+]
+
 { #category : #'applying effects' }
 OverloadCard >> applyEffectsUsing: anInitialValue [
 
@@ -42,18 +56,4 @@ OverloadCard >> initializeOwnedBy: aSpaceship [
 OverloadCard >> owner [ 
 
 	^ owner
-]
-
-{ #category : #accessing }
-OverloadCard >> playedBy: spaceship playedIn: game aimingAt: target [
-
-	game currentPlayer = spaceship ifFalse: [ 
-		Error signal:
-			'Cannot play permanent card when not in the spaceships turn' ].
-	game playedCardStack
-		add: (OverloadCard ownedBy: spaceship)
-		aimingAt: target.
-	game history add: (Event_CardIsPlayed
-			 using: (OverloadCard ownedBy: spaceship)
-			 aimedAt: target)
 ]
