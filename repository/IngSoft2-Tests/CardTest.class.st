@@ -31,7 +31,7 @@ CardTest >> testAccelerationCardEqualsAnotherAccelerationCardWithSameValues [
 CardTest >> testAccelerationCardIncreasesInOneTheThrowOfAllShips [
 
 	| game aDie aBoard squares deck |
-	squares := Gen_SquareGenerator
+	squares := SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -70,7 +70,7 @@ CardTest >> testCancellationCardCannotBeUsedWhenNoPermanentCardsAreActive [
 	enterprise := 'Enterprise'.
 	planetExpress := 'PlanetExpress'.
 	starfighter := 'StarFighter'.
-	squares := Gen_SquareGenerator
+	squares := SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -118,7 +118,7 @@ CardTest >> testCancellationCardRemovesAnActiveAccelerationCard [
 	enterprise := 'Enterprise'.
 	planetExpress := 'PlanetExpress'.
 	starfighter := 'StarFighter'.
-	squares := Gen_SquareGenerator
+	squares := SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -173,7 +173,7 @@ CardTest >> testOverloadCardReducesInTwoTheNextPlayOfSelectedShip [
 	enterprise := 'Enterprise'.
 	planetExpress := 'PlanetExpress'.
 	starfighter := 'StarFighter'.
-	squares := Gen_SquareGenerator
+	squares := SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -214,7 +214,7 @@ CardTest >> testPlayingAPermanentCardOutOfTurnIsInvalid [
 	enterprise := 'Enterprise'.
 	planetExpress := 'PlanetExpress'.
 	starfighter := 'StarFighter'.
-	squares := Gen_SquareGenerator
+	squares := SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -248,7 +248,7 @@ CardTest >> testRedoCardAppliesTheEffectOfACancellationCard [
 	enterprise := 'Enterprise'.
 	planetExpress := 'PlanetExpress'.
 	starfighter := 'StarFighter'.
-	squares := Gen_SquareGenerator
+	squares := SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -300,7 +300,7 @@ CardTest >> testRedoCardAppliesTheEffectOfACancellationCardButAimedAtADifferentT
 	enterprise := 'Enterprise'.
 	planetExpress := 'PlanetExpress'.
 	starfighter := 'StarFighter'.
-	squares := Gen_SquareGenerator
+	squares := SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -353,7 +353,7 @@ CardTest >> testRedoCardAppliesTheEffectOfARedoCard [
 	enterprise := 'Enterprise'.
 	planetExpress := 'PlanetExpress'.
 	starfighter := 'StarFighter'.
-	squares := Gen_SquareGenerator
+	squares := SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -415,7 +415,7 @@ CardTest >> testRedoCardAppliesTheEffectOfARepeatCard [
 	enterprise := 'Enterprise'.
 	planetExpress := 'PlanetExpress'.
 	starfighter := 'StarFighter'.
-	squares := Gen_SquareGenerator
+	squares := SquareGenerator
 		           creating: 20
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -474,7 +474,7 @@ CardTest >> testRedoCardAppliesTheEffectOfASpeedCard [
 	enterprise := 'Enterprise'.
 	planetExpress := 'PlanetExpress'.
 	starfighter := 'StarFighter'.
-	squares := Gen_SquareGenerator
+	squares := SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -515,7 +515,7 @@ CardTest >> testRedoCardAppliesTheEffectOfAnAccelerationCard [
 	enterprise := 'Enterprise'.
 	planetExpress := 'PlanetExpress'.
 	starfighter := 'StarFighter'.
-	squares := Gen_SquareGenerator
+	squares := SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -554,7 +554,7 @@ CardTest >> testRedoCardAppliesTheEffectOfAnOverloadCard [
 	enterprise := 'Enterprise'.
 	planetExpress := 'PlanetExpress'.
 	starfighter := 'StarFighter'.
-	squares := Gen_SquareGenerator
+	squares := SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -604,7 +604,7 @@ CardTest >> testRepeatCardAppliesTheEffectOfABlankSquare [
 	enterprise := 'Enterprise'.
 	planetExpress := 'PlanetExpress'.
 	starfighter := 'StarFighter'.
-	squares := Gen_SquareGenerator
+	squares := SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -640,7 +640,7 @@ CardTest >> testRepeatCardAppliesTheEffectOfADrawCardSquare [
 	enterprise := 'Enterprise'.
 	planetExpress := 'PlanetExpress'.
 	starfighter := 'StarFighter'.
-	squares := Gen_SquareGenerator
+	squares := SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -677,7 +677,7 @@ CardTest >> testRepeatCardAppliesTheEffectOfAHyperJumpSquare [
 	enterprise := 'Enterprise'.
 	planetExpress := 'PlanetExpress'.
 	starfighter := 'StarFighter'.
-	squares := Gen_SquareGenerator
+	squares := SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -714,7 +714,7 @@ CardTest >> testRepeatCardAppliesTheEffectOfAMoonWalkSquare [
 	enterprise := 'Enterprise'.
 	planetExpress := 'PlanetExpress'.
 	starfighter := 'StarFighter'.
-	squares := Gen_SquareGenerator
+	squares := SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -751,7 +751,7 @@ CardTest >> testRepeatCardAppliesTheEffectOfASpeedUpSquare [
 	enterprise := 'Enterprise'.
 	planetExpress := 'PlanetExpress'.
 	starfighter := 'StarFighter'.
-	squares := Gen_SquareGenerator
+	squares := SquareGenerator
 		           creating: 11
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -788,7 +788,7 @@ CardTest >> testRepeatCardAppliesTheEffectOfAWormHoleSquare [
 	enterprise := 'Enterprise'.
 	planetExpress := 'PlanetExpress'.
 	starfighter := 'StarFighter'.
-	squares := Gen_SquareGenerator
+	squares := SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -825,7 +825,7 @@ CardTest >> testRepeatCardAppliesTheEffectOfAnAtomicBombSquare [
 	enterprise := 'Enterprise'.
 	planetExpress := 'PlanetExpress'.
 	starfighter := 'StarFighter'.
-	squares := Gen_SquareGenerator
+	squares := SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -884,7 +884,7 @@ CardTest >> testSpeedCardIncreasesInOneThePlayOfSelectedShip [
 	enterprise := 'Enterprise'.
 	planetExpress := 'PlanetExpress'.
 	starfighter := 'StarFighter'.
-	squares := Gen_SquareGenerator
+	squares := SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
