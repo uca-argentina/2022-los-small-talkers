@@ -19,7 +19,7 @@ GameInstanceTest >> testAskingForGameStateWhenFinishedReturnsFinished [
 
 	| game enterprise aDiceCup aBoard squares deck |
 	enterprise := 'Enterprise'.
-	squares := SquareGenerator
+	squares := Gen_SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -43,7 +43,7 @@ GameInstanceTest >> testAskingForGameStateWhenStartedReturnsStarted [
 
 	| game enterprise aDiceCup aBoard squares deck |
 	enterprise := 'Enterprise'.
-	squares := SquareGenerator
+	squares := Gen_SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -66,7 +66,7 @@ GameInstanceTest >> testAskingForGameStateWhenStartedReturnsStarted [
 GameInstanceTest >> testAskingForWinnerWhenGameStillHasNotFinishedIsInvalid [
 
 	| game aBoard enterprise die squares deck |
-	squares := SquareGenerator
+	squares := Gen_SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -93,7 +93,7 @@ GameInstanceTest >> testAtomicBombSlotResetsPositionsToOneButMaintainsNumberOfLa
 
 	| aGame enterprise board starfighter explorer aDie squares deck |
 	aDie := LoadedDie with: 15.
-	squares := SquareGenerator
+	squares := Gen_SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -135,7 +135,7 @@ GameInstanceTest >> testBlankSlotHasNoEffect [
 
 	| aGame enterprise dice board squares |
 	dice := LoadedDie with: 5.
-	squares := SquareGenerator
+	squares := Gen_SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -159,7 +159,7 @@ GameInstanceTest >> testGameWithOneSpaceshipIsStartedOnceFirstHandIsPlayed [
 
 	| game enterprise aDiceCup aBoard squares |
 	enterprise := 'Enterprise'.
-	squares := SquareGenerator
+	squares := Gen_SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -183,7 +183,7 @@ GameInstanceTest >> testHyperJumpCanMovePlayersInLightYears [
 	| game enterprise die board squares |
 	enterprise := 'Enterprise'.
 	die := LoadedDie with: 1.
-	squares := SquareGenerator
+	squares := Gen_SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -214,7 +214,7 @@ GameInstanceTest >> testHyperJumpMovesPlayersInDescendingOrderOfSequenceGiven [
 	| game enterprise die board squares |
 	enterprise := 'Enterprise'.
 	die := LoadedDie with: 1.
-	squares := SquareGenerator
+	squares := Gen_SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -244,7 +244,7 @@ GameInstanceTest >> testMoonWalkSlotBackTracksEverySpaceshipAnAmountOfSquaresExc
 
 	| aGame enterprise board starfighter explorer aDie squares |
 	aDie := LoadedDie with: 3.
-	squares := SquareGenerator
+	squares := Gen_SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -284,7 +284,7 @@ GameInstanceTest >> testMultipleShipsPositionsOnceGameIsFinished [
 	starfighter := 'Starfighter'.
 	explorer := 'Explorer'.
 	aLoadedDie := LoadedDie with: 8.
-	squares := SquareGenerator
+	squares := Gen_SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -315,7 +315,7 @@ GameInstanceTest >> testOneShippedGameCanOnlyKnowWinnerOnceGameIsFinished [
 	| enterprise aBoard aGame aLoadedDie winner squares |
 	enterprise := 'Enterprise'.
 	aLoadedDie := LoadedDie with: 11.
-	squares := SquareGenerator
+	squares := Gen_SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -342,7 +342,7 @@ GameInstanceTest >> testShipCannotStartAnotherTurnOnceGameHasFinished [
 	starfighter := 'Starfighter'.
 	explorer := 'Explorer'.
 	aLoadedDie := LoadedDie with: 15.
-	squares := SquareGenerator
+	squares := Gen_SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -371,7 +371,7 @@ GameInstanceTest >> testSlotDoesNotActivateWhenSomeoneStepsOnFirstSlotOfMaximumL
 	| game enterprise die board squares |
 	enterprise := 'Enterprise'.
 	die := LoadedDie with: 500.
-	squares := SquareGenerator
+	squares := Gen_SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -395,7 +395,7 @@ GameInstanceTest >> testSpaceshipCompletingALapActuallyCountsIntoPositionTracker
 
 	| game enterprise aDiceCup aBoard squares |
 	enterprise := 'Enterprise'.
-	squares := SquareGenerator
+	squares := Gen_SquareGenerator
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -420,7 +420,7 @@ GameInstanceTest >> testSpeedUpSlotForwardTracksFourSquares [
 
 	| aGame enterprise dice board squares |
 	dice := LoadedDie with: 3.
-	squares := SquareGenerator
+	squares := Gen_SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -447,7 +447,7 @@ GameInstanceTest >> testStartedGamePlaysUntilOneSpaceshipWins [
 	enterprise := 'Enterprise'.
 	starfighter := 'Starfighter'.
 	aLoadedDie := LoadedDie with: 4.
-	squares := SquareGenerator
+	squares := Gen_SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -476,7 +476,7 @@ GameInstanceTest >> testStartingGameWithTwoOrMoreSpaceshipsIsValid [
 	enterprise := 'Enterprise'.
 	starfighter := 'Starfighter'.
 	aDiceCup := DiceCup withAll: { (LoadedDie with: 5) }.
-	squares := SquareGenerator
+	squares := Gen_SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -502,7 +502,7 @@ GameInstanceTest >> testTwoShippedGameCanOnlyKnowWinnerOnceGameIsFinished [
 	| enterprise starfighter aLoadedDie aGame aBoard winner squares |
 	enterprise := 'Enterprise'.
 	starfighter := 'Starfighter'.
-	squares := SquareGenerator
+	squares := Gen_SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -533,7 +533,7 @@ GameInstanceTest >> testWinnerOfFixedMatchMatchesPositionsTable [
 	enterprise := 'Enterprise'.
 	starfighter := 'Starfighter'.
 	aLoadedDie := LoadedDie with: 6.
-	squares := SquareGenerator
+	squares := Gen_SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -566,7 +566,7 @@ GameInstanceTest >> testWinnerOfFixedMatchMatchesRanking [
 	enterprise := 'Enterprise'.
 	starfighter := 'Starfighter'.
 	aLoadedDie := LoadedDie with: 6.
-	squares := SquareGenerator
+	squares := Gen_SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -596,7 +596,7 @@ GameInstanceTest >> testWormHoleSlotBackTracksFourSquares [
 
 	| aGame enterprise dice board squares |
 	dice := LoadedDie with: 8.
-	squares := SquareGenerator
+	squares := Gen_SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
@@ -617,7 +617,7 @@ GameInstanceTest >> testWormHoleSlotBackTracksToSquareOneIfSpaceshipIsOnLapOneAn
 	| aGame enterprise dice board squares |
 	dice := LoadedDie with: 1.
 	enterprise := 'Enterprise'.
-	squares := SquareGenerator
+	squares := Gen_SquareGenerator
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.

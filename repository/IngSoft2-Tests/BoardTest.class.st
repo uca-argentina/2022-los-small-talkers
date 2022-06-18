@@ -64,7 +64,7 @@ BoardTest >> testBoardDistanceInLightYearsIsThreeTimesAsMuchAsInParsecs [
 BoardTest >> testCreatingABoardFromSomeRandomlyGeneratedSquaresSetsItsAmountOfSquaresCorrectly [
 
 	| board squares |
-	squares := SquareGenerator
+	squares := Gen_SquareGenerator
 		           creating: 100
 		           of: { 
 				           AtomicBombSquare.

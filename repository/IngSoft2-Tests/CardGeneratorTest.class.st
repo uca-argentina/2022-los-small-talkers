@@ -19,7 +19,7 @@ CardGeneratorTest >> testCardGeneratorCannotBeCreatedWithProbabilitiesSummingDif
 
 	self
 		should: [ 
-		CardGenerator creating: 10 of: { SpeedCard } with: { 1.5 } ]
+		Gen_CardGenerator creating: 10 of: { SpeedCard } with: { 1.5 } ]
 		raise: Error
 		withMessage: 'Sum of probabilities differ from 1'
 ]
@@ -28,7 +28,7 @@ CardGeneratorTest >> testCardGeneratorCannotBeCreatedWithProbabilitiesSummingDif
 CardGeneratorTest >> testCardGeneratorCreatesOneHundredSpeedCards [
 
 	| cards |
-	cards := CardGenerator creating: 100 of: { SpeedCard } with: { 1 }.
+	cards := Gen_CardGenerator creating: 100 of: { SpeedCard } with: { 1 }.
 
 	self assert: cards size equals: 100.
 	cards do: [ :card | self assert: card className equals: 'SpeedCard class' ]

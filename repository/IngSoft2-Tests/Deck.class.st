@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'cardGenerator'
 	],
-	#category : #'IngSoft2-Model'
+	#category : #'IngSoft2-Tests'
 }
 
 { #category : #'instance creation' }
@@ -16,7 +16,7 @@ Deck class >> handingOver: someCards [
 { #category : #initialization }
 Deck >> initializeHandingOver: someCards [
 
-	cardGenerator := CardGenerator of: someCards
+	cardGenerator := Gen_CardGenerator of: someCards
 ]
 
 { #category : #'taking cards' }

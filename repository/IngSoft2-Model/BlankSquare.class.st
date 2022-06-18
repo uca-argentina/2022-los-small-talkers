@@ -13,7 +13,7 @@ BlankSquare >> = anotherBlankSquare [
 { #category : #'executing effects' }
 BlankSquare >> applyEffectTo: spaceship from: game [
 
-	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
+	game history add: (Event_LandsOnSquare from: spaceship landsOn: self)
 ]
 
 { #category : #comparing }

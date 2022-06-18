@@ -16,12 +16,6 @@ Card >> = anotherCard [
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
-Card >> a: spaceship playsCardIn: game aimingAt: target [
-
-	self subclassResponsibility
-]
-
 { #category : #comparing }
 Card >> hash [ 
 
@@ -38,4 +32,10 @@ Card >> initializeOwnedBy: aSpaceship [
 Card >> owner [
 
 	self subclassResponsibility 
+]
+
+{ #category : #accessing }
+Card >> playedBy: spaceship playedIn: game aimingAt: target [
+
+	self subclassResponsibility
 ]

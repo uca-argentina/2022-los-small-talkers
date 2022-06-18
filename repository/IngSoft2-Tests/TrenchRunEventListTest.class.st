@@ -20,39 +20,39 @@ TrenchRunEventListTest >> testFindingTheLastCardEventInACardOnlyEventListReturns
 	| trenchRunEventList enterprise planetExpress |
 	enterprise := 'Enterprise'.
 	planetExpress := 'Planet Express'.
-	trenchRunEventList := TrenchRunEventList new.
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList := Event_TrenchRunEventList new.
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (SpeedCard ownedBy: enterprise)
 			 aimedAt: { enterprise }).
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (CancellationCard ownedBy: enterprise)
 			 aimedAt: { 
 					 planetExpress.
 					 SpeedCard }).
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (AccelerationCard ownedBy: enterprise)
 			 aimedAt: { 
 					 planetExpress.
 					 enterprise }).
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (OverloadCard ownedBy: enterprise)
 			 aimedAt: { planetExpress }).
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (RedoCard ownedBy: enterprise)
 			 aimedAt: { enterprise }).
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (RepeatCard ownedBy: enterprise)
 			 aimedAt: { enterprise }).
 
 	self
-		assert: trenchRunEventList lastPlayCardEvent
-		equals: (PlayCardEvent
+		assert: trenchRunEventList lastCardIsPlayedEvent
+		equals: (Event_CardIsPlayed
 				 using: (RepeatCard ownedBy: enterprise)
 				 aimedAt: { enterprise }).
 
 	self
-		assert: trenchRunEventList lastPlayCardEvent hash
-		equals: (PlayCardEvent
+		assert: trenchRunEventList lastCardIsPlayedEvent hash
+		equals: (Event_CardIsPlayed
 				 using: (RepeatCard ownedBy: enterprise)
 				 aimedAt: { enterprise }) hash
 ]
@@ -63,22 +63,22 @@ TrenchRunEventListTest >> testFindingTheLastCardEventInALandsOnSquareOnlyEventLi
 	| trenchRunEventList enterprise planetExpress |
 	enterprise := 'Enterprise'.
 	planetExpress := 'Planet Express'.
-	trenchRunEventList := TrenchRunEventList new.
+	trenchRunEventList := Event_TrenchRunEventList new.
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: BlankSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: BlankSquare new).
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: DrawCardSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: DrawCardSquare new).
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: AtomicBombSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: AtomicBombSquare new).
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: SpeedUpSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: SpeedUpSquare new).
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: HyperJumpSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: HyperJumpSquare new).
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: WormHoleSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: WormHoleSquare new).
 
 	self
-		should: [ trenchRunEventList lastPlayCardEvent ]
+		should: [ trenchRunEventList lastCardIsPlayedEvent ]
 		raise: Error
 		withMessage:
 		'Trying to access last played card event when none ever happened'
@@ -90,51 +90,51 @@ TrenchRunEventListTest >> testFindingTheLastCardEventInAMixedEventListReturnsThe
 	| trenchRunEventList enterprise planetExpress |
 	enterprise := 'Enterprise'.
 	planetExpress := 'Planet Express'.
-	trenchRunEventList := TrenchRunEventList new.
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList := Event_TrenchRunEventList new.
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (SpeedCard ownedBy: enterprise)
 			 aimedAt: { enterprise }).
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (CancellationCard ownedBy: enterprise)
 			 aimedAt: { 
 					 planetExpress.
 					 SpeedCard }).
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (AccelerationCard ownedBy: enterprise)
 			 aimedAt: { 
 					 planetExpress.
 					 enterprise }).
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (OverloadCard ownedBy: enterprise)
 			 aimedAt: { planetExpress }).
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (RedoCard ownedBy: enterprise)
 			 aimedAt: { enterprise }).
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (RepeatCard ownedBy: enterprise)
 			 aimedAt: { enterprise }).
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: BlankSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: BlankSquare new).
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: DrawCardSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: DrawCardSquare new).
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: AtomicBombSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: AtomicBombSquare new).
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: SpeedUpSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: SpeedUpSquare new).
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: HyperJumpSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: HyperJumpSquare new).
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: WormHoleSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: WormHoleSquare new).
 
 	self
-		assert: trenchRunEventList lastPlayCardEvent
-		equals: (PlayCardEvent
+		assert: trenchRunEventList lastCardIsPlayedEvent
+		equals: (Event_CardIsPlayed
 				 using: (RepeatCard ownedBy: enterprise)
 				 aimedAt: { enterprise }).
 
 	self
-		assert: trenchRunEventList lastPlayCardEvent hash
-		equals: (PlayCardEvent
+		assert: trenchRunEventList lastCardIsPlayedEvent hash
+		equals: (Event_CardIsPlayed
 				 using: (RepeatCard ownedBy: enterprise)
 				 aimedAt: { enterprise }) hash
 ]
@@ -145,37 +145,37 @@ TrenchRunEventListTest >> testFindingTheLastEventInACardOnlyEventListReturnsTheL
 	| trenchRunEventList enterprise planetExpress |
 	enterprise := 'Enterprise'.
 	planetExpress := 'Planet Express'.
-	trenchRunEventList := TrenchRunEventList new.
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList := Event_TrenchRunEventList new.
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (SpeedCard ownedBy: enterprise)
 			 aimedAt: { enterprise }).
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (CancellationCard ownedBy: enterprise)
 			 aimedAt: { 
 					 planetExpress.
 					 SpeedCard }).
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (AccelerationCard ownedBy: enterprise)
 			 aimedAt: { 
 					 planetExpress.
 					 enterprise }).
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (OverloadCard ownedBy: enterprise)
 			 aimedAt: { planetExpress }).
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (RedoCard ownedBy: enterprise)
 			 aimedAt: { enterprise }).
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (RepeatCard ownedBy: enterprise)
 			 aimedAt: { enterprise }).
 
-	self assert: trenchRunEventList lastEvent equals: (PlayCardEvent
+	self assert: trenchRunEventList lastEvent equals: (Event_CardIsPlayed
 			 using: (RepeatCard ownedBy: enterprise)
 			 aimedAt: { enterprise }).
 
 	self
-		assert: trenchRunEventList lastPlayCardEvent hash
-		equals: (PlayCardEvent
+		assert: trenchRunEventList lastCardIsPlayedEvent hash
+		equals: (Event_CardIsPlayed
 				 using: (RepeatCard ownedBy: enterprise)
 				 aimedAt: { enterprise }) hash
 ]
@@ -186,29 +186,29 @@ TrenchRunEventListTest >> testFindingTheLastEventInALandsOnSquareOnlyEventListRe
 	| trenchRunEventList enterprise planetExpress |
 	enterprise := 'Enterprise'.
 	planetExpress := 'Planet Express'.
-	trenchRunEventList := TrenchRunEventList new.
+	trenchRunEventList := Event_TrenchRunEventList new.
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: BlankSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: BlankSquare new).
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: DrawCardSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: DrawCardSquare new).
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: AtomicBombSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: AtomicBombSquare new).
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: SpeedUpSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: SpeedUpSquare new).
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: HyperJumpSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: HyperJumpSquare new).
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: WormHoleSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: WormHoleSquare new).
 
 	self
 		assert: trenchRunEventList lastEvent
 		equals:
-		(LandsOnSquareEvent from: enterprise landsOn: WormHoleSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: WormHoleSquare new).
 
 	self
 		assert: trenchRunEventList lastEvent hash
 		equals:
-		(LandsOnSquareEvent from: enterprise landsOn: WormHoleSquare new)
+		(Event_LandsOnSquare from: enterprise landsOn: WormHoleSquare new)
 			hash
 ]
 
@@ -218,27 +218,27 @@ TrenchRunEventListTest >> testFindingTheLastLandsOnSquareEventInACardOnlyEventLi
 	| trenchRunEventList enterprise planetExpress |
 	enterprise := 'Enterprise'.
 	planetExpress := 'Planet Express'.
-	trenchRunEventList := TrenchRunEventList new.
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList := Event_TrenchRunEventList new.
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (SpeedCard ownedBy: enterprise)
 			 aimedAt: { enterprise }).
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (CancellationCard ownedBy: enterprise)
 			 aimedAt: { 
 					 planetExpress.
 					 SpeedCard }).
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (AccelerationCard ownedBy: enterprise)
 			 aimedAt: { 
 					 planetExpress.
 					 enterprise }).
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (OverloadCard ownedBy: enterprise)
 			 aimedAt: { planetExpress }).
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (RedoCard ownedBy: enterprise)
 			 aimedAt: { enterprise }).
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (RepeatCard ownedBy: enterprise)
 			 aimedAt: { enterprise }).
 
@@ -255,24 +255,24 @@ TrenchRunEventListTest >> testFindingTheLastLandsOnSquareEventInALandsOnSquareOn
 	| trenchRunEventList enterprise planetExpress |
 	enterprise := 'Enterprise'.
 	planetExpress := 'Planet Express'.
-	trenchRunEventList := TrenchRunEventList new.
+	trenchRunEventList := Event_TrenchRunEventList new.
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: BlankSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: BlankSquare new).
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: DrawCardSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: DrawCardSquare new).
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: AtomicBombSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: AtomicBombSquare new).
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: SpeedUpSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: SpeedUpSquare new).
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: HyperJumpSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: HyperJumpSquare new).
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: WormHoleSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: WormHoleSquare new).
 
 	self
 		assert: trenchRunEventList lastEvent
 		equals:
-		(LandsOnSquareEvent from: enterprise landsOn: WormHoleSquare new)
+		(Event_LandsOnSquare from: enterprise landsOn: WormHoleSquare new)
 ]
 
 { #category : #tests }
@@ -281,44 +281,44 @@ TrenchRunEventListTest >> testFindingTheLastLandsOnSquareEventInAMixedEventListR
 	| trenchRunEventList enterprise planetExpress |
 	enterprise := 'Enterprise'.
 	planetExpress := 'Planet Express'.
-	trenchRunEventList := TrenchRunEventList new.
+	trenchRunEventList := Event_TrenchRunEventList new.
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: BlankSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: BlankSquare new).
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: DrawCardSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: DrawCardSquare new).
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: AtomicBombSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: AtomicBombSquare new).
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: SpeedUpSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: SpeedUpSquare new).
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: HyperJumpSquare new).
+		(Event_LandsOnSquare from: enterprise landsOn: HyperJumpSquare new).
 	trenchRunEventList add:
-		(LandsOnSquareEvent from: enterprise landsOn: WormHoleSquare new).
-	trenchRunEventList add: (PlayCardEvent
+		(Event_LandsOnSquare from: enterprise landsOn: WormHoleSquare new).
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (SpeedCard ownedBy: enterprise)
 			 aimedAt: { enterprise }).
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (CancellationCard ownedBy: enterprise)
 			 aimedAt: { 
 					 planetExpress.
 					 SpeedCard }).
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (AccelerationCard ownedBy: enterprise)
 			 aimedAt: { 
 					 planetExpress.
 					 enterprise }).
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (OverloadCard ownedBy: enterprise)
 			 aimedAt: { planetExpress }).
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (RedoCard ownedBy: enterprise)
 			 aimedAt: { enterprise }).
-	trenchRunEventList add: (PlayCardEvent
+	trenchRunEventList add: (Event_CardIsPlayed
 			 using: (RepeatCard ownedBy: enterprise)
 			 aimedAt: { enterprise }).
 
 	self
 		assert: trenchRunEventList lastLandsOnSquareEvent
 		equals:
-		(LandsOnSquareEvent from: enterprise landsOn: WormHoleSquare new)
+		(Event_LandsOnSquare from: enterprise landsOn: WormHoleSquare new)
 ]
