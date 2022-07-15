@@ -29,9 +29,9 @@ OverloadCard >> a: spaceship playsCardIn: game aimingAt: target [
 	game playedCardStack
 		add: (OverloadCard ownedBy: spaceship)
 		aimingAt: target.
-	game history add: (PlayCardEvent
-			 using: (OverloadCard ownedBy: spaceship)
-			 aimedAt: target)
+	^ PlayCardEvent
+		  using: (OverloadCard ownedBy: spaceship)
+		  aimedAt: target
 ]
 
 { #category : #'applying effects' }

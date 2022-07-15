@@ -17,44 +17,73 @@ BoardTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage [
 BoardTest >> testBoardCreationWhereLengthLowerOrEqualThanZeroIsInvalid [
 
 	self
-		should: [ Board madeUpBy: {  } stretchedIntoParsecs: 10 ]
+		should: [ 
+		Board madeUpBy: {  } stretchedInto: (Parsec amounting: 10) ]
 		raise: Error
-		withMessage: 'Boards need a minimum length of 1'
+		withMessage: 'Boards needs at least one square'
 ]
 
 { #category : #tests }
 BoardTest >> testBoardCreationWhereLightYearsLowerOrEqualToZeroIsInvalid [
 
 	self
-		should: [ Board madeUpBy: { BlankSquare } stretchedIntoLightYears: 0 ]
+		should: [ 
+			Board
+				madeUpBy: { BlankSquare }
+				stretchedInto: (LightYear amounting: 0) ]
 		raise: Error
-		withMessage: 'Boards need a minimum length of 1'.
+		withMessage: 'Board distance cannot be zero'.
 
 	self
-		should: [ Board madeUpBy: { BlankSquare } stretchedIntoLightYears: -10 ]
+		should: [ 
+			Board
+				madeUpBy: { BlankSquare }
+				stretchedInto: (LightYear amounting: -10) ]
 		raise: Error
-		withMessage: 'Boards need a minimum length of 1'
+		withMessage: 'LightYears cannot amount to a negative number'
 ]
 
 { #category : #tests }
 BoardTest >> testBoardCreationWhereParsecsLowerOrEqualToZeroIsInvalid [
 
 	self
-		should: [ Board madeUpBy: { BlankSquare } stretchedIntoParsecs: 0 ]
+		should: [ Board madeUpBy: { BlankSquare } stretchedInto: (Parsec amounting: 0) ]
 		raise: Error
-		withMessage: 'Boards need a minimum length of 1'.
+		withMessage: 'Board distance cannot be zero'.
 
 	self
-		should: [ Board madeUpBy: { BlankSquare } stretchedIntoParsecs: -10 ]
+		should: [ Board madeUpBy: { BlankSquare } stretchedInto: (Parsec amounting: -10) ]
 		raise: Error
-		withMessage: 'Boards need a minimum length of 1'
+		withMessage: 'Parsecs cannot amount to a negative number'
 ]
 
 { #category : #tests }
-BoardTest >> testBoardDistanceInLightYearsIsThreeTimesAsMuchAsInParsecs [
+BoardTest >> testBoardDistancedInLightYearsCanGiveItsLengthAccuratelyInParsecs [
 
 	| board |
-	board := Board madeUpBy: { BlankSquare } stretchedIntoLightYears: 10.
+	board := Board
+		         madeUpBy: { BlankSquare }
+		         stretchedInto: (LightYear amounting: 10).
+	self
+		assert: board distanceInLightYears
+		equals: board distanceInParsecs * 3.
+
+	self
+		assert: board lightYearsPerSquare
+		equals: board parsecsPerSquare * 3
+]
+
+{ #category : #tests }
+BoardTest >> testBoardDistancedInParsecsCanGiveItsLengthAccuratelyInLightYears [
+
+	| board |
+	board := Board
+		         madeUpBy: { BlankSquare }
+		         stretchedInto: (Parsec amounting: 10).
+	self
+		assert: board distanceInLightYears
+		equals: board distanceInParsecs * 3.
+
 	self
 		assert: board lightYearsPerSquare
 		equals: board parsecsPerSquare * 3
@@ -80,7 +109,7 @@ BoardTest >> testCreatingABoardFromSomeRandomlyGeneratedSquaresSetsItsAmountOfSq
 				           (2 / 10).
 				           (2 / 10).
 				           (4 / 10) }.
-	board := Board madeUpBy: squares stretchedIntoLightYears: 200.
+	board := Board madeUpBy: squares stretchedInto: (LightYear amounting: 200).
 
 
 	self assert: [ board length = 100 ]

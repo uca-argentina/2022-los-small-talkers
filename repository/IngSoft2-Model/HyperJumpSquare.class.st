@@ -43,7 +43,7 @@ HyperJumpSquare >> = anotherHyperJumpSquare [
 HyperJumpSquare >> applyEffectTo: spaceship from: game [
 
 	game move: spaceship by: parsecSequence next.
-	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
+	^ LandsOnSquareEvent from: spaceship landsOn: self
 ]
 
 { #category : #comparing }
@@ -53,10 +53,11 @@ HyperJumpSquare >> hash [
 ]
 
 { #category : #initialization }
-HyperJumpSquare >> initializeWith: someJumps [
+HyperJumpSquare >> initializeWith: aNumberOfDistanceJumps [
 
 	parsecSequence := TrenchRunSequence withAll:
-		                (someJumps sorted: [ :jumpA :jumpB | jumpA > jumpB ])
+		                  (aNumberOfDistanceJumps sorted: [ :jumpA :jumpB | 
+			                   jumpA > jumpB ])
 ]
 
 { #category : #initialization }

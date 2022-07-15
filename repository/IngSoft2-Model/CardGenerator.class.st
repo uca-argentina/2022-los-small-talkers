@@ -37,20 +37,17 @@ CardGenerator class >> verifySumOf: probabilities [
 { #category : #auxiliary }
 CardGenerator >> group: cards withTheirRangeOf: probabilities [
 
-	| rangeFloor ranges |
+	| accumulatedProbability ranges |
 	ranges := OrderedCollection new.
-	rangeFloor := 0.
+	accumulatedProbability := 0.
 	(1 to: probabilities size by: 1) do: [ :i | 
-		| rangeCeiling card objectProbability |
+		| card objectProbability |
 		card := cards at: i.
 		objectProbability := probabilities at: i.
-		rangeCeiling := rangeFloor + objectProbability.
-
-		ranges add: { 
-				rangeFloor.
-				rangeCeiling.
-				card }.
-		rangeFloor := rangeFloor + (probabilities at: i) ].
+		
+		accumulatedProbability := accumulatedProbability  + objectProbability.
+		ranges add: { accumulatedProbability . card }
+	].
 
 	^ ranges
 ]
@@ -69,12 +66,11 @@ CardGenerator >> next [
 	numberGenerated := fractionGenerator next.
 
 	probabilityRanges do: [ :range | 
-		| rangeFloor rangeCeiling cardClass |
-		rangeFloor := range at: 1.
-		rangeCeiling := range at: 2.
-		cardClass := range at: 3.
+		| rangeCeiling cardClass |
+		rangeCeiling := range at: 1.
+		cardClass := range at: 2.
 
-		(numberGenerated between: rangeFloor and: rangeCeiling) ifTrue: [ 
+		(numberGenerated < rangeCeiling) ifTrue: [ 
 			card := cardClass ] ].
 
 	^ card

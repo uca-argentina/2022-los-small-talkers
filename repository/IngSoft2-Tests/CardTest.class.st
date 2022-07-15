@@ -36,7 +36,7 @@ CardTest >> testAccelerationCardIncreasesInOneTheThrowOfAllShips [
 		           of: { BlankSquare }
 		           with: { 1 }.
 	deck := Deck handingOver: { AccelerationCard }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 5).
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating:
@@ -75,7 +75,7 @@ CardTest >> testCancellationCardCannotBeUsedWhenNoPermanentCardsAreActive [
 		           of: { BlankSquare }
 		           with: { 1 }.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 5).
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -123,7 +123,7 @@ CardTest >> testCancellationCardRemovesAnActiveAccelerationCard [
 		           of: { BlankSquare }
 		           with: { 1 }.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 5).
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -178,7 +178,7 @@ CardTest >> testOverloadCardReducesInTwoTheNextPlayOfSelectedShip [
 		           of: { BlankSquare }
 		           with: { 1 }.
 	deck := Deck handingOver: { OverloadCard }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 5).
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -220,7 +220,7 @@ CardTest >> testPlayingAPermanentCardOutOfTurnIsInvalid [
 		           with: { 1 }.
 	squares at: 2 put: DrawCardSquare new.
 	deck := Deck handingOver: { AccelerationCard }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 5).
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -253,7 +253,7 @@ CardTest >> testRedoCardAppliesTheEffectOfACancellationCard [
 		           of: { BlankSquare }
 		           with: { 1 }.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 5).
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -305,7 +305,7 @@ CardTest >> testRedoCardAppliesTheEffectOfACancellationCardButAimedAtADifferentT
 		           of: { BlankSquare }
 		           with: { 1 }.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 5).
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -358,7 +358,7 @@ CardTest >> testRedoCardAppliesTheEffectOfARedoCard [
 		           of: { BlankSquare }
 		           with: { 1 }.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 5).
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -421,7 +421,7 @@ CardTest >> testRedoCardAppliesTheEffectOfARepeatCard [
 		           with: { 1 }.
 	squares at: 2 put: SpeedUpSquare new.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 20.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 20).
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -479,7 +479,7 @@ CardTest >> testRedoCardAppliesTheEffectOfASpeedCard [
 		           of: { BlankSquare }
 		           with: { 1 }.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 5).
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -520,7 +520,7 @@ CardTest >> testRedoCardAppliesTheEffectOfAnAccelerationCard [
 		           of: { BlankSquare }
 		           with: { 1 }.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 5).
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -559,7 +559,7 @@ CardTest >> testRedoCardAppliesTheEffectOfAnOverloadCard [
 		           of: { BlankSquare }
 		           with: { 1 }.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 5).
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -609,7 +609,7 @@ CardTest >> testRepeatCardAppliesTheEffectOfABlankSquare [
 		           of: { BlankSquare }
 		           with: { 1 }.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 5).
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -646,7 +646,7 @@ CardTest >> testRepeatCardAppliesTheEffectOfADrawCardSquare [
 		           with: { 1 }.
 	squares at: 2 put: DrawCardSquare new.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 5).
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -683,7 +683,7 @@ CardTest >> testRepeatCardAppliesTheEffectOfAHyperJumpSquare [
 		           with: { 1 }.
 	squares at: 2 put: (HyperJumpSquare withParsecs: { 3 }).
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 10.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -720,7 +720,7 @@ CardTest >> testRepeatCardAppliesTheEffectOfAMoonWalkSquare [
 		           with: { 1 }.
 	squares at: 2 put: (MoonWalkSquare with: 1).
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 10.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -757,7 +757,7 @@ CardTest >> testRepeatCardAppliesTheEffectOfASpeedUpSquare [
 		           with: { 1 }.
 	squares at: 2 put: SpeedUpSquare new.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 11.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 11).
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -794,7 +794,7 @@ CardTest >> testRepeatCardAppliesTheEffectOfAWormHoleSquare [
 		           with: { 1 }.
 	squares at: 2 put: WormHoleSquare new.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 10.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -831,7 +831,7 @@ CardTest >> testRepeatCardAppliesTheEffectOfAnAtomicBombSquare [
 		           with: { 1 }.
 	squares at: 2 put: AtomicBombSquare new.
 	deck := Deck handingOver: { CancellationCard }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 10.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -889,7 +889,7 @@ CardTest >> testSpeedCardIncreasesInOneThePlayOfSelectedShip [
 		           of: { BlankSquare }
 		           with: { 1 }.
 	deck := Deck handingOver: { SpeedCard }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 10.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 

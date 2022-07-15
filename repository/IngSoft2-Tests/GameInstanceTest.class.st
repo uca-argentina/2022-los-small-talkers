@@ -24,7 +24,7 @@ GameInstanceTest >> testAskingForGameStateWhenFinishedReturnsFinished [
 		           of: { BlankSquare }
 		           with: { 1 }.
 	deck := Deck handingOver: { SpeedCard }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 5).
 	aDiceCup := DiceCup withAll: { (LoadedDie with: 6) }.
 	game := TrenchRunGame
 		        withParticipating: { enterprise }
@@ -47,7 +47,7 @@ GameInstanceTest >> testAskingForGameStateWhenStartedReturnsStarted [
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 10.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
 	aDiceCup := DiceCup withAll: { (LoadedDie with: 7) }.
 	deck := Deck handingOver: { SpeedCard }.
 	game := TrenchRunGame
@@ -70,7 +70,7 @@ GameInstanceTest >> testAskingForWinnerWhenGameStillHasNotFinishedIsInvalid [
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 5).
 	enterprise := 'Enterprise'.
 	die := LoadedDie with: 7.
 	deck := Deck handingOver: { SpeedCard }.
@@ -99,7 +99,7 @@ GameInstanceTest >> testAtomicBombSlotResetsPositionsToOneButMaintainsNumberOfLa
 		           with: { 1 }.
 	squares at: 6 put: AtomicBombSquare new.
 	deck := Deck handingOver: { SpeedCard }.
-	board := Board madeUpBy: squares stretchedIntoParsecs: 10.
+	board := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
 	enterprise := 'Enterprise'.
 	starfighter := 'Starfighter'.
 	explorer := 'Explorer'.
@@ -139,7 +139,7 @@ GameInstanceTest >> testBlankSlotHasNoEffect [
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
-	board := Board madeUpBy: squares stretchedIntoParsecs: 10.
+	board := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
 	enterprise := 'Enterprise'.
 	aGame := TrenchRunGame
 		         withParticipating: { enterprise }
@@ -163,7 +163,7 @@ GameInstanceTest >> testGameWithOneSpaceshipIsStartedOnceFirstHandIsPlayed [
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 10.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
 	aDiceCup := DiceCup withAll: { (LoadedDie with: 7) }.
 	game := TrenchRunGame
 		        withParticipating: { enterprise }
@@ -189,7 +189,7 @@ GameInstanceTest >> testHyperJumpCanMovePlayersInLightYears [
 		           with: { 1 }.
 	squares at: 2 put: (HyperJumpSquare withLightYears: { 3. 4 }).
 	squares at: 5 put: (HyperJumpSquare withLightYears: { 1. 2 }).
-	board := Board madeUpBy: squares stretchedIntoLightYears: 20.
+	board := Board madeUpBy: squares stretchedInto: (LightYear amounting: 20).
 	game := TrenchRunGame
 		        withParticipating: { enterprise }
 		        rolling: die
@@ -220,7 +220,7 @@ GameInstanceTest >> testHyperJumpMovesPlayersInDescendingOrderOfSequenceGiven [
 		           with: { 1 }.
 	squares at: 2 put: (HyperJumpSquare withParsecs: { 3. 4 }).
 	squares at: 5 put: (HyperJumpSquare withParsecs: { 1. 2 }).
-	board := Board madeUpBy: squares stretchedIntoParsecs: 20.
+	board := Board madeUpBy: squares stretchedInto: (Parsec amounting: 20).
 	game := TrenchRunGame
 		        withParticipating: { enterprise }
 		        rolling: die
@@ -249,7 +249,7 @@ GameInstanceTest >> testMoonWalkSlotBackTracksEverySpaceshipAnAmountOfSquaresExc
 		           of: { BlankSquare }
 		           with: { 1 }.
 	squares at: 7 put: (MoonWalkSquare with: 1).
-	board := Board madeUpBy: squares stretchedIntoParsecs: 10.
+	board := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
 	enterprise := 'Enterprise'.
 	starfighter := 'Starfighter'.
 	explorer := 'Explorer'.
@@ -288,7 +288,7 @@ GameInstanceTest >> testMultipleShipsPositionsOnceGameIsFinished [
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 10.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
 	aGame := TrenchRunGame
 		         withParticipating: { 
 				         enterprise.
@@ -305,8 +305,7 @@ GameInstanceTest >> testMultipleShipsPositionsOnceGameIsFinished [
 	aGame playNextTurn.
 	winner := aGame winner.
 
-	self assert: [ 
-		aGame isFinished and: (winner match: 'Enterprise') ]
+	self assert: [ aGame isFinished and: (winner match: 'Enterprise') ]
 ]
 
 { #category : #'tests - winner' }
@@ -319,7 +318,7 @@ GameInstanceTest >> testOneShippedGameCanOnlyKnowWinnerOnceGameIsFinished [
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 10.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
 	aGame := TrenchRunGame
 		         withParticipating: { enterprise }
 		         rolling: aLoadedDie
@@ -330,8 +329,7 @@ GameInstanceTest >> testOneShippedGameCanOnlyKnowWinnerOnceGameIsFinished [
 	aGame playNextTurn.
 	winner := aGame winner.
 
-	self assert:
-		(aGame isFinished and: (winner match: 'Enterprise'))
+	self assert: (aGame isFinished and: (winner match: 'Enterprise'))
 ]
 
 { #category : #'tests - starting game checks' }
@@ -346,7 +344,7 @@ GameInstanceTest >> testShipCannotStartAnotherTurnOnceGameHasFinished [
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 10.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
 	aGame := TrenchRunGame
 		         withParticipating: { 
 				         enterprise.
@@ -376,7 +374,7 @@ GameInstanceTest >> testSlotDoesNotActivateWhenSomeoneStepsOnFirstSlotOfMaximumL
 		           of: { BlankSquare }
 		           with: { 1 }.
 	squares at: 10 put: WormHoleSquare new.
-	board := Board madeUpBy: squares stretchedIntoParsecs: 200.
+	board := Board madeUpBy: squares stretchedInto: (Parsec amounting: 200).
 	game := TrenchRunGame
 		        withParticipating: { enterprise }
 		        rolling: die
@@ -399,7 +397,7 @@ GameInstanceTest >> testSpaceshipCompletingALapActuallyCountsIntoPositionTracker
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 5.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 5).
 	aDiceCup := DiceCup withAll: { (LoadedDie with: 8) }.
 	game := TrenchRunGame
 		        withParticipating: { enterprise }
@@ -425,7 +423,7 @@ GameInstanceTest >> testSpeedUpSlotForwardTracksFourSquares [
 		           of: { BlankSquare }
 		           with: { 1 }.
 	squares at: 4 put: SpeedUpSquare new.
-	board := Board madeUpBy: squares stretchedIntoParsecs: 10.
+	board := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
 	enterprise := 'Enterprise'.
 	aGame := TrenchRunGame
 		         withParticipating: { enterprise }
@@ -451,7 +449,7 @@ GameInstanceTest >> testStartedGamePlaysUntilOneSpaceshipWins [
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 10.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
 	aGame := TrenchRunGame
 		         withParticipating: { 
 				         enterprise.
@@ -480,7 +478,7 @@ GameInstanceTest >> testStartingGameWithTwoOrMoreSpaceshipsIsValid [
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 10.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
 	game := TrenchRunGame
 		        withParticipating: { 
 				        starfighter.
@@ -506,7 +504,7 @@ GameInstanceTest >> testTwoShippedGameCanOnlyKnowWinnerOnceGameIsFinished [
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 10.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
 	aLoadedDie := LoadedDie with: 6.
 	aGame := TrenchRunGame
 		         withParticipating: { 
@@ -522,8 +520,7 @@ GameInstanceTest >> testTwoShippedGameCanOnlyKnowWinnerOnceGameIsFinished [
 	aGame playNextTurn.
 	winner := aGame winner.
 
-	self assert:
-		(aGame isFinished and: (winner match: 'Enterprise'))
+	self assert: (aGame isFinished and: (winner match: 'Enterprise'))
 ]
 
 { #category : #'tests - winner' }
@@ -537,7 +534,7 @@ GameInstanceTest >> testWinnerOfFixedMatchMatchesPositionsTable [
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 10.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
 	aGame := TrenchRunGame
 		         withParticipating: { 
 				         enterprise.
@@ -570,7 +567,7 @@ GameInstanceTest >> testWinnerOfFixedMatchMatchesRanking [
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
-	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 10.
+	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
 	aGame := TrenchRunGame
 		         withParticipating: { 
 				         enterprise.
@@ -601,7 +598,7 @@ GameInstanceTest >> testWormHoleSlotBackTracksFourSquares [
 		           of: { BlankSquare }
 		           with: { 1 }.
 	squares at: 9 put: WormHoleSquare new.
-	board := Board madeUpBy: squares stretchedIntoParsecs: 10.
+	board := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
 	enterprise := 'Enterprise'.
 	aGame := TrenchRunGame
 		         withParticipating: { enterprise }
@@ -622,7 +619,7 @@ GameInstanceTest >> testWormHoleSlotBackTracksToSquareOneIfSpaceshipIsOnLapOneAn
 		           of: { BlankSquare }
 		           with: { 1 }.
 	squares at: 2 put: WormHoleSquare new.
-	board := Board madeUpBy: squares stretchedIntoParsecs: 10.
+	board := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
 	aGame := TrenchRunGame
 		         withParticipating: { enterprise }
 		         rolling: dice

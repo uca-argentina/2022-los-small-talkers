@@ -24,7 +24,7 @@ RepeatCard >> = anotherCard [
 RepeatCard >> a: spaceship playsCardIn: game aimingAt: target [
 
 	game lastLandsOnSquareEvent applyEffectTo: target from: game.
-	game history add: (PlayCardEvent using: (RepeatCard ownedBy: spaceship) aimedAt: target)
+	^ PlayCardEvent using: (RepeatCard ownedBy: spaceship) aimedAt: target
 ]
 
 { #category : #comparing }

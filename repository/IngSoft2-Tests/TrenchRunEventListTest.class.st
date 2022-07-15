@@ -49,12 +49,13 @@ TrenchRunEventListTest >> testFindingTheLastCardEventInACardOnlyEventListReturns
 		equals: (PlayCardEvent
 				 using: (RepeatCard ownedBy: enterprise)
 				 aimedAt: { enterprise }).
-
-	self
+				
+		self
 		assert: trenchRunEventList lastPlayCardEvent hash
 		equals: (PlayCardEvent
 				 using: (RepeatCard ownedBy: enterprise)
 				 aimedAt: { enterprise }) hash
+
 ]
 
 { #category : #tests }
@@ -131,8 +132,8 @@ TrenchRunEventListTest >> testFindingTheLastCardEventInAMixedEventListReturnsThe
 		equals: (PlayCardEvent
 				 using: (RepeatCard ownedBy: enterprise)
 				 aimedAt: { enterprise }).
-
-	self
+				
+		self
 		assert: trenchRunEventList lastPlayCardEvent hash
 		equals: (PlayCardEvent
 				 using: (RepeatCard ownedBy: enterprise)

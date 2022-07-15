@@ -27,11 +27,9 @@ SpeedCard >> a: spaceship playsCardIn: game aimingAt: target [
 		Error signal:
 			'Cannot play permanent card when not in the spaceships turn' ].
 	game playedCardStack
-		add: (SpeedCard  ownedBy: spaceship)
+		add: (SpeedCard ownedBy: spaceship)
 		aimingAt: target.
-	game history add: (PlayCardEvent
-			 using: (SpeedCard ownedBy: spaceship)
-			 aimedAt: target)
+	^ PlayCardEvent using: (SpeedCard ownedBy: spaceship) aimedAt: target
 ]
 
 { #category : #'applying effects' }

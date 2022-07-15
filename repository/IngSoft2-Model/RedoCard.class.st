@@ -1,6 +1,6 @@
 Class {
 	#name : #RedoCard,
-	#superclass : #InstantCard,
+	#superclass : #Card,
 	#instVars : [
 		'owner'
 	],
@@ -23,7 +23,7 @@ RedoCard >> = anotherCard [
 { #category : #accessing }
 RedoCard >> a: spaceship playsCardIn: game aimingAt: target [
 
-	game lastPlayedCard a: spaceship playsCardIn: game aimingAt: target
+	^ game lastPlayedCard a: spaceship playsCardIn: game aimingAt: target
 ]
 
 { #category : #comparing }

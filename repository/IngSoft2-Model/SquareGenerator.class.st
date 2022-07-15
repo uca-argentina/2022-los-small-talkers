@@ -26,19 +26,18 @@ SquareGenerator class >> verifySumOf: probabilities [
 ]
 
 { #category : #auxiliary }
-SquareGenerator >> group: objects withTheirRangeOf: probabilities [
+SquareGenerator >> group: squares withTheirRangeOf: probabilities [
 
-	|rangeFloor ranges|
+	|accumulatedProbability ranges|
 	ranges := OrderedCollection new.
-	rangeFloor := 0.
-	(1 to: probabilities size by: 1) do: [ :i |
-		|rangeCeiling square objectProbability|
-		square := objects at: i.
-		objectProbability := probabilities at: i.
-		rangeCeiling := rangeFloor + objectProbability.
+	accumulatedProbability := 0.
+	(1 to: probabilities size by: 1) do: [ :objectIndex |
+		|square objectProbability|
+		square := squares at: objectIndex.
+		objectProbability := probabilities at: objectIndex.
 		
-		ranges add: {rangeFloor . rangeCeiling . square}.
-		rangeFloor  := rangeFloor + (probabilities at: i).
+		accumulatedProbability := accumulatedProbability + objectProbability.
+		ranges add: {accumulatedProbability . square}.
 		].
 	
 	^ranges.
@@ -60,12 +59,11 @@ SquareGenerator >> next [
 	numberGenerated := fractionGenerator next.
 
 	probabilityRanges do: [ :range | 
-		| rangeFloor rangeCeiling square |
-		rangeFloor := range at: 1.
-		rangeCeiling := range at: 2.
-		square := range at: 3.
+		|rangeCeiling square |
+		rangeCeiling := range at: 1.
+		square := range at: 2.
 
-		(numberGenerated between: rangeFloor and: rangeCeiling) ifTrue: [ 
+		(numberGenerated < rangeCeiling) ifTrue: [ 
 			slot := square new ] ].
 
 	^ slot

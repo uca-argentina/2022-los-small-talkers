@@ -3,59 +3,61 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'squares',
-		'totalParsecs',
 		'totalSquares',
-		'totalLightYears'
+		'totalLightYears',
+		'totalDistance'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'input validation' }
-Board class >> assertValid: aLength [
-	aLength >= 1 ifFalse: [ 
-		Error signal: 'Boards need a minimum length of 1' ].
+Board class >> assertMinimumOf: aLength [
+
+	aLength isZero ifTrue: [ 
+		Error signal: 'Board distance cannot be zero' ]
 ]
 
 { #category : #'instance creation' }
-Board class >> madeUpBy: someSquares stretchedIntoLightYears: anAmountOfLightYears [
+Board class >> madeUpBy: someSquares stretchedInto: anAmountOfDistance [
 
-	self assertValid: anAmountOfLightYears.
+	self assertMinimumOf: anAmountOfDistance.
 	self validateSizeOf: someSquares.
 	^ self new
 		  initializeMadeUpBy: someSquares
-		  stretchedInto: anAmountOfLightYears / 3
-]
-
-{ #category : #'instance creation' }
-Board class >> madeUpBy: someSquares stretchedIntoParsecs: anAmountOfParsecs [
-
-	self assertValid: anAmountOfParsecs.
-	self validateSizeOf: someSquares.
-	^ self new
-		  initializeMadeUpBy: someSquares
-		  stretchedInto: anAmountOfParsecs
+		  stretchedInto: anAmountOfDistance
 ]
 
 { #category : #'input validation' }
 Board class >> validateSizeOf: someSquares [
 
-		someSquares ifEmpty: [ 
-		Error signal: 'Boards need a minimum length of 1' ].
+	someSquares ifEmpty: [ 
+		Error signal: 'Boards needs at least one square' ]
 ]
 
 { #category : #'executing effects' }
 Board >> applyEffectAt: aSquare to: aSpaceship on: aGame [
 
-	(squares at: aSquare) applyEffectTo: aSpaceship from: aGame
+	^ (squares at: aSquare) applyEffectTo: aSpaceship from: aGame
+]
+
+{ #category : #accessing }
+Board >> distanceInLightYears [
+
+	^ totalDistance inLightYears
+]
+
+{ #category : #accessing }
+Board >> distanceInParsecs [
+
+	^ totalDistance inParsecs
 ]
 
 { #category : #initialization }
-Board >> initializeMadeUpBy: someSquares stretchedInto: anAmountOfParsecs [
+Board >> initializeMadeUpBy: someSquares stretchedInto: anAmountOfDistance [
 
 	squares := someSquares.
-	totalParsecs := anAmountOfParsecs.
-	totalLightYears := anAmountOfParsecs * 3.
-	totalSquares := squares size.
+	totalDistance := anAmountOfDistance.
+	totalSquares := squares size
 ]
 
 { #category : #'accessing - attributes' }
@@ -67,11 +69,11 @@ Board >> length [
 { #category : #accessing }
 Board >> lightYearsPerSquare [
 
-	^ totalLightYears / squares size
+	^ totalDistance inLightYears / squares size
 ]
 
 { #category : #accessing }
 Board >> parsecsPerSquare [
 
-	^ totalParsecs / totalSquares
+	^ totalDistance inParsecs / totalSquares
 ]
