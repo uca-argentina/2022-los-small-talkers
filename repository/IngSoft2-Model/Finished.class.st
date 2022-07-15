@@ -25,5 +25,5 @@ Finished >> update: gameInstance [
 { #category : #'determining game behaviour' }
 Finished >> winner: game [
 
-	^ game currentLeader
+	^ game positionTracker currentLeader
 ]

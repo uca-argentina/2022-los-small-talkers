@@ -27,6 +27,12 @@ PositionTracker >> initializeTracking: spaceships [
 	positions addAll: (spaceships collect: [ :spaceship | Position of: spaceship at: 1 after: 1]).
 ]
 
+{ #category : #'accessing - positions' }
+PositionTracker >> lapOf: aShip [
+
+	^ (self positionOf: aShip) lap
+]
+
 { #category : #moving }
 PositionTracker >> move: aSpaceship at: aSquare after: lap [
 
@@ -37,6 +43,12 @@ PositionTracker >> move: aSpaceship at: aSquare after: lap [
 	self removePositionOf: aSpaceship.
 
 	positions add: (Position of: aSpaceship at: aSquare after: lap)
+]
+
+{ #category : #private }
+PositionTracker >> positionOf: aShip [
+
+	^ self positionOf: aShip ifAbsent: [  ]
 ]
 
 { #category : #accessing }
@@ -57,6 +69,20 @@ PositionTracker >> positions [
 	^ positions.
 ]
 
+{ #category : #'accessing - positions' }
+PositionTracker >> ranking [
+
+	| rankingSize |
+	rankingSize := 3 min: self positions size.
+
+	^ Dictionary
+		  newFromKeys: (1 to: rankingSize by: 1)
+		  andValues: (self positions
+				   collect: [ :position | position ship ]
+				   from: 1
+				   to: rankingSize)
+]
+
 { #category : #private }
 PositionTracker >> removePositionOf: aSpaceship [
 
@@ -73,4 +99,10 @@ PositionTracker >> removePositionOf: aSpaceship [
 PositionTracker >> spaceships [
 
 	^ positions collect: [ :position | position ship ]
+]
+
+{ #category : #'accessing - positions' }
+PositionTracker >> squareOf: aShip [
+
+	^ (self positionOf: aShip) square
 ]

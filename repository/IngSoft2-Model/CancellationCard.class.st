@@ -20,15 +20,6 @@ CancellationCard >> = anotherCard [
 		  owner = anotherCard owner ]
 ]
 
-{ #category : #accessing }
-CancellationCard >> a: spaceship playsCardIn: game aimingAt: aPlayedPermanentCard [
-
-	game playedCardStack remove: aPlayedPermanentCard.
-	^ PlayCardEvent
-			 using: (self class ownedBy: spaceship)
-			 aimedAt: aPlayedPermanentCard
-]
-
 { #category : #comparing }
 CancellationCard >> hash [
 
@@ -39,6 +30,13 @@ CancellationCard >> hash [
 CancellationCard >> initializeOwnedBy: aSpaceship [
 
 	owner := aSpaceship.
+]
+
+{ #category : #accessing }
+CancellationCard >> isPlayedIn: game aimingAt: aPlayedPermanentCard [
+
+	game cancel: aPlayedPermanentCard.
+	^ PlayCardEvent using: self aimedAt: aPlayedPermanentCard
 ]
 
 { #category : #accessing }

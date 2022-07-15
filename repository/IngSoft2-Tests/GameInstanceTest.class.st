@@ -99,7 +99,9 @@ GameInstanceTest >> testAtomicBombSlotResetsPositionsToOneButMaintainsNumberOfLa
 		           with: { 1 }.
 	squares at: 6 put: AtomicBombSquare new.
 	deck := Deck handingOver: { SpeedCard }.
-	board := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
+	board := Board
+		         madeUpBy: squares
+		         stretchedInto: (Parsec amounting: 10).
 	enterprise := 'Enterprise'.
 	starfighter := 'Starfighter'.
 	explorer := 'Explorer'.
@@ -122,12 +124,12 @@ GameInstanceTest >> testAtomicBombSlotResetsPositionsToOneButMaintainsNumberOfLa
 	aGame playNextTurn.
 	aGame playNextTurn.
 
-	self assert: (aGame squareOf: enterprise) equals: 1.
-	self assert: (aGame lapOf: enterprise) equals: 2.
-	self assert: (aGame squareOf: starfighter) equals: 1.
-	self assert: (aGame lapOf: starfighter) equals: 2.
-	self assert: (aGame squareOf: explorer) equals: 1.
-	self assert: (aGame lapOf: explorer) equals: 2
+	self assert: (aGame positionTracker squareOf: enterprise) equals: 1.
+	self assert: (aGame positionTracker lapOf: enterprise) equals: 2.
+	self assert: (aGame positionTracker squareOf: starfighter) equals: 1.
+	self assert: (aGame positionTracker lapOf: starfighter) equals: 2.
+	self assert: (aGame positionTracker squareOf: explorer) equals: 1.
+	self assert: (aGame positionTracker lapOf: explorer) equals: 2
 ]
 
 { #category : #'tests - slot functionality' }
@@ -139,7 +141,9 @@ GameInstanceTest >> testBlankSlotHasNoEffect [
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
-	board := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
+	board := Board
+		         madeUpBy: squares
+		         stretchedInto: (Parsec amounting: 10).
 	enterprise := 'Enterprise'.
 	aGame := TrenchRunGame
 		         withParticipating: { enterprise }
@@ -150,8 +154,8 @@ GameInstanceTest >> testBlankSlotHasNoEffect [
 
 	aGame playNextTurn.
 
-	self assert: (aGame squareOf: enterprise) equals: 6.
-	self assert: (aGame lapOf: enterprise) equals: 1
+	self assert: (aGame positionTracker squareOf: enterprise) equals: 6.
+	self assert: (aGame positionTracker lapOf: enterprise) equals: 1
 ]
 
 { #category : #'tests - starting game checks' }
@@ -189,7 +193,9 @@ GameInstanceTest >> testHyperJumpCanMovePlayersInLightYears [
 		           with: { 1 }.
 	squares at: 2 put: (HyperJumpSquare withLightYears: { 3. 4 }).
 	squares at: 5 put: (HyperJumpSquare withLightYears: { 1. 2 }).
-	board := Board madeUpBy: squares stretchedInto: (LightYear amounting: 20).
+	board := Board
+		         madeUpBy: squares
+		         stretchedInto: (LightYear amounting: 20).
 	game := TrenchRunGame
 		        withParticipating: { enterprise }
 		        rolling: die
@@ -199,13 +205,13 @@ GameInstanceTest >> testHyperJumpCanMovePlayersInLightYears [
 
 	game playNextTurn.
 	self assert:
-		((game squareOf: enterprise) = 4 and: [ 
-			 (game lapOf: enterprise) = 1 ]).
+		((game positionTracker squareOf: enterprise) = 4 and: [ 
+			 (game positionTracker lapOf: enterprise) = 1 ]).
 
 	game playNextTurn.
 	self assert:
-		((game squareOf: enterprise) = 6 and: [ 
-			 (game lapOf: enterprise) = 1 ])
+		((game positionTracker squareOf: enterprise) = 6 and: [ 
+			 (game positionTracker lapOf: enterprise) = 1 ])
 ]
 
 { #category : #'tests - slot functionality' }
@@ -220,7 +226,9 @@ GameInstanceTest >> testHyperJumpMovesPlayersInDescendingOrderOfSequenceGiven [
 		           with: { 1 }.
 	squares at: 2 put: (HyperJumpSquare withParsecs: { 3. 4 }).
 	squares at: 5 put: (HyperJumpSquare withParsecs: { 1. 2 }).
-	board := Board madeUpBy: squares stretchedInto: (Parsec amounting: 20).
+	board := Board
+		         madeUpBy: squares
+		         stretchedInto: (Parsec amounting: 20).
 	game := TrenchRunGame
 		        withParticipating: { enterprise }
 		        rolling: die
@@ -230,13 +238,13 @@ GameInstanceTest >> testHyperJumpMovesPlayersInDescendingOrderOfSequenceGiven [
 
 	game playNextTurn.
 	self assert:
-		((game squareOf: enterprise) = 4 and: [ 
-			 (game lapOf: enterprise) = 1 ]).
+		((game positionTracker squareOf: enterprise) = 4 and: [ 
+			 (game positionTracker lapOf: enterprise) = 1 ]).
 
 	game playNextTurn.
 	self assert:
-		((game squareOf: enterprise) = 6 and: [ 
-			 (game lapOf: enterprise) = 1 ])
+		((game positionTracker squareOf: enterprise) = 6 and: [ 
+			 (game positionTracker lapOf: enterprise) = 1 ])
 ]
 
 { #category : #'tests - slot functionality' }
@@ -249,7 +257,9 @@ GameInstanceTest >> testMoonWalkSlotBackTracksEverySpaceshipAnAmountOfSquaresExc
 		           of: { BlankSquare }
 		           with: { 1 }.
 	squares at: 7 put: (MoonWalkSquare with: 1).
-	board := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
+	board := Board
+		         madeUpBy: squares
+		         stretchedInto: (Parsec amounting: 10).
 	enterprise := 'Enterprise'.
 	starfighter := 'Starfighter'.
 	explorer := 'Explorer'.
@@ -268,12 +278,12 @@ GameInstanceTest >> testMoonWalkSlotBackTracksEverySpaceshipAnAmountOfSquaresExc
 	aGame playNextTurn.
 	aGame playNextTurn.
 
-	self assert: (aGame squareOf: enterprise) equals: 7.
-	self assert: (aGame lapOf: enterprise) equals: 1.
-	self assert: (aGame squareOf: starfighter) equals: 3.
-	self assert: (aGame lapOf: starfighter) equals: 1.
-	self assert: (aGame squareOf: explorer) equals: 3.
-	self assert: (aGame lapOf: explorer) equals: 1
+	self assert: (aGame positionTracker squareOf: enterprise) equals: 7.
+	self assert: (aGame positionTracker lapOf: enterprise) equals: 1.
+	self assert: (aGame positionTracker squareOf: starfighter) equals: 3.
+	self assert: (aGame positionTracker lapOf: starfighter) equals: 1.
+	self assert: (aGame positionTracker squareOf: explorer) equals: 3.
+	self assert: (aGame positionTracker lapOf: explorer) equals: 1
 ]
 
 { #category : #'tests - positions' }
@@ -374,7 +384,9 @@ GameInstanceTest >> testSlotDoesNotActivateWhenSomeoneStepsOnFirstSlotOfMaximumL
 		           of: { BlankSquare }
 		           with: { 1 }.
 	squares at: 10 put: WormHoleSquare new.
-	board := Board madeUpBy: squares stretchedInto: (Parsec amounting: 200).
+	board := Board
+		         madeUpBy: squares
+		         stretchedInto: (Parsec amounting: 200).
 	game := TrenchRunGame
 		        withParticipating: { enterprise }
 		        rolling: die
@@ -384,8 +396,8 @@ GameInstanceTest >> testSlotDoesNotActivateWhenSomeoneStepsOnFirstSlotOfMaximumL
 	game playNextTurn.
 
 	self assert: (game winner = enterprise and: [ 
-			 (game squareOf: enterprise) = 1 and: [ 
-				 (game lapOf: enterprise) = 2 ] ])
+			 (game positionTracker squareOf: enterprise) = 1 and: [ 
+				 (game positionTracker lapOf: enterprise) = 2 ] ])
 ]
 
 { #category : #'tests - positions' }
@@ -397,7 +409,9 @@ GameInstanceTest >> testSpaceshipCompletingALapActuallyCountsIntoPositionTracker
 		           creating: 5
 		           of: { BlankSquare }
 		           with: { 1 }.
-	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 5).
+	aBoard := Board
+		          madeUpBy: squares
+		          stretchedInto: (Parsec amounting: 5).
 	aDiceCup := DiceCup withAll: { (LoadedDie with: 8) }.
 	game := TrenchRunGame
 		        withParticipating: { enterprise }
@@ -409,8 +423,8 @@ GameInstanceTest >> testSpaceshipCompletingALapActuallyCountsIntoPositionTracker
 	game playNextTurn.
 
 	self assert:
-		((game lapOf: enterprise) = 2 and: [ 
-			 (game squareOf: enterprise) = 4 ])
+		((game positionTracker lapOf: enterprise) = 2 and: [ 
+			 (game positionTracker squareOf: enterprise) = 4 ])
 ]
 
 { #category : #'tests - slot functionality' }
@@ -423,7 +437,9 @@ GameInstanceTest >> testSpeedUpSlotForwardTracksFourSquares [
 		           of: { BlankSquare }
 		           with: { 1 }.
 	squares at: 4 put: SpeedUpSquare new.
-	board := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
+	board := Board
+		         madeUpBy: squares
+		         stretchedInto: (Parsec amounting: 10).
 	enterprise := 'Enterprise'.
 	aGame := TrenchRunGame
 		         withParticipating: { enterprise }
@@ -434,8 +450,8 @@ GameInstanceTest >> testSpeedUpSlotForwardTracksFourSquares [
 
 	aGame playNextTurn.
 
-	self assert: (aGame squareOf: enterprise) equals: 8.
-	self assert: (aGame lapOf: enterprise) equals: 1
+	self assert: (aGame positionTracker squareOf: enterprise) equals: 8.
+	self assert: (aGame positionTracker lapOf: enterprise) equals: 1
 ]
 
 { #category : #'tests - starting game checks' }
@@ -534,7 +550,9 @@ GameInstanceTest >> testWinnerOfFixedMatchMatchesPositionsTable [
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
-	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
+	aBoard := Board
+		          madeUpBy: squares
+		          stretchedInto: (Parsec amounting: 10).
 	aGame := TrenchRunGame
 		         withParticipating: { 
 				         enterprise.
@@ -548,12 +566,12 @@ GameInstanceTest >> testWinnerOfFixedMatchMatchesPositionsTable [
 	aGame playNextTurn.
 	aGame playNextTurn.
 
-	positions := aGame positions.
+	positions := aGame positionTracker positions.
 
 	self assert: (aGame isFinished and: [ 
 			 (aGame winner match: 'Enterprise') and: [ 
-				 (aGame squareOf: enterprise) = 1 and: [ 
-					 (aGame lapOf: enterprise) = 2 ] ] ])
+				 (aGame positionTracker squareOf: enterprise) = 1 and: [ 
+					 (aGame positionTracker lapOf: enterprise) = 2 ] ] ])
 ]
 
 { #category : #'tests - winner' }
@@ -567,7 +585,9 @@ GameInstanceTest >> testWinnerOfFixedMatchMatchesRanking [
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
-	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
+	aBoard := Board
+		          madeUpBy: squares
+		          stretchedInto: (Parsec amounting: 10).
 	aGame := TrenchRunGame
 		         withParticipating: { 
 				         enterprise.
@@ -581,11 +601,11 @@ GameInstanceTest >> testWinnerOfFixedMatchMatchesRanking [
 	aGame playNextTurn.
 	aGame playNextTurn.
 
-	positions := aGame positions.
+	positions := aGame positionTracker positions.
 
 	self assert: (aGame isFinished and: [ 
 			 (aGame winner match: 'Enterprise') and: [ 
-				 (aGame ranking at: 1) match: 'Enterprise' ] ])
+				 (aGame positionTracker ranking at: 1) match: 'Enterprise' ] ])
 ]
 
 { #category : #'tests - slot functionality' }
@@ -619,7 +639,9 @@ GameInstanceTest >> testWormHoleSlotBackTracksToSquareOneIfSpaceshipIsOnLapOneAn
 		           of: { BlankSquare }
 		           with: { 1 }.
 	squares at: 2 put: WormHoleSquare new.
-	board := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
+	board := Board
+		         madeUpBy: squares
+		         stretchedInto: (Parsec amounting: 10).
 	aGame := TrenchRunGame
 		         withParticipating: { enterprise }
 		         rolling: dice
@@ -629,6 +651,6 @@ GameInstanceTest >> testWormHoleSlotBackTracksToSquareOneIfSpaceshipIsOnLapOneAn
 
 	aGame playNextTurn.
 
-	self assert: (aGame squareOf: enterprise) equals: 1.
-	self assert: (aGame lapOf: enterprise) equals: 1
+	self assert: (aGame positionTracker squareOf: enterprise) equals: 1.
+	self assert: (aGame positionTracker lapOf: enterprise) equals: 1
 ]

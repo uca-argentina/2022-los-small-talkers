@@ -25,6 +25,14 @@ PlayedPermanentCardStack >> applyEffectsTo: spaceship using: anInitialValue [
 	^ resultingEffect
 ]
 
+{ #category : #accessing }
+PlayedPermanentCardStack >> cancel: aPlayedPermanentCard [
+
+	stack
+		remove: aPlayedPermanentCard
+		ifAbsent: [ Error signal: 'Cannot cancel a nonexistent effect' ]
+]
+
 { #category : #initialization }
 PlayedPermanentCardStack >> initialize [
 	
