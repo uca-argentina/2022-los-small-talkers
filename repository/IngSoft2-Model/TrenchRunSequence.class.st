@@ -59,3 +59,19 @@ TrenchRunSequence >> previous [
 	^ previous 
 	
 ]
+
+{ #category : #'as yet unclassified' }
+TrenchRunSequence >> repeatLastOnNext [
+
+	counter := counter -1.
+]
+
+{ #category : #converting }
+TrenchRunSequence >> reversed [
+
+	| newSequence |
+	newSequence := TrenchRunSequence withAll: elements reversed.
+	(newSequence elements indexOf: self previous) - 1 timesRepeat:
+		newSequence next.
+	^ newSequence.
+]

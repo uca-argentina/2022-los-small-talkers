@@ -1,6 +1,6 @@
 Class {
 	#name : #DiceCup,
-	#superclass : #Object,
+	#superclass : #RollableObject,
 	#instVars : [
 		'dice'
 	],
@@ -13,10 +13,22 @@ DiceCup class >> withAll: givenDice [
 	^ self new initializeWithAll: givenDice
 ]
 
+{ #category : #arithmetic }
+DiceCup >> + anotherRollableObject [
+
+	^ DiceCup withAll: { self. anotherRollableObject }.
+]
+
 { #category : #initialization }
 DiceCup >> initializeWithAll: givenDice [
 
 	dice := givenDice
+]
+
+{ #category : #accessing }
+DiceCup >> maxResult [ 
+
+	^ dice sum: [ :die | die maxResult ] ifEmpty: 0.
 ]
 
 { #category : #rolling }

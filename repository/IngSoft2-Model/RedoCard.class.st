@@ -23,7 +23,7 @@ RedoCard >> = anotherCard [
 { #category : #comparing }
 RedoCard >> hash [
 
-	self className hash bitXor:  self owner hash 
+	^ (self className hash bitXor: self owner hash)
 ]
 
 { #category : #initialization }

@@ -4,7 +4,6 @@ Class {
 	#instVars : [
 		'squares',
 		'totalSquares',
-		'totalLightYears',
 		'totalDistance'
 	],
 	#category : #'IngSoft2-Model'

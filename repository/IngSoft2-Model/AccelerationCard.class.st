@@ -28,7 +28,7 @@ AccelerationCard >> applyEffectsUsing: anInitialValue [
 { #category : #comparing }
 AccelerationCard >> hash [
 
-	self className hash bitXor: ( self owner hash )
+	^ self className hash bitXor: self owner hash
 ]
 
 { #category : #initialization }
@@ -40,15 +40,12 @@ AccelerationCard >> initializeOwnedBy: aSpaceship [
 { #category : #accessing }
 AccelerationCard >> isPlayedIn: game aimingAt: target [
 
-	game currentSpaceshipTurn = owner ifFalse: [ 
+	game turnHandler currentSpaceshipTurn = owner ifFalse: [ 
 		Error signal:
 			'Cannot play permanent card when not in the spaceships turn' ].
-	game playedCardStack
-		add: self
-		aimingAt: target.
-	^ PlayCardEvent
-		  using: self
-		  aimedAt: target
+
+	game cardHandler playedCardStack add: self aimingAt: game spaceships.
+	^ PlayCardEvent using: self aimedAt: game spaceships
 ]
 
 { #category : #accessing }

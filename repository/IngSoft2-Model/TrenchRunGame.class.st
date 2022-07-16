@@ -7,11 +7,9 @@ Class {
 		'state',
 		'positionTracker',
 		'endingLap',
-		'deck',
-		'onHandCardStack',
-		'playedCardStack',
 		'history',
-		'turnHandler'
+		'turnHandler',
+		'cardHandler'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -27,16 +25,36 @@ TrenchRunGame class >> withParticipating: spaceships rolling: aDiceCup on: aBoar
 		  using: aDeck
 ]
 
-{ #category : #'editing keys' }
-TrenchRunGame >> cancel: playedCard [
+{ #category : #accessing }
+TrenchRunGame >> cardHandler [
 
-	playedCardStack cancel: playedCard
+	^ cardHandler
 ]
 
 { #category : #'card playing' }
-TrenchRunGame >> currentSpaceshipTurn [
+TrenchRunGame >> cardPlayBy: aSpaceship using: aCard [
 
-	^ turnHandler currentSpaceshipTurn
+	"Method used for those cards that do not support a target argument."
+
+	"If the card requires a target argument, then this method
+	will raise an Error with the message '(Card) did not understand the message Card >> #isPlayedIn:' "
+
+	self shouldBeImplemented.
+	cardHandler take: aCard fromHandsOf: aSpaceship.
+	history add: ((aCard ownedBy: aSpaceship) isPlayedIn: self)
+]
+
+{ #category : #'card playing' }
+TrenchRunGame >> cardPlayBy: aSpaceship using: aCard aimingAt: target [
+
+	"Each card has its own interpretation of target."
+
+	"Use this method only on those cards that accept a target argument.
+	If they do not support a target argument, it will be discarded. (For now)"
+
+	cardHandler take: aCard fromHandsOf: aSpaceship.
+	history add:
+		((aCard ownedBy: aSpaceship) isPlayedIn: self aimingAt: target)
 ]
 
 { #category : #private }
@@ -47,24 +65,21 @@ TrenchRunGame >> end [
 { #category : #'card playing' }
 TrenchRunGame >> give: cardType toHandsOf: spaceship [
 
-	onHandCardStack give: cardType toHandsOf: spaceship
+	cardHandler give: cardType toHandsOf: spaceship
 ]
 
 { #category : #initialization }
 TrenchRunGame >> initializeWithParticipating: spaceships rolling: aDiceCup on: aBoard until: endLap using: aDeck [
 
-	deck := aDeck.
 	gameBoard := aBoard.
 	dice := aDiceCup.
 	state := Started new.
 	endingLap := endLap.
 	positionTracker := PositionTracker tracking: spaceships.
-	onHandCardStack := OnHandCardStack new.
-	playedCardStack := PlayedPermanentCardStack new.
-	spaceships do: [ :spaceship | 
-		self take: 2 andGiveToHandsOf: spaceship ].
+	cardHandler := CardHandler withAll: spaceships drawingFrom: aDeck.
 	history := TrenchRunEventList new.
 	turnHandler := TurnHandler withParticipating: spaceships.
+	
 ]
 
 { #category : #'asserting state' }
@@ -138,31 +153,13 @@ TrenchRunGame >> moveAllSpaceshipsAnAmountOf: squares exceptFor: aSpaceship [
 		self move: spaceship anAmountOf: 0 - squares ]
 ]
 
-{ #category : #'card playing' }
-TrenchRunGame >> playAccelerationCardOwnedBy: aSpaceship [
-
-	onHandCardStack take: AccelerationCard fromHandsOf: aSpaceship.
-	history add: ((AccelerationCard ownedBy: aSpaceship)
-			 isPlayedIn: self
-			 aimingAt: self spaceships)
-]
-
-{ #category : #'card playing' }
-TrenchRunGame >> playCancellationCardOwnedBy: aSpaceship aimingAt: aPlayedPermanentCard [
-
-	onHandCardStack take: CancellationCard fromHandsOf: aSpaceship.
-	history add: ((CancellationCard ownedBy: aSpaceship)
-			 isPlayedIn: self
-			 aimingAt: aPlayedPermanentCard)
-]
-
 { #category : #'turn related' }
 TrenchRunGame >> playNextTurn [
 
 	| squaresForward ship |
 	state update: self.
 	ship := turnHandler nextSpaceshipTurn.
-	squaresForward := playedCardStack
+	squaresForward := cardHandler playedCardStack
 		                  applyEffectsTo: ship
 		                  using: dice roll.
 	self move: ship anAmountOf: squaresForward.
@@ -171,48 +168,6 @@ TrenchRunGame >> playNextTurn [
 				 applyEffectAt: (positionTracker squareOf: ship)
 				 to: ship
 				 on: self) ]
-]
-
-{ #category : #'card playing' }
-TrenchRunGame >> playOverloadCardOwnedBy: aSpaceship aimingAt: anotherSpaceship [
-
-	onHandCardStack take: OverloadCard fromHandsOf: aSpaceship.
-	history add: ((OverloadCard ownedBy: aSpaceship)
-			 isPlayedIn: self
-			 aimingAt: anotherSpaceship)
-]
-
-{ #category : #'card playing' }
-TrenchRunGame >> playRedoCardOwnedBy: aSpaceship aimingAt: anotherSpaceship [
-
-	onHandCardStack take: RedoCard fromHandsOf: aSpaceship.
-	history add: ((RedoCard ownedBy: aSpaceship)
-			 isPlayedIn: self
-			 aimingAt: anotherSpaceship)
-]
-
-{ #category : #'card playing' }
-TrenchRunGame >> playRepeatCardOwnedBy: aSpaceship aimingAt: anotherSpaceship [
-
-	onHandCardStack take: RepeatCard fromHandsOf: aSpaceship.
-	history add: ((RepeatCard ownedBy: aSpaceship)
-			 isPlayedIn: self
-			 aimingAt: anotherSpaceship)
-]
-
-{ #category : #'card playing' }
-TrenchRunGame >> playSpeedCardOwnedBy: aSpaceship aimingAt: anotherSpaceship [
-
-	onHandCardStack take: SpeedCard fromHandsOf: aSpaceship.
-	history add: ((SpeedCard ownedBy: aSpaceship)
-			 isPlayedIn: self
-			 aimingAt: anotherSpaceship)
-]
-
-{ #category : #accessing }
-TrenchRunGame >> playedCardStack [
-
-	^playedCardStack 
 ]
 
 { #category : #accessing }
@@ -227,14 +182,10 @@ TrenchRunGame >> spaceships [
 	^ positionTracker spaceships.
 ]
 
-{ #category : #'turn related' }
-TrenchRunGame >> take: anAmountOfCards andGiveToHandsOf: aSpaceship [
-	
-	|cards|
-	cards := deck take: anAmountOfCards.
-	cards do: [ :card | onHandCardStack give: card toHandsOf: aSpaceship ].
+{ #category : #accessing }
+TrenchRunGame >> turnHandler [
 
-	
+	^ turnHandler
 ]
 
 { #category : #'accessing - positions' }

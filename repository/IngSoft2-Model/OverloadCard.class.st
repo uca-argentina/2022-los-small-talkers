@@ -29,7 +29,7 @@ OverloadCard >> applyEffectsUsing: anInitialValue [
 { #category : #comparing }
 OverloadCard >> hash [
 
-	self className hash bitXor:  self owner hash 
+	^ self className hash bitXor: self owner hash
 ]
 
 { #category : #initialization }
@@ -41,15 +41,11 @@ OverloadCard >> initializeOwnedBy: aSpaceship [
 { #category : #accessing }
 OverloadCard >> isPlayedIn: game aimingAt: target [
 
-	game currentSpaceshipTurn = owner ifFalse: [ 
+	game turnHandler currentSpaceshipTurn = owner ifFalse: [ 
 		Error signal:
 			'Cannot play permanent card when not in the spaceships turn' ].
-	game playedCardStack
-		add: self
-		aimingAt: target.
-	^ PlayCardEvent
-		  using: self
-		  aimedAt: target
+	game cardHandler playedCardStack add: self aimingAt: target.
+	^ PlayCardEvent using: self aimedAt: target
 ]
 
 { #category : #accessing }

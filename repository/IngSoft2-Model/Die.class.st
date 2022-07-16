@@ -1,6 +1,6 @@
 Class {
 	#name : #Die,
-	#superclass : #Object,
+	#superclass : #RollableObject,
 	#instVars : [
 		'numberOfSides'
 	],
@@ -22,10 +22,22 @@ Die class >> with: aNumberOfSides [
 	^ self new initializeWith: aNumberOfSides
 ]
 
+{ #category : #arithmetic }
+Die >> + anotherRollableObject [
+
+	^ DiceCup withAll: { self. anotherRollableObject }.
+]
+
 { #category : #initialization }
 Die >> initializeWith: aNumberOfSides [
 
 	numberOfSides := aNumberOfSides
+]
+
+{ #category : #accessing }
+Die >> maxResult [
+
+	^ numberOfSides
 ]
 
 { #category : #rolling }

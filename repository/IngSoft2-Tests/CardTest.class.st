@@ -52,16 +52,20 @@ CardTest >> testAccelerationCardIncreasesInOneTheThrowOfAllShips [
 	game playNextTurn.
 	game playNextTurn.
 	self assert: (game positionTracker squareOf: 'Enterprise') equals: 2.
-	self assert: (game positionTracker squareOf: 'PlanetExpress') equals: 2.
+	self
+		assert: (game positionTracker squareOf: 'PlanetExpress')
+		equals: 2.
 	self assert: (game positionTracker squareOf: 'StarFighter') equals: 2.
 
-	game playAccelerationCardOwnedBy: 'StarFighter'.
+	game cardPlayBy: 'StarFighter' using: AccelerationCard  aimingAt: {  }.
 
 	game playNextTurn.
 	game playNextTurn.
 	game playNextTurn.
 	self assert: (game positionTracker squareOf: 'Enterprise') equals: 4.
-	self assert: (game positionTracker squareOf: 'PlanetExpress') equals: 4.
+	self
+		assert: (game positionTracker squareOf: 'PlanetExpress')
+		equals: 4.
 	self assert: (game positionTracker squareOf: 'StarFighter') equals: 4
 ]
 
@@ -92,12 +96,9 @@ CardTest >> testCancellationCardCannotBeUsedWhenNoPermanentCardsAreActive [
 		        using: deck.
 
 	self
-		should: [ 
-			game
-				playCancellationCardOwnedBy: enterprise
-				aimingAt: (PlayedPermanentCard
+		should: [ game cardPlayBy: enterprise using: CancellationCard aimingAt: (PlayedPermanentCard
 						 using: (SpeedCard ownedBy: starfighter)
-						 aimingAt: starfighter) ]
+						 aimingAt: starfighter) . ]
 		raise: Error
 		withMessage: 'Cannot cancel a nonexistent effect'
 ]
@@ -144,15 +145,17 @@ CardTest >> testCancellationCardRemovesAnActiveAccelerationCard [
 	game give: AccelerationCard toHandsOf: enterprise.
 
 	game playNextTurn.
-	game playAccelerationCardOwnedBy: enterprise.
+	game cardPlayBy: enterprise using: AccelerationCard aimingAt: {  }.
 	game
-		playCancellationCardOwnedBy: starfighter
+		cardPlayBy: starfighter
+		using: CancellationCard
 		aimingAt: (PlayedPermanentCard
 				 using: (AccelerationCard ownedBy: enterprise)
 				 aimingAt: { 
 						 enterprise.
 						 planetExpress.
 						 starfighter }).
+
 	game playNextTurn.
 	game playNextTurn.
 	game playNextTurn.
@@ -205,7 +208,10 @@ CardTest >> testOverloadCardReducesInTwoTheNextPlayOfSelectedShip [
 	self assert: (game positionTracker squareOf: planetExpress) equals: 2.
 	self assert: (game positionTracker squareOf: starfighter) equals: 2.
 
-	game playOverloadCardOwnedBy: starfighter aimingAt: { enterprise }.
+	game
+		cardPlayBy: starfighter
+		using: OverloadCard
+		aimingAt: { enterprise }.
 
 	game playNextTurn.
 	game playNextTurn.
@@ -228,7 +234,9 @@ CardTest >> testPlayingAPermanentCardOutOfTurnIsInvalid [
 		           with: { 1 }.
 	squares at: 2 put: DrawCardSquare new.
 	deck := Deck handingOver: { AccelerationCard }.
-	aBoard := Board madeUpBy: squares stretchedInto: (Parsec amounting: 5).
+	aBoard := Board
+		          madeUpBy: squares
+		          stretchedInto: (Parsec amounting: 5).
 	aDie := LoadedDie with: 1.
 	game := TrenchRunGame
 		        withParticipating: { 
@@ -243,7 +251,7 @@ CardTest >> testPlayingAPermanentCardOutOfTurnIsInvalid [
 	game playNextTurn.
 
 	self
-		should: [ game playAccelerationCardOwnedBy: planetExpress ]
+		should: [ game cardPlayBy: planetExpress using: AccelerationCard aimingAt: {  }  ]
 		raise: Error
 		withMessage:
 		'Cannot play permanent card when not in the spaceships turn'
@@ -280,11 +288,12 @@ CardTest >> testRedoCardAppliesTheEffectOfACancellationCard [
 	game give: SpeedCard toHandsOf: enterprise.
 
 	game playNextTurn.
-	game playSpeedCardOwnedBy: enterprise aimingAt: { enterprise }.
-	game playAccelerationCardOwnedBy: enterprise.
+	game cardPlayBy: enterprise using: SpeedCard aimingAt: { enterprise }.
+	game cardPlayBy: enterprise using: AccelerationCard aimingAt: {  }.
 
 	game
-		playCancellationCardOwnedBy: starfighter
+		cardPlayBy: starfighter
+		using: CancellationCard
 		aimingAt: (PlayedPermanentCard
 				 using: (AccelerationCard ownedBy: enterprise)
 				 aimingAt: { 
@@ -292,9 +301,12 @@ CardTest >> testRedoCardAppliesTheEffectOfACancellationCard [
 						 starfighter.
 						 planetExpress }).
 
-	game playRedoCardOwnedBy: starfighter aimingAt: (PlayedPermanentCard
-			 using: (SpeedCard ownedBy: enterprise)
-			 aimingAt: { enterprise }).
+	game
+		cardPlayBy: starfighter
+		using: RedoCard
+		aimingAt: (PlayedPermanentCard
+				 using: (SpeedCard ownedBy: enterprise)
+				 aimingAt: { enterprise }).
 	game playNextTurn.
 	game playNextTurn.
 	game playNextTurn.
@@ -334,21 +346,22 @@ CardTest >> testRedoCardAppliesTheEffectOfACancellationCardButAimedAtADifferentT
 	game give: SpeedCard toHandsOf: planetExpress.
 
 	game playNextTurn.
-	game playAccelerationCardOwnedBy: enterprise.
-
-	game playNextTurn.
-	game playSpeedCardOwnedBy: planetExpress aimingAt: { planetExpress }.
+	game cardPlayBy: enterprise using: AccelerationCard aimingAt: {  }.
 
 	game playNextTurn.
 	game
-		playCancellationCardOwnedBy: starfighter
-		aimingAt: (PlayedPermanentCard
+		cardPlayBy: planetExpress
+		using: SpeedCard
+		aimingAt: { planetExpress }.
+
+	game playNextTurn.
+	game cardPlayBy: starfighter using: CancellationCard aimingAt: (PlayedPermanentCard
 				 using: (AccelerationCard ownedBy: enterprise)
 				 aimingAt: { 
 						 enterprise.
 						 starfighter.
 						 planetExpress }).
-	game playRedoCardOwnedBy: starfighter aimingAt: (PlayedPermanentCard
+	game cardPlayBy: starfighter using: RedoCard aimingAt: (PlayedPermanentCard
 			 using: (SpeedCard ownedBy: planetExpress)
 			 aimingAt: { planetExpress }).
 	game playNextTurn.
@@ -391,28 +404,38 @@ CardTest >> testRedoCardAppliesTheEffectOfARedoCard [
 	game give: SpeedCard toHandsOf: starfighter.
 
 	game playNextTurn.
-	game playAccelerationCardOwnedBy: enterprise.
+	game cardPlayBy: enterprise using: AccelerationCard aimingAt: {  }.
 
 	game playNextTurn.
-	game playSpeedCardOwnedBy: planetExpress aimingAt: { planetExpress }.
+	game
+		cardPlayBy: planetExpress
+		using: SpeedCard
+		aimingAt: { planetExpress }.
 
 	game playNextTurn.
-	game playSpeedCardOwnedBy: starfighter aimingAt: { starfighter }.
+	game
+		cardPlayBy: starfighter
+		using: SpeedCard
+		aimingAt: { starfighter }.
 
 	game
-		playCancellationCardOwnedBy: starfighter
+		cardPlayBy: starfighter
+		using: CancellationCard
 		aimingAt: (PlayedPermanentCard
 				 using: (AccelerationCard ownedBy: enterprise)
 				 aimingAt: { 
 						 enterprise.
 						 starfighter.
 						 planetExpress }).
-	game playRedoCardOwnedBy: starfighter aimingAt: (PlayedPermanentCard
-			 using: (SpeedCard ownedBy: planetExpress)
-			 aimingAt: { planetExpress }).
+	game
+		cardPlayBy: starfighter
+		using: RedoCard
+		aimingAt: (PlayedPermanentCard
+				 using: (SpeedCard ownedBy: planetExpress)
+				 aimingAt: { planetExpress }).
 
 	game playNextTurn.
-	game playRedoCardOwnedBy: enterprise aimingAt: (PlayedPermanentCard
+	game cardPlayBy: enterprise using: RedoCard aimingAt: (PlayedPermanentCard
 			 using: (SpeedCard ownedBy: starfighter)
 			 aimingAt: { starfighter }).
 
@@ -456,26 +479,34 @@ CardTest >> testRedoCardAppliesTheEffectOfARepeatCard [
 	game give: SpeedCard toHandsOf: starfighter.
 
 	game playNextTurn.
-	game playAccelerationCardOwnedBy: enterprise.
+	game cardPlayBy: enterprise using: AccelerationCard aimingAt: {  }.
 
 	game playNextTurn.
-	game playSpeedCardOwnedBy: planetExpress aimingAt: { planetExpress }.
+	game
+		cardPlayBy: planetExpress
+		using: SpeedCard
+		aimingAt: { planetExpress }.
 
 	game playNextTurn.
-	game playSpeedCardOwnedBy: starfighter aimingAt: { starfighter }.
+	game
+		cardPlayBy: starfighter
+		using: SpeedCard
+		aimingAt: { starfighter }.
 
 	game
-		playCancellationCardOwnedBy: starfighter
+		cardPlayBy: starfighter
+		using: CancellationCard
 		aimingAt: (PlayedPermanentCard
 				 using: (AccelerationCard ownedBy: enterprise)
 				 aimingAt: { 
 						 enterprise.
 						 starfighter.
 						 planetExpress }).
-	game playRepeatCardOwnedBy: starfighter aimingAt: starfighter.
+
+	game cardPlayBy: starfighter using: RepeatCard aimingAt: starfighter.
 
 	game playNextTurn.
-	game playRedoCardOwnedBy: enterprise aimingAt: enterprise.
+	game cardPlayBy: enterprise using: RedoCard  aimingAt: enterprise.
 
 	game playNextTurn.
 	self assert: (game positionTracker squareOf: enterprise) equals: 7.
@@ -512,10 +543,10 @@ CardTest >> testRedoCardAppliesTheEffectOfASpeedCard [
 	game give: SpeedCard toHandsOf: enterprise.
 
 	game playNextTurn.
-	game playSpeedCardOwnedBy: enterprise aimingAt: { enterprise }.
+	game cardPlayBy: enterprise using: SpeedCard aimingAt: { enterprise }.
 
 	game playNextTurn.
-	game playRedoCardOwnedBy: planetExpress aimingAt: { planetExpress }.
+	game cardPlayBy: planetExpress using: RedoCard aimingAt: { planetExpress }.
 
 	game playNextTurn.
 	game playNextTurn.
@@ -555,10 +586,10 @@ CardTest >> testRedoCardAppliesTheEffectOfAnAccelerationCard [
 	game give: AccelerationCard toHandsOf: enterprise.
 
 	game playNextTurn.
-	game playAccelerationCardOwnedBy: enterprise.
+	game cardPlayBy: enterprise using: AccelerationCard aimingAt: {  }.
 
 	game playNextTurn.
-	game playRedoCardOwnedBy: planetExpress aimingAt: { starfighter }.
+	game cardPlayBy: planetExpress using: RedoCard aimingAt: { starfighter }.
 
 	game playNextTurn.
 
@@ -596,10 +627,10 @@ CardTest >> testRedoCardAppliesTheEffectOfAnOverloadCard [
 	game give: OverloadCard toHandsOf: enterprise.
 
 	game playNextTurn.
-	game playOverloadCardOwnedBy: enterprise aimingAt: { planetExpress }.
+	game cardPlayBy: enterprise using: OverloadCard aimingAt: { planetExpress }.
 
 	game playNextTurn.
-	game playRedoCardOwnedBy: planetExpress aimingAt: { starfighter }.
+	game cardPlayBy: planetExpress using: RedoCard aimingAt: { starfighter  }.
 
 	game playNextTurn.
 
@@ -647,7 +678,7 @@ CardTest >> testRepeatCardAppliesTheEffectOfABlankSquare [
 	game give: RepeatCard toHandsOf: enterprise.
 
 	game playNextTurn.
-	game playRepeatCardOwnedBy: enterprise aimingAt: { enterprise }.
+	game cardPlayBy: enterprise using: RepeatCard aimingAt: { enterprise }.
 
 	game playNextTurn.
 	game playNextTurn.
@@ -686,7 +717,7 @@ CardTest >> testRepeatCardAppliesTheEffectOfADrawCardSquare [
 	game give: RepeatCard toHandsOf: enterprise.
 
 	game playNextTurn.
-	game playRepeatCardOwnedBy: enterprise aimingAt: { enterprise }.
+	game cardPlayBy: enterprise using: RepeatCard aimingAt: { enterprise }.
 
 	game playNextTurn.
 	game playNextTurn.
@@ -725,7 +756,7 @@ CardTest >> testRepeatCardAppliesTheEffectOfAHyperJumpSquare [
 	game give: RepeatCard toHandsOf: enterprise.
 
 	game playNextTurn.
-	game playRepeatCardOwnedBy: enterprise aimingAt: enterprise.
+	game cardPlayBy: enterprise using: RepeatCard aimingAt: enterprise.
 
 	game playNextTurn.
 	game playNextTurn.
@@ -764,7 +795,7 @@ CardTest >> testRepeatCardAppliesTheEffectOfAMoonWalkSquare [
 	game give: RepeatCard toHandsOf: enterprise.
 
 	game playNextTurn.
-	game playRepeatCardOwnedBy: enterprise aimingAt: enterprise.
+	game cardPlayBy: enterprise using: RepeatCard aimingAt: enterprise.
 
 	game playNextTurn.
 	game playNextTurn.
@@ -803,7 +834,7 @@ CardTest >> testRepeatCardAppliesTheEffectOfASpeedUpSquare [
 	game give: RepeatCard toHandsOf: enterprise.
 
 	game playNextTurn.
-	game playRepeatCardOwnedBy: enterprise aimingAt: enterprise.
+	game cardPlayBy: enterprise using: RepeatCard aimingAt: enterprise.
 
 	game playNextTurn.
 	game playNextTurn.
@@ -842,7 +873,7 @@ CardTest >> testRepeatCardAppliesTheEffectOfAWormHoleSquare [
 	game give: RepeatCard toHandsOf: enterprise.
 
 	game playNextTurn.
-	game playRepeatCardOwnedBy: enterprise aimingAt: enterprise.
+	game cardPlayBy: enterprise using: RepeatCard aimingAt: enterprise.
 
 	game playNextTurn.
 	game playNextTurn.
@@ -881,7 +912,7 @@ CardTest >> testRepeatCardAppliesTheEffectOfAnAtomicBombSquare [
 	game give: RepeatCard toHandsOf: enterprise.
 
 	game playNextTurn.
-	game playRepeatCardOwnedBy: enterprise aimingAt: { enterprise }.
+	game cardPlayBy: enterprise using: RepeatCard aimingAt: enterprise.
 
 	game playNextTurn.
 	game playNextTurn.
@@ -940,7 +971,7 @@ CardTest >> testSpeedCardIncreasesInOneThePlayOfSelectedShip [
 		        using: deck.
 
 	game playNextTurn.
-	game playSpeedCardOwnedBy: enterprise aimingAt: { enterprise }.
+	game cardPlayBy: enterprise using: SpeedCard aimingAt: { enterprise }.
 
 	game playNextTurn.
 	game playNextTurn.
