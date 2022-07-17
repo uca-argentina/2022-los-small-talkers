@@ -33,10 +33,12 @@ SkipCard >> initializeOwnedBy: aSpaceship [
 ]
 
 { #category : #accessing }
-SkipCard >> isPlayedIn: game aimingAt: target [
+SkipCard >> isPlayedIn: game [
 
-	game turnHandler skip: 1 of: game currentSpaceshipTurn.
-	^ PlayCardEvent using: self aimedAt: game currentSpaceshipTurn
+	|spaceshipSkipped|
+	spaceshipSkipped := game turnHandler currentSpaceshipTurn.
+	game playNextTurn.
+	^ PlayCardEvent using: self aimedAt: spaceshipSkipped
 ]
 
 { #category : #accessing }

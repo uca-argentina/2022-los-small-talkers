@@ -34,10 +34,10 @@ DoubleCard >> initializeOwnedBy: aSpaceship [
 ]
 
 { #category : #accessing }
-DoubleCard >> isPlayedIn: game aimingAt: target [
+DoubleCard >> isPlayedIn: game [
 
 	game turnHandler repeatTurn.
-	^ PlayCardEvent using: self aimedAt: {game currentSpaceshipTurn}.
+	^ PlayCardEvent using: self aimedAt: game turnHandler currentSpaceshipTurn
 ]
 
 { #category : #accessing }

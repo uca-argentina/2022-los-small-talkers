@@ -21,7 +21,7 @@ TurnHandler class >> withParticipating: spaceships [
 { #category : #'accessing current spaceship turn' }
 TurnHandler >> currentSpaceshipTurn [
 
-	^ spaceshipTurnSequence previous.
+	^ spaceshipTurnSequence current
 ]
 
 { #category : #initialization }

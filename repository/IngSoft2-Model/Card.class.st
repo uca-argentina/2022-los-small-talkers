@@ -29,12 +29,6 @@ Card >> initializeOwnedBy: aSpaceship [
 ]
 
 { #category : #accessing }
-Card >> isPlayedIn: game aimingAt: target [
-
-	self subclassResponsibility
-]
-
-{ #category : #accessing }
 Card >> owner [
 
 	self subclassResponsibility 

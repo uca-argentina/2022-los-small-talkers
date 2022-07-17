@@ -12,6 +12,9 @@ JailSquare >> = anotherDrawCardSquare [
 
 { #category : #'executing effects' }
 JailSquare >> applyEffectTo: spaceship from: game [
+
+	game jail confine: spaceship.
+	^ LandsOnSquareEvent from: spaceship landsOn: self
 ]
 
 { #category : #comparing }

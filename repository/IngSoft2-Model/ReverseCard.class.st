@@ -33,10 +33,10 @@ ReverseCard >> initializeOwnedBy: aSpaceship [
 ]
 
 { #category : #testing }
-ReverseCard >> isPlayedIn: game aimingAt: target [
+ReverseCard >> isPlayedIn: game [
 
 	game turnHandler reverseOrderOfTurns.
-	^ (PlayCardEvent using: self aimedAt: target)
+	^ PlayCardEvent using: self aimedAt: {  }
 ]
 
 { #category : #accessing }

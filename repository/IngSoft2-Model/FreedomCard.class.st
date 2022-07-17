@@ -34,6 +34,13 @@ FreedomCard >> initializeOwnedBy: aSpaceship [
 ]
 
 { #category : #accessing }
+FreedomCard >> isPlayedIn: game [
+
+	game jail free: owner.
+	^ PlayCardEvent using: self aimedAt: owner
+]
+
+{ #category : #accessing }
 FreedomCard >> owner [
 
 	^ owner

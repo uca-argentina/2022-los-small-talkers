@@ -27,6 +27,14 @@ LoadedDie >> initializeWith: aLoadedSide [
 	loadedSide := aLoadedSide.
 ]
 
+{ #category : #accessing }
+LoadedDie >> maxResult [
+
+	^ loadedSide
+
+	
+]
+
 { #category : #rolling }
 LoadedDie >> roll [
 	^ loadedSide.

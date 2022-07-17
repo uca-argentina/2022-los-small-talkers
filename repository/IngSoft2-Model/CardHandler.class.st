@@ -56,9 +56,3 @@ CardHandler >> take: aCard fromHandsOf: aSpaceship [
 
 	unplayedCards take: aCard fromHandsOf: aSpaceship
 ]
-
-{ #category : #accessing }
-CardHandler >> unplayedCardStack [
-
-	^ unplayedCards
-]

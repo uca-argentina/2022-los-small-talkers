@@ -400,6 +400,43 @@ GameInstanceTest >> testSlotDoesNotActivateWhenSomeoneStepsOnFirstSlotOfMaximumL
 				 (game positionTracker lapOf: enterprise) = 2 ] ])
 ]
 
+{ #category : #tests }
+GameInstanceTest >> testSpaceshipCanGetOutOfJailSquareIfItGetsTheMaximumPossibleDiceRollWithGivenDice [
+
+	| game enterprise planetExpress starfighter aDie aBoard squares deck |
+	enterprise := 'Enterprise'.
+	planetExpress := 'PlanetExpress'.
+	starfighter := 'StarFighter'.
+	squares := SquareGenerator
+		           creating: 10
+		           of: { BlankSquare }
+		           with: { 1 }.
+	squares at: 2 put: JailSquare new.
+	deck := Deck handingOver: { FreedomCard }.
+	aBoard := Board
+		          madeUpBy: squares
+		          stretchedInto: (Parsec amounting: 10).
+	aDie := LoadedDie with: 1.
+	game := TrenchRunGame
+		        withParticipating: { 
+				        enterprise.
+				        planetExpress.
+				        starfighter }
+		        rolling: aDie
+		        on: aBoard
+		        until: 1
+		        using: deck.
+
+	game playNextTurn.
+	self assert: (game jail isInJail: enterprise).
+	game playNextTurn.
+	self assert: (game jail isInJail: enterprise).
+	game playNextTurn.
+	self assert: (game jail isInJail: enterprise).
+	game playNextTurn.
+	self deny: (game jail isInJail: enterprise)
+]
+
 { #category : #'tests - positions' }
 GameInstanceTest >> testSpaceshipCompletingALapActuallyCountsIntoPositionTracker [
 

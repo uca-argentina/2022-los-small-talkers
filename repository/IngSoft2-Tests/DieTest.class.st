@@ -14,6 +14,32 @@ DieTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage [
 		description: 'Test did not fail for expected reason'
 ]
 
+{ #category : #tests }
+DieTest >> testAddingADieWithADiceCupTogetherMakesADiceCupWithItsMaximumBeingTheSumOfBothMaximums [
+
+	| sixSidedDie diceCupWithTwoEightSidedDice |
+	sixSidedDie := Die with: 6.
+	diceCupWithTwoEightSidedDice := DiceCup withAll: { 
+			                                (Die with: 8).
+			                                (Die with: 8) }.
+
+	self
+		assert: (diceCupWithTwoEightSidedDice + sixSidedDie) maxResult
+		equals:
+		diceCupWithTwoEightSidedDice maxResult + sixSidedDie maxResult 
+]
+
+{ #category : #tests }
+DieTest >> testAddingTwoDiceTogetherMakesADiceCupWithItsMaximumBeingTheSumOfBothDicesMaximums [
+
+	| sixSidedDie eightSidedDie |
+	sixSidedDie := Die with: 6.
+	eightSidedDie := Die with: 8.
+	
+	self assert: (sixSidedDie + eightSidedDie) maxResult equals: sixSidedDie maxResult + eightSidedDie maxResult.
+	
+]
+
 { #category : #'tests - DiceCup' }
 DieTest >> testCreatingDiceCupWithOnlyOneDiceIsValid [
 

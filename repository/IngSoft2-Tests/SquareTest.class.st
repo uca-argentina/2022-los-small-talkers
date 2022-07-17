@@ -37,6 +37,13 @@ SquareTest >> testHyperJumpSquareEqualsAnotherHyperJumpSquare [
 ]
 
 { #category : #tests }
+SquareTest >> testJailSquareEqualsAnotherJailSquare [
+
+	self assert: JailSquare new equals: JailSquare  new.
+	self assert: JailSquare  new hash equals: JailSquare new hash
+]
+
+{ #category : #tests }
 SquareTest >> testMoonWalkSquareEqualsAnotherMoonWalkSquare [
 
 	self

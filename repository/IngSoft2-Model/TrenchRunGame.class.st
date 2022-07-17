@@ -9,7 +9,8 @@ Class {
 		'endingLap',
 		'history',
 		'turnHandler',
-		'cardHandler'
+		'cardHandler',
+		'jail'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -39,7 +40,6 @@ TrenchRunGame >> cardPlayBy: aSpaceship using: aCard [
 	"If the card requires a target argument, then this method
 	will raise an Error with the message '(Card) did not understand the message Card >> #isPlayedIn:' "
 
-	self shouldBeImplemented.
 	cardHandler take: aCard fromHandsOf: aSpaceship.
 	history add: ((aCard ownedBy: aSpaceship) isPlayedIn: self)
 ]
@@ -75,11 +75,11 @@ TrenchRunGame >> initializeWithParticipating: spaceships rolling: aDiceCup on: a
 	dice := aDiceCup.
 	state := Started new.
 	endingLap := endLap.
+	jail := Jail new.
 	positionTracker := PositionTracker tracking: spaceships.
 	cardHandler := CardHandler withAll: spaceships drawingFrom: aDeck.
 	history := TrenchRunEventList new.
-	turnHandler := TurnHandler withParticipating: spaceships.
-	
+	turnHandler := TurnHandler withParticipating: spaceships
 ]
 
 { #category : #'asserting state' }
@@ -92,6 +92,12 @@ TrenchRunGame >> isFinished [
 TrenchRunGame >> isStarted [
 
 	^ state isStarted
+]
+
+{ #category : #accessing }
+TrenchRunGame >> jail [
+
+^ jail
 ]
 
 { #category : #'applying effects' }
@@ -162,6 +168,13 @@ TrenchRunGame >> playNextTurn [
 	squaresForward := cardHandler playedCardStack
 		                  applyEffectsTo: ship
 		                  using: dice roll.
+	(jail isInJail: ship) ifTrue: [ 
+		(squaresForward < dice maxResult) ifTrue: [ 
+			 squaresForward := 0.
+		] ifFalse: [ 
+		 	jail free: ship.
+		]
+	].
 	self move: ship anAmountOf: squaresForward.
 	self isFinished ifFalse: [ 
 		history add: (gameBoard

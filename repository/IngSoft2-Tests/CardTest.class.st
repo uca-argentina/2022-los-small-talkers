@@ -164,6 +164,96 @@ CardTest >> testCancellationCardRemovesAnActiveAccelerationCard [
 	self assert: (game positionTracker squareOf: starfighter) equals: 2
 ]
 
+{ #category : #tests }
+CardTest >> testDoubleCardAllowsSpaceshipToThrowTwice [
+
+	| game enterprise planetExpress starfighter aDie aBoard squares deck |
+	enterprise := 'Enterprise'.
+	planetExpress := 'PlanetExpress'.
+	starfighter := 'StarFighter'.
+	squares := SquareGenerator
+		           creating: 10
+		           of: { BlankSquare }
+		           with: { 1 }.
+	deck := Deck handingOver: { DoubleCard }.
+	aBoard := Board
+		          madeUpBy: squares
+		          stretchedInto: (Parsec amounting: 10).
+	aDie := LoadedDie with: 1.
+	game := TrenchRunGame
+		        withParticipating: { 
+				        enterprise.
+				        planetExpress.
+				        starfighter }
+		        rolling: aDie
+		        on: aBoard
+		        until: 1
+		        using: deck.
+
+	game playNextTurn.
+	game cardPlayBy: enterprise using: DoubleCard.
+	game playNextTurn.
+
+	self assert: (game positionTracker squareOf: enterprise) equals: 3.
+	self assert: (game positionTracker squareOf: planetExpress) equals: 1.
+	self assert: (game positionTracker squareOf: starfighter) equals: 1.
+]
+
+{ #category : #tests }
+CardTest >> testDoubleCardEqualsAnotherDoubleCard [
+
+	self
+		assert: (DoubleCard ownedBy: 'Enterprise')
+		equals: (DoubleCard ownedBy: 'Enterprise').
+	self
+		assert: (DoubleCard ownedBy: 'Enterprise') hash
+		equals: (DoubleCard ownedBy: 'Enterprise') hash
+]
+
+{ #category : #tests }
+CardTest >> testFreedomCardEqualsAnotherFreedomCard [
+
+	self
+		assert: (FreedomCard ownedBy: 'Enterprise')
+		equals: (FreedomCard ownedBy: 'Enterprise').
+	self
+		assert: (FreedomCard ownedBy: 'Enterprise') hash
+		equals: (FreedomCard ownedBy: 'Enterprise') hash
+]
+
+{ #category : #tests }
+CardTest >> testFreedomCardFreesOwnerFromJail [
+
+	| game enterprise planetExpress starfighter aDie aBoard squares deck |
+	enterprise := 'Enterprise'.
+	planetExpress := 'PlanetExpress'.
+	starfighter := 'StarFighter'.
+	squares := SquareGenerator
+		           creating: 10
+		           of: { JailSquare }
+		           with: { 1 }.
+	deck := Deck handingOver: { FreedomCard }.
+	aBoard := Board
+		          madeUpBy: squares
+		          stretchedInto: (Parsec amounting: 10).
+	aDie := LoadedDie with: 1.
+	game := TrenchRunGame
+		        withParticipating: { 
+				        enterprise.
+				        planetExpress.
+				        starfighter }
+		        rolling: aDie
+		        on: aBoard
+		        until: 1
+		        using: deck.
+
+	game playNextTurn.
+	self assert: (game jail isInJail: enterprise).
+
+	game cardPlayBy: enterprise using: FreedomCard.
+	self deny: (game jail isInJail: enterprise)
+]
+
 { #category : #accessing }
 CardTest >> testOverloadCardEqualsAnotherOverloadCardWithSameValues [
 
@@ -931,6 +1021,95 @@ CardTest >> testRepeatCardEqualsAnotherRepeatCardWithSameValues [
 	self
 		assert: (RepeatCard ownedBy: 'Enterprise') hash
 		equals: (RepeatCard ownedBy: 'Enterprise') hash
+]
+
+{ #category : #tests }
+CardTest >> testReverseCardEqualsAnotherReverseCard [
+
+	self
+		assert: (ReverseCard ownedBy: 'Enterprise')
+		equals: (ReverseCard  ownedBy: 'Enterprise').
+	self
+		assert: (ReverseCard ownedBy: 'Enterprise') hash
+		equals: (ReverseCard ownedBy: 'Enterprise') hash
+]
+
+{ #category : #tests }
+CardTest >> testReverseCardReversesTheOrderOfTurns [
+
+	| game enterprise planetExpress starfighter aDie aBoard squares deck |
+	enterprise := 'Enterprise'.
+	planetExpress := 'PlanetExpress'.
+	starfighter := 'StarFighter'.
+	squares := SquareGenerator
+		           creating: 10
+		           of: { BlankSquare }
+		           with: { 1 }.
+	deck := Deck handingOver: { ReverseCard }.
+	aBoard := Board
+		          madeUpBy: squares
+		          stretchedInto: (Parsec amounting: 10).
+	aDie := LoadedDie with: 1.
+	game := TrenchRunGame
+		        withParticipating: { 
+				        enterprise.
+				        planetExpress.
+				        starfighter }
+		        rolling: aDie
+		        on: aBoard
+		        until: 1
+		        using: deck.
+		
+	game playNextTurn.
+	game cardPlayBy: starfighter using: ReverseCard.
+	game playNextTurn.
+
+	self
+		assert: game turnHandler currentSpaceshipTurn
+		equals: starfighter
+]
+
+{ #category : #accessing }
+CardTest >> testSkipCardEqualsAnotherSkipCardWithSameValues [
+
+	self
+		assert: (SkipCard ownedBy: 'Enterprise')
+		equals: (SkipCard ownedBy: 'Enterprise').
+	self
+		assert: (SkipCard ownedBy: 'Enterprise') hash
+		equals: (SkipCard ownedBy: 'Enterprise') hash
+]
+
+{ #category : #tests }
+CardTest >> testSkipCardSkipsToTheNextTurn [
+
+	| game enterprise planetExpress starfighter aDie aBoard squares deck |
+	enterprise := 'Enterprise'.
+	planetExpress := 'PlanetExpress'.
+	starfighter := 'StarFighter'.
+	squares := SquareGenerator
+		           creating: 10
+		           of: { BlankSquare }
+		           with: { 1 }.
+	deck := Deck handingOver: { SkipCard }.
+	aBoard := Board
+		          madeUpBy: squares
+		          stretchedInto: (Parsec amounting: 10).
+	aDie := LoadedDie with: 1.
+	game := TrenchRunGame
+		        withParticipating: { 
+				        enterprise.
+				        planetExpress.
+				        starfighter }
+		        rolling: aDie
+		        on: aBoard
+		        until: 1
+		        using: deck.
+	game give: AccelerationCard toHandsOf: enterprise.
+	game playNextTurn.
+	game cardPlayBy: starfighter using: SkipCard.
+	
+	self assert: (game turnHandler currentSpaceshipTurn) equals: planetExpress
 ]
 
 { #category : #accessing }
