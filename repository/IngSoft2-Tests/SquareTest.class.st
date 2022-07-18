@@ -29,11 +29,17 @@ SquareTest >> testDrawCardSquareEqualsAnotherDrawCardSquare [
 SquareTest >> testHyperJumpSquareEqualsAnotherHyperJumpSquare [
 
 	self
-		assert: (HyperJumpSquare withParsecs: { 10 })
-		equals: (HyperJumpSquare withParsecs: { 10 }).
+		assert: (HyperJumpSquare with: { (Parsec amounting: 10) })
+		equals: (HyperJumpSquare with: { (Parsec amounting: 10) }).
 	self
-		assert: (HyperJumpSquare withParsecs: { 10 }) hash
-		equals: (HyperJumpSquare withParsecs: { 10 }) hash
+		assert: (HyperJumpSquare with: { (Parsec amounting: 10) }) hash
+		equals: (HyperJumpSquare with: { (Parsec amounting: 10) }) hash.
+	self
+		assert: (HyperJumpSquare with: { (LightYear amounting: 10) })
+		equals: (HyperJumpSquare with: { (LightYear amounting: 10) }).
+	self
+		assert: (HyperJumpSquare with: { (LightYear amounting: 10) }) hash
+		equals: (HyperJumpSquare with: { (LightYear amounting: 10) }) hash
 ]
 
 { #category : #tests }
@@ -59,7 +65,7 @@ SquareTest >> testNewMethodInHyperJumpSquareCreatesAValidRandomizedInstanceWithA
 
 	|square|
 	square := HyperJumpSquare new.
-	self assert: (square parsecSequence) className equals: 'TrenchRunSequence'  
+	self assert: (square jumpSequence) className equals: 'TrenchRunSequence'  
 ]
 
 { #category : #tests }

@@ -46,13 +46,13 @@ TurnHandler >> nextSpaceshipTurn [
 	^ nextSpaceship
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'alter order of turns' }
 TurnHandler >> repeatTurn [
 
 	spaceshipTurnSequence repeatLastOnNext.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'alter order of turns' }
 TurnHandler >> reverseOrderOfTurns [
 	
 	spaceshipTurnSequence := spaceshipTurnSequence reversed.

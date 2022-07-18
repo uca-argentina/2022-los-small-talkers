@@ -20,6 +20,24 @@ LightYear class >> assertValid: anAmountOfLightYears [
 	anAmountOfLightYears < 0 ifTrue: [ Error signal: 'LightYears cannot amount to a negative number' ]
 ]
 
+{ #category : #comparing }
+LightYear >> = anotherDistanceUnit [
+
+	^ (self inLightYears = anotherDistanceUnit inLightYears)
+]
+
+{ #category : #comparing }
+LightYear >> > anotherDistanceUnit [
+
+	^ (self inLightYears > anotherDistanceUnit inLightYears)
+]
+
+{ #category : #comparing }
+LightYear >> hash [ 
+
+	^ self inLightYears hash
+]
+
 { #category : #accessing }
 LightYear >> inLightYears [
 

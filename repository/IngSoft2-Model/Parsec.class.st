@@ -21,6 +21,24 @@ Parsec class >> assertValid: anAmountOfParsecs [
 		Error signal: 'Parsecs cannot amount to a negative number' ]
 ]
 
+{ #category : #comparing }
+Parsec >> = anotherDistanceUnit [
+
+	^ (self inLightYears = anotherDistanceUnit inLightYears)
+]
+
+{ #category : #comparing }
+Parsec >> > anotherDistanceUnit [
+
+	^ (self inLightYears > anotherDistanceUnit inLightYears)
+]
+
+{ #category : #comparing }
+Parsec >> hash [ 
+
+	^ self inLightYears hash
+]
+
 { #category : #accessing }
 Parsec >> inLightYears [
 

@@ -2,7 +2,7 @@ Class {
 	#name : #HyperJumpSquare,
 	#superclass : #Square,
 	#instVars : [
-		'parsecSequence'
+		'jumpSequence'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -16,52 +16,44 @@ HyperJumpSquare class >> new [
 { #category : #'parameter randomization' }
 HyperJumpSquare class >> randomizeParsecSequence [
 
-	^((1 to: 3 atRandom by: 1) collect: [:aNumber | 20 atRandom ])
+	^((1 to: 3 atRandom by: 1) collect: [:aNumber | (Parsec amounting: (20 atRandom)) ])
 ]
 
 { #category : #'instance creation' }
-HyperJumpSquare class >> withLightYears: aNumberOfJumps [
+HyperJumpSquare class >> with: aNumberOfDistanceJumps [
 
-	|jumpsInParsecs|
-	jumpsInParsecs := aNumberOfJumps collect: [ :jumpInLightYears | jumpInLightYears /3 ].
-	^ self new initializeWith: jumpsInParsecs 
-]
-
-{ #category : #'instance creation' }
-HyperJumpSquare class >> withParsecs: aNumberOfJumps [
-
-	^ self new initializeWith: aNumberOfJumps
+	^ self new initializeWith: aNumberOfDistanceJumps 
 ]
 
 { #category : #comparing }
 HyperJumpSquare >> = anotherHyperJumpSquare [
 
-	^(parsecSequence = anotherHyperJumpSquare parsecSequence and: [ anotherHyperJumpSquare className match: self className ])
+	^(jumpSequence = anotherHyperJumpSquare jumpSequence and: [ anotherHyperJumpSquare className match: self className ])
 ]
 
 { #category : #'executing effects' }
 HyperJumpSquare >> applyEffectTo: spaceship from: game [
 
-	game move: spaceship by: parsecSequence next.
+	game move: spaceship by: jumpSequence next.
 	^ LandsOnSquareEvent from: spaceship landsOn: self
 ]
 
 { #category : #comparing }
 HyperJumpSquare >> hash [ 
 
-	^( self className hash bitXor: ( parsecSequence hash ))
+	^( self className hash bitXor: ( jumpSequence hash ))
 ]
 
 { #category : #initialization }
 HyperJumpSquare >> initializeWith: aNumberOfDistanceJumps [
 
-	parsecSequence := TrenchRunSequence withAll:
+	jumpSequence := TrenchRunSequence withAll:
 		                  (aNumberOfDistanceJumps sorted: [ :jumpA :jumpB | 
-			                   jumpA > jumpB ])
+			                   (jumpA > jumpB)  ])
 ]
 
 { #category : #initialization }
-HyperJumpSquare >> parsecSequence [
+HyperJumpSquare >> jumpSequence [
 
-	^ parsecSequence 
+	^ jumpSequence 
 ]

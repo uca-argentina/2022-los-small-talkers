@@ -191,8 +191,8 @@ GameInstanceTest >> testHyperJumpCanMovePlayersInLightYears [
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
-	squares at: 2 put: (HyperJumpSquare withLightYears: { 3. 4 }).
-	squares at: 5 put: (HyperJumpSquare withLightYears: { 1. 2 }).
+	squares at: 2 put: (HyperJumpSquare with: { (LightYear amounting: 3). (LightYear amounting: 4) }).
+	squares at: 5 put: (HyperJumpSquare with: { (LightYear amounting: 1). (LightYear amounting: 2) }).
 	board := Board
 		         madeUpBy: squares
 		         stretchedInto: (LightYear amounting: 20).
@@ -224,8 +224,8 @@ GameInstanceTest >> testHyperJumpMovesPlayersInDescendingOrderOfSequenceGiven [
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
-	squares at: 2 put: (HyperJumpSquare withParsecs: { 3. 4 }).
-	squares at: 5 put: (HyperJumpSquare withParsecs: { 1. 2 }).
+	squares at: 2 put: (HyperJumpSquare with: { (Parsec amounting: 3). (Parsec amounting: 4) }).
+	squares at: 5 put: (HyperJumpSquare with: { (Parsec amounting: 1). (Parsec amounting: 2) }).
 	board := Board
 		         madeUpBy: squares
 		         stretchedInto: (Parsec amounting: 20).
@@ -371,6 +371,33 @@ GameInstanceTest >> testShipCannotStartAnotherTurnOnceGameHasFinished [
 		should: [ aGame playNextTurn ]
 		raise: Error
 		withMessage: 'Cannot start another turn in a finished game'
+]
+
+{ #category : #'tests - slot functionality' }
+GameInstanceTest >> testSkippingTurnOfASecondShipInATwoSpaceshipGameMakesTheNextTurnTheFirstSpaceshipsTurn [
+
+	| aGame enterprise dice board squares planetExpress|
+	dice := LoadedDie with: 8.
+	squares := SquareGenerator
+		           creating: 10
+		           of: { BlankSquare }
+		           with: { 1 }.
+	squares at: 9 put: WormHoleSquare new.
+	board := Board madeUpBy: squares stretchedInto: (Parsec amounting: 10).
+	enterprise := 'Enterprise'.
+	planetExpress := 'Planet Express'.
+	aGame := TrenchRunGame
+		         withParticipating: { enterprise . planetExpress }
+		         rolling: dice
+		         on: board
+		         until: 1
+		         using: (Deck handingOver: { SpeedCard }).
+		
+	aGame turnHandler skip: 1 of: planetExpress.
+	aGame playNextTurn.
+	self assert: (aGame turnHandler currentSpaceshipTurn) equals: enterprise.
+	aGame playNextTurn.
+	self assert: (aGame turnHandler currentSpaceshipTurn) equals: enterprise.
 ]
 
 { #category : #tests }
@@ -662,7 +689,10 @@ GameInstanceTest >> testWormHoleSlotBackTracksFourSquares [
 		         rolling: dice
 		         on: board
 		         until: 1
-		         using: (Deck handingOver: { SpeedCard })
+		         using: (Deck handingOver: { SpeedCard }).
+	
+	aGame playNextTurn.
+	self assert: (aGame positionTracker squareOf: enterprise) equals: 5
 ]
 
 { #category : #'tests - slot functionality' }

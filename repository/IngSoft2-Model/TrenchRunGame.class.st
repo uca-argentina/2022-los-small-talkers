@@ -135,9 +135,9 @@ TrenchRunGame >> move: ship anAmountOf: squares [
 ]
 
 { #category : #'turn related' }
-TrenchRunGame >> move: spaceship by: aNumberOfParsecs [
+TrenchRunGame >> move: spaceship by: someDistance [
 
-	self move: spaceship anAmountOf: (aNumberOfParsecs / gameBoard parsecsPerSquare)
+	self move: spaceship anAmountOf: (someDistance inParsecs / gameBoard parsecsPerSquare)
 ]
 
 { #category : #'turn related' }

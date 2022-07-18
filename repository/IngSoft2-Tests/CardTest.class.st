@@ -828,7 +828,7 @@ CardTest >> testRepeatCardAppliesTheEffectOfAHyperJumpSquare [
 		           creating: 10
 		           of: { BlankSquare }
 		           with: { 1 }.
-	squares at: 2 put: (HyperJumpSquare withParsecs: { 3 }).
+	squares at: 2 put: (HyperJumpSquare with: { Parsec amounting: 3 }).
 	deck := Deck handingOver: { CancellationCard }.
 	aBoard := Board
 		          madeUpBy: squares
