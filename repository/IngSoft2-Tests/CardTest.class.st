@@ -15,7 +15,7 @@ CardTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage [
 ]
 
 { #category : #tests }
-CardTest >> testPlayingAPermanentCardOutOfTurnIsInvalid [
+CardTest >> testPlayingAPermanentCardOutOfTurnIsNotValid [
 
 	| game enterprise planetExpress starfighter aDie aBoard squares deck |
 	enterprise := 'Enterprise'.
