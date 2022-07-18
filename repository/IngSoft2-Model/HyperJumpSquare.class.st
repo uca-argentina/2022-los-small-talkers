@@ -2,7 +2,8 @@ Class {
 	#name : #HyperJumpSquare,
 	#superclass : #Square,
 	#instVars : [
-		'parsecSequence'
+		'parsecSequence',
+		'playedReversePolarityCardCount'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -39,10 +40,28 @@ HyperJumpSquare >> = anotherHyperJumpSquare [
 	^(parsecSequence = anotherHyperJumpSquare parsecSequence and: [ anotherHyperJumpSquare className match: self className ])
 ]
 
+{ #category : #'Reverse Polarity Card handling' }
+HyperJumpSquare >> addReversePolarityCard: aReversePolarityCard [
+
+	playedReversePolarityCardCount
+		ifNil: [ playedReversePolarityCardCount := 1 ]
+		ifNotNil: [ playedReversePolarityCardCount := 0 ]
+]
+
 { #category : #'executing effects' }
 HyperJumpSquare >> applyEffectTo: spaceship from: game [
 
-	game move: spaceship by: parsecSequence next.
+	game move: spaceship by: parsecSequence next
+]
+
+{ #category : #'executing effects' }
+HyperJumpSquare >> applyReverseEffectTo: spaceship from: game [
+	
+	| target |
+	target := game spaceships.
+	target remove: spaceship.
+	
+	target do: [ :ship | game move: ship by: parsecSequence next ].
 ]
 
 { #category : #comparing }
@@ -62,4 +81,12 @@ HyperJumpSquare >> initializeWith: someJumps [
 HyperJumpSquare >> parsecSequence [
 
 	^ parsecSequence 
+]
+
+{ #category : #'Reverse Polarity Card handling' }
+HyperJumpSquare >> playedReversePolarityCardCount [
+
+	playedReversePolarityCardCount
+		ifNil: [ ^ 0 ]
+		ifNotNil: [ ^ playedReversePolarityCardCount ]
 ]

@@ -7,6 +7,14 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #'removing card from player' }
+OnHandCardStack >> amountOfCardsOf: spaceship [
+
+	| temp |
+	temp := cards select: [ :card | card owner = spaceship ].
+	^ temp size
+]
+
 { #category : #accessing }
 OnHandCardStack >> cards [
 

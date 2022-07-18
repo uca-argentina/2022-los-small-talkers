@@ -1,11 +1,11 @@
 Class {
-	#name : #GameInstanceTest,
+	#name : #TrenchRunGameTest,
 	#superclass : #TestCase,
 	#category : #'IngSoft2-Tests'
 }
 
 { #category : #asserting }
-GameInstanceTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage [
+TrenchRunGameTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage [
 
 	^self 
 		should: aBlock 
@@ -15,7 +15,7 @@ GameInstanceTest >> should: aBlock raise: anErrorType withMessage: anErrorMessag
 ]
 
 { #category : #'tests - state asserting' }
-GameInstanceTest >> testAskingForGameStateWhenFinishedReturnsFinished [
+TrenchRunGameTest >> testAskingForGameStateWhenFinishedReturnsFinished [
 
 	| game enterprise aDiceCup aBoard squares deck |
 	enterprise := 'Enterprise'.
@@ -39,7 +39,7 @@ GameInstanceTest >> testAskingForGameStateWhenFinishedReturnsFinished [
 ]
 
 { #category : #'tests - state asserting' }
-GameInstanceTest >> testAskingForGameStateWhenStartedReturnsStarted [
+TrenchRunGameTest >> testAskingForGameStateWhenStartedReturnsStarted [
 
 	| game enterprise aDiceCup aBoard squares deck |
 	enterprise := 'Enterprise'.
@@ -63,7 +63,7 @@ GameInstanceTest >> testAskingForGameStateWhenStartedReturnsStarted [
 ]
 
 { #category : #'tests - winner' }
-GameInstanceTest >> testAskingForWinnerWhenGameStillHasNotFinishedIsInvalid [
+TrenchRunGameTest >> testAskingForWinnerWhenGameStillHasNotFinishedIsInvalid [
 
 	| game aBoard enterprise die squares deck |
 	squares := SquareGenerator
@@ -89,7 +89,7 @@ GameInstanceTest >> testAskingForWinnerWhenGameStillHasNotFinishedIsInvalid [
 ]
 
 { #category : #'tests - slot functionality' }
-GameInstanceTest >> testAtomicBombSlotResetsPositionsToOneButMaintainsNumberOfLaps [
+TrenchRunGameTest >> testAtomicBombSlotResetsPositionsToOneButMaintainsNumberOfLaps [
 
 	| aGame enterprise board starfighter explorer aDie squares deck |
 	aDie := LoadedDie with: 15.
@@ -131,7 +131,7 @@ GameInstanceTest >> testAtomicBombSlotResetsPositionsToOneButMaintainsNumberOfLa
 ]
 
 { #category : #'tests - slot functionality' }
-GameInstanceTest >> testBlankSlotHasNoEffect [
+TrenchRunGameTest >> testBlankSlotHasNoEffect [
 
 	| aGame enterprise dice board squares |
 	dice := LoadedDie with: 5.
@@ -155,7 +155,7 @@ GameInstanceTest >> testBlankSlotHasNoEffect [
 ]
 
 { #category : #'tests - starting game checks' }
-GameInstanceTest >> testGameWithOneSpaceshipIsStartedOnceFirstHandIsPlayed [
+TrenchRunGameTest >> testGameWithOneSpaceshipIsStartedOnceFirstHandIsPlayed [
 
 	| game enterprise aDiceCup aBoard squares |
 	enterprise := 'Enterprise'.
@@ -178,7 +178,7 @@ GameInstanceTest >> testGameWithOneSpaceshipIsStartedOnceFirstHandIsPlayed [
 ]
 
 { #category : #'tests - slot functionality' }
-GameInstanceTest >> testHyperJumpCanMovePlayersInLightYears [
+TrenchRunGameTest >> testHyperJumpCanMovePlayersInLightYears [
 
 	| game enterprise die board squares |
 	enterprise := 'Enterprise'.
@@ -209,7 +209,7 @@ GameInstanceTest >> testHyperJumpCanMovePlayersInLightYears [
 ]
 
 { #category : #'tests - slot functionality' }
-GameInstanceTest >> testHyperJumpMovesPlayersInDescendingOrderOfSequenceGiven [
+TrenchRunGameTest >> testHyperJumpMovesPlayersInDescendingOrderOfSequenceGiven [
 
 	| game enterprise die board squares |
 	enterprise := 'Enterprise'.
@@ -240,7 +240,7 @@ GameInstanceTest >> testHyperJumpMovesPlayersInDescendingOrderOfSequenceGiven [
 ]
 
 { #category : #'tests - slot functionality' }
-GameInstanceTest >> testMoonWalkSlotBackTracksEverySpaceshipAnAmountOfSquaresExceptFromTheShipPlayingTheirTurn [
+TrenchRunGameTest >> testMoonWalkSlotBackTracksEverySpaceshipAnAmountOfSquaresExceptFromTheShipPlayingTheirTurn [
 
 	| aGame enterprise board starfighter explorer aDie squares |
 	aDie := LoadedDie with: 3.
@@ -277,7 +277,7 @@ GameInstanceTest >> testMoonWalkSlotBackTracksEverySpaceshipAnAmountOfSquaresExc
 ]
 
 { #category : #'tests - positions' }
-GameInstanceTest >> testMultipleShipsPositionsOnceGameIsFinished [
+TrenchRunGameTest >> testMultipleShipsPositionsOnceGameIsFinished [
 
 	| enterprise starfighter explorer aBoard aLoadedDie aGame winner squares |
 	enterprise := 'Enterprise'.
@@ -310,7 +310,7 @@ GameInstanceTest >> testMultipleShipsPositionsOnceGameIsFinished [
 ]
 
 { #category : #'tests - winner' }
-GameInstanceTest >> testOneShippedGameCanOnlyKnowWinnerOnceGameIsFinished [
+TrenchRunGameTest >> testOneShippedGameCanOnlyKnowWinnerOnceGameIsFinished [
 
 	| enterprise aBoard aGame aLoadedDie winner squares |
 	enterprise := 'Enterprise'.
@@ -335,7 +335,7 @@ GameInstanceTest >> testOneShippedGameCanOnlyKnowWinnerOnceGameIsFinished [
 ]
 
 { #category : #'tests - starting game checks' }
-GameInstanceTest >> testShipCannotStartAnotherTurnOnceGameHasFinished [
+TrenchRunGameTest >> testShipCannotStartAnotherTurnOnceGameHasFinished [
 
 	| enterprise starfighter explorer aBoard aLoadedDie aGame squares |
 	enterprise := 'Enterprise'.
@@ -366,7 +366,7 @@ GameInstanceTest >> testShipCannotStartAnotherTurnOnceGameHasFinished [
 ]
 
 { #category : #tests }
-GameInstanceTest >> testSlotDoesNotActivateWhenSomeoneStepsOnFirstSlotOfMaximumLapPlusOne [
+TrenchRunGameTest >> testSlotDoesNotActivateWhenSomeoneStepsOnFirstSlotOfMaximumLapPlusOne [
 
 	| game enterprise die board squares |
 	enterprise := 'Enterprise'.
@@ -391,7 +391,7 @@ GameInstanceTest >> testSlotDoesNotActivateWhenSomeoneStepsOnFirstSlotOfMaximumL
 ]
 
 { #category : #'tests - positions' }
-GameInstanceTest >> testSpaceshipCompletingALapActuallyCountsIntoPositionTracker [
+TrenchRunGameTest >> testSpaceshipCompletingALapActuallyCountsIntoPositionTracker [
 
 	| game enterprise aDiceCup aBoard squares |
 	enterprise := 'Enterprise'.
@@ -416,7 +416,7 @@ GameInstanceTest >> testSpaceshipCompletingALapActuallyCountsIntoPositionTracker
 ]
 
 { #category : #'tests - slot functionality' }
-GameInstanceTest >> testSpeedUpSlotForwardTracksFourSquares [
+TrenchRunGameTest >> testSpeedUpSlotForwardTracksFourSquares [
 
 	| aGame enterprise dice board squares |
 	dice := LoadedDie with: 3.
@@ -441,7 +441,7 @@ GameInstanceTest >> testSpeedUpSlotForwardTracksFourSquares [
 ]
 
 { #category : #tests }
-GameInstanceTest >> testSprintSlotForwardTracksSpaceshipByTheAmountOfCardsInTtsHand [
+TrenchRunGameTest >> testSprintSlotForwardTracksSpaceshipByTheAmountOfCardsInTtsHand [
 	
 	| game enterprise dice board squares |
 	dice := LoadedDie with: 3.
@@ -467,7 +467,7 @@ GameInstanceTest >> testSprintSlotForwardTracksSpaceshipByTheAmountOfCardsInTtsH
 ]
 
 { #category : #'tests - starting game checks' }
-GameInstanceTest >> testStartedGamePlaysUntilOneSpaceshipWins [
+TrenchRunGameTest >> testStartedGamePlaysUntilOneSpaceshipWins [
 
 	| enterprise starfighter aBoard aLoadedDie aGame squares |
 	enterprise := 'Enterprise'.
@@ -496,7 +496,7 @@ GameInstanceTest >> testStartedGamePlaysUntilOneSpaceshipWins [
 ]
 
 { #category : #'tests - starting game checks' }
-GameInstanceTest >> testStartingGameWithTwoOrMoreSpaceshipsIsValid [
+TrenchRunGameTest >> testStartingGameWithTwoOrMoreSpaceshipsIsValid [
 
 	| game starfighter enterprise aDiceCup aBoard squares |
 	enterprise := 'Enterprise'.
@@ -523,7 +523,7 @@ GameInstanceTest >> testStartingGameWithTwoOrMoreSpaceshipsIsValid [
 ]
 
 { #category : #'tests - winner' }
-GameInstanceTest >> testTwoShippedGameCanOnlyKnowWinnerOnceGameIsFinished [
+TrenchRunGameTest >> testTwoShippedGameCanOnlyKnowWinnerOnceGameIsFinished [
 
 	| enterprise starfighter aLoadedDie aGame aBoard winner squares |
 	enterprise := 'Enterprise'.
@@ -553,7 +553,7 @@ GameInstanceTest >> testTwoShippedGameCanOnlyKnowWinnerOnceGameIsFinished [
 ]
 
 { #category : #'tests - winner' }
-GameInstanceTest >> testWinnerOfFixedMatchMatchesPositionsTable [
+TrenchRunGameTest >> testWinnerOfFixedMatchMatchesPositionsTable [
 
 	| enterprise starfighter aBoard aLoadedDie aGame positions squares |
 	enterprise := 'Enterprise'.
@@ -586,7 +586,7 @@ GameInstanceTest >> testWinnerOfFixedMatchMatchesPositionsTable [
 ]
 
 { #category : #'tests - winner' }
-GameInstanceTest >> testWinnerOfFixedMatchMatchesRanking [
+TrenchRunGameTest >> testWinnerOfFixedMatchMatchesRanking [
 
 	| enterprise starfighter aBoard aLoadedDie aGame positions squares |
 	enterprise := 'Enterprise'.
@@ -618,7 +618,7 @@ GameInstanceTest >> testWinnerOfFixedMatchMatchesRanking [
 ]
 
 { #category : #'tests - slot functionality' }
-GameInstanceTest >> testWormHoleSlotBackTracksFourSquares [
+TrenchRunGameTest >> testWormHoleSlotBackTracksFourSquares [
 
 	| aGame enterprise dice board squares |
 	dice := LoadedDie with: 8.
@@ -638,7 +638,7 @@ GameInstanceTest >> testWormHoleSlotBackTracksFourSquares [
 ]
 
 { #category : #'tests - slot functionality' }
-GameInstanceTest >> testWormHoleSlotBackTracksToSquareOneIfSpaceshipIsOnLapOneAndSquareIsNotGreaterThanFour [
+TrenchRunGameTest >> testWormHoleSlotBackTracksToSquareOneIfSpaceshipIsOnLapOneAndSquareIsNotGreaterThanFour [
 
 	| aGame enterprise dice board squares |
 	dice := LoadedDie with: 1.

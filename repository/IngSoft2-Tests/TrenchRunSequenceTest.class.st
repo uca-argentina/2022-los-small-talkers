@@ -1,11 +1,11 @@
 Class {
-	#name : #SequenceTest,
+	#name : #TrenchRunSequenceTest,
 	#superclass : #TestCase,
 	#category : #'IngSoft2-Tests'
 }
 
 { #category : #tests }
-SequenceTest >> testSequenceHoldsACorrectfullyOrderedCollectionOfSpaceships [
+TrenchRunSequenceTest >> testSequenceHoldsACorrectfullyOrderedCollectionOfSpaceships [
 
 	| enterprise starfighter sequence |
 	enterprise := 'Enterprise'.
@@ -20,7 +20,7 @@ SequenceTest >> testSequenceHoldsACorrectfullyOrderedCollectionOfSpaceships [
 ]
 
 { #category : #tests }
-SequenceTest >> testSequenceResetsWhenGoesOverAllElements [
+TrenchRunSequenceTest >> testSequenceResetsWhenGoesOverAllElements [
 
 	| sequence |
 	sequence := TrenchRunSequence withAll: { 1. 2 }.
