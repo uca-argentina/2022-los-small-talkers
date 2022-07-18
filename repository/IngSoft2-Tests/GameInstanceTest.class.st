@@ -440,6 +440,32 @@ GameInstanceTest >> testSpeedUpSlotForwardTracksFourSquares [
 	self assert: (aGame lapOf: enterprise) equals: 1
 ]
 
+{ #category : #tests }
+GameInstanceTest >> testSprintSlotForwardTracksSpaceshipByTheAmountOfCardsInTtsHand [
+	
+	| game enterprise dice board squares |
+	dice := LoadedDie with: 3.
+	squares := SquareGenerator
+		           creating: 10
+		           of: { BlankSquare }
+		           with: { 1 }.
+	squares at: 4 put: SprintSquare new.
+	board := Board madeUpBy: squares stretchedIntoParsecs: 10.
+	enterprise := 'Enterprise'.
+	game := TrenchRunGame
+		         withParticipating: { enterprise }
+		         rolling: dice
+		         on: board
+		         until: 1
+		         using: (Deck handingOver: { SpeedCard }).
+
+	game playNextTurn.
+	
+	self assert:
+		((game squareOf: enterprise) = 6 and: [ 
+			 (game lapOf: enterprise) = 1 ])
+]
+
 { #category : #'tests - starting game checks' }
 GameInstanceTest >> testStartedGamePlaysUntilOneSpaceshipWins [
 

@@ -866,6 +866,43 @@ CardTest >> testRepeatCardEqualsAnotherRepeatCardWithSameValues [
 		equals: (RepeatCard ownedBy: 'Enterprise') hash
 ]
 
+{ #category : #tests }
+CardTest >> testReversePolarityCardReversesTheEffectOfASpeedUpSlot [
+
+	| aGame enterprise planetExpress starfighter dice board squares |
+	enterprise := 'Enterprise'.
+	planetExpress := 'PlanetExpress'.
+	starfighter := 'StarFighter'.
+	dice := LoadedDie with: 3.
+	squares := SquareGenerator
+		           creating: 10
+		           of: { BlankSquare }
+		           with: { 1 }.
+	squares at: 4 put: SpeedUpSquare new.
+	board := Board madeUpBy: squares stretchedIntoParsecs: 10.
+	aGame := TrenchRunGame
+		         withParticipating: { enterprise }
+		         rolling: dice
+		         on: board
+		         until: 1
+		         using: (Deck handingOver: { ReversePolarityCard }).
+
+	aGame playNextTurn.
+
+	self assert: (aGame squareOf: enterprise) equals: 8.
+	self assert: (aGame lapOf: enterprise) equals: 1.
+
+
+	aGame give: ReversePolarityCard toHandsOf: enterprise.
+	aGame
+		playReversePolarityCardOwnedBy: enterprise
+		aimingAt: (squares at: 4).
+
+	aGame playNextTurn.
+
+	self assert: (aGame squareOf: enterprise) equals: 1
+]
+
 { #category : #accessing }
 CardTest >> testSpeedCardEqualsAnotherSpeedCardWithSameValues [
 

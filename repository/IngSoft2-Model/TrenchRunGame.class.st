@@ -27,6 +27,11 @@ TrenchRunGame class >> withParticipating: spaceships rolling: aDiceCup on: aBoar
 		  using: aDeck
 ]
 
+{ #category : #'as yet unclassified' }
+TrenchRunGame >> amountOfCardsOf: spaceship [ 
+	^(self onHandCardStack cards) size.
+]
+
 { #category : #'accessing - positions' }
 TrenchRunGame >> currentLeader [
 
@@ -141,6 +146,11 @@ TrenchRunGame >> moveAllSpaceshipsAnAmountOf: squares exceptFor: aSpaceship [
 	spaceshipsToMove := self spaceships.
 	spaceshipsToMove remove: aSpaceship.
 	spaceshipsToMove do: [ :spaceship | self move: spaceship anAmountOf: (0 - squares) ].
+]
+
+{ #category : #accessing }
+TrenchRunGame >> onHandCardStack [
+	^ onHandCardStack
 ]
 
 { #category : #'card playing' }
