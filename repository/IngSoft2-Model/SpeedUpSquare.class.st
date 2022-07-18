@@ -14,7 +14,6 @@ SpeedUpSquare >> = anotherSpeedUpSquare [
 SpeedUpSquare >> applyEffectTo: spaceship from: game [
 
 	game move: spaceship anAmountOf: 4.
-	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
 ]
 
 { #category : #comparing }

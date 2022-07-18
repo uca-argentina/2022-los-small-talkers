@@ -44,9 +44,11 @@ Board class >> validateSizeOf: someSquares [
 ]
 
 { #category : #'executing effects' }
-Board >> applyEffectAt: aSquare to: aSpaceship on: aGame [
+Board >> applyEffectAt: aSquare to: spaceship on: game [
 
-	(squares at: aSquare) applyEffectTo: aSpaceship from: aGame
+	(squares at: aSquare) applyEffectTo: spaceship from: game.
+	
+	game history add: (LandsOnSquareEvent from: spaceship landsOn: (squares at: aSquare)).
 ]
 
 { #category : #initialization }

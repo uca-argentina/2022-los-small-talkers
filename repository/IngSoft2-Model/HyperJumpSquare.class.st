@@ -43,7 +43,6 @@ HyperJumpSquare >> = anotherHyperJumpSquare [
 HyperJumpSquare >> applyEffectTo: spaceship from: game [
 
 	game move: spaceship by: parsecSequence next.
-	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
 ]
 
 { #category : #comparing }

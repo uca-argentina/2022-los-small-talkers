@@ -14,7 +14,6 @@ DrawCardSquare >> = anotherDrawCardSquare [
 DrawCardSquare >> applyEffectTo: spaceship from: game [
 
 	game take: 1 andGiveToHandsOf: spaceship.
-	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
 ]
 
 { #category : #comparing }

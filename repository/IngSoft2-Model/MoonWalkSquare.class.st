@@ -37,7 +37,6 @@ MoonWalkSquare >> applyEffectTo: spaceship from: game [
 	game
 		moveAllSpaceshipsAnAmountOf: retrogression
 		exceptFor: spaceship.
-	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
 ]
 
 { #category : #comparing }
