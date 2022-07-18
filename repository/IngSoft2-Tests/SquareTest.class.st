@@ -75,6 +75,13 @@ SquareTest >> testSpeedUpSquareEqualsAnotherSpeedUpSquare [
 ]
 
 { #category : #tests }
+SquareTest >> testSprintSquareEqualsAnotherWormHoleSquare [
+
+	self assert: SprintSquare  new equals: SprintSquare new.
+	self assert: SprintSquare new hash equals: SprintSquare new hash
+]
+
+{ #category : #tests }
 SquareTest >> testWormHoleSquareEqualsAnotherWormHoleSquare [
 
 	self assert: WormHoleSquare new equals: WormHoleSquare new.

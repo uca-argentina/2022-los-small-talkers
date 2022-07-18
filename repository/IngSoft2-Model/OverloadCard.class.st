@@ -27,10 +27,10 @@ OverloadCard >> a: spaceship playsCardIn: game aimingAt: target [
 		Error signal:
 			'Cannot play permanent card when not in the spaceships turn' ].
 	game playedCardStack
-		add: (OverloadCard ownedBy: spaceship)
+		add: (self class ownedBy: spaceship)
 		aimingAt: target.
 	game history add: (PlayCardEvent
-			 using: (OverloadCard ownedBy: spaceship)
+			 using: (self class ownedBy: spaceship)
 			 aimedAt: target)
 ]
 

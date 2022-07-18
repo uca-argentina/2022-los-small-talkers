@@ -11,7 +11,8 @@ Class {
 		'onHandCardStack',
 		'playedCardStack',
 		'history',
-		'spaceshipSequence'
+		'spaceshipSequence',
+		'playedReversePolarityCardsStack'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -25,6 +26,12 @@ TrenchRunGame class >> withParticipating: spaceships rolling: aDiceCup on: aBoar
 		  on: aBoard
 		  until: endLap
 		  using: aDeck
+]
+
+{ #category : #accessing }
+TrenchRunGame >> amountOfCardsOf: spaceship [
+
+	^ self onHandCardStack amountOfCardsOf: spaceship 
 ]
 
 { #category : #'accessing - positions' }
@@ -67,7 +74,9 @@ TrenchRunGame >> initializeWithParticipating: spaceships rolling: aDiceCup on: a
 	positionTracker := PositionTracker tracking: spaceships.
 	onHandCardStack := OnHandCardStack new.
 	playedCardStack := PlayedPermanentCardStack new.
-	spaceships do: [ :spaceship | self take: 2 andGiveToHandsOf: spaceship].
+	playedReversePolarityCardsStack := PlayedPermanentCardStack new.
+	spaceships do: [ :spaceship | 
+		self take: 2 andGiveToHandsOf: spaceship ].
 	history := TrenchRunEventList new.
 	spaceshipSequence := TrenchRunSequence withAll: spaceships
 ]
@@ -137,10 +146,17 @@ TrenchRunGame >> moveAllSpaceshipToSquareOne [
 
 { #category : #'turn related' }
 TrenchRunGame >> moveAllSpaceshipsAnAmountOf: squares exceptFor: aSpaceship [
-	|spaceshipsToMove|
+
+	| spaceshipsToMove |
 	spaceshipsToMove := self spaceships.
 	spaceshipsToMove remove: aSpaceship.
-	spaceshipsToMove do: [ :spaceship | self move: spaceship anAmountOf: (0 - squares) ].
+	spaceshipsToMove do: [ :spaceship | 
+		self move: spaceship anAmountOf: squares ]
+]
+
+{ #category : #accessing }
+TrenchRunGame >> onHandCardStack [
+	^ onHandCardStack
 ]
 
 { #category : #'card playing' }
@@ -200,6 +216,18 @@ TrenchRunGame >> playRepeatCardOwnedBy: aSpaceship aimingAt: anotherSpaceship [
 		a: aSpaceship
 		playsCardIn: self
 		aimingAt: anotherSpaceship
+]
+
+{ #category : #'card playing' }
+TrenchRunGame >> playReversePolarityCardOwnedBy: aSpaceship aimingAt: aSquare [
+
+		onHandCardStack take: ReversePolarityCard  fromHandsOf: aSpaceship.
+		(ReversePolarityCard ownedBy: aSpaceship)
+		a: aSpaceship
+		playsCardIn: self
+		aimingAt: aSquare.
+		
+		
 ]
 
 { #category : #'card playing' }

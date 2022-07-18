@@ -24,8 +24,9 @@ CancellationCard >> = anotherCard [
 CancellationCard >> a: spaceship playsCardIn: game aimingAt: aPlayedPermanentCard [
 
 	game playedCardStack remove: aPlayedPermanentCard.
+	
 	game history add: (PlayCardEvent
-			 using: (CancellationCard ownedBy: spaceship)
+			 using: (self class ownedBy: spaceship)
 			 aimedAt: aPlayedPermanentCard)
 ]
 

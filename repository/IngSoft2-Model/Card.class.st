@@ -1,6 +1,10 @@
 Class {
 	#name : #Card,
 	#superclass : #Object,
+	#instVars : [
+		'owner',
+		'playedReversePolarityCardStack'
+	],
 	#category : #'IngSoft2-Model'
 }
 
