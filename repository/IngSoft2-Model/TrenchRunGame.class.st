@@ -168,13 +168,7 @@ TrenchRunGame >> playNextTurn [
 	squaresForward := cardHandler playedCardStack
 		                  applyEffectsTo: ship
 		                  using: dice roll.
-	(jail isInJail: ship) ifTrue: [ 
-		(squaresForward < dice maxResult) ifTrue: [ 
-			 squaresForward := 0.
-		] ifFalse: [ 
-		 	jail free: ship.
-		]
-	].
+	squaresForward := jail verifyMovabilityOf: ship whenRolling: squaresForward on: dice.
 	self move: ship anAmountOf: squaresForward.
 	self isFinished ifFalse: [ 
 		history add: (gameBoard

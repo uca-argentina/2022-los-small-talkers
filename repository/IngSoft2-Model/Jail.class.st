@@ -31,3 +31,18 @@ Jail >> isInJail: spaceship [
 
 	^ jailedPlayers anySatisfy: [ :jailedSpaceship | jailedSpaceship = spaceship ]
 ]
+
+{ #category : #'moving modifier' }
+Jail >> verifyMovabilityOf: subject whenRolling: anAmount on: dice [
+
+	|squaresForward|
+	squaresForward := anAmount.
+	(self isInJail: subject) ifTrue: [ 
+		(squaresForward < dice maxResult) ifTrue: [ 
+			 squaresForward := 0.
+		] ifFalse: [ 
+		 	self free: subject.
+		]
+	].
+	^ squaresForward.
+]
