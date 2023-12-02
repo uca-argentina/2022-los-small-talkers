@@ -58,7 +58,9 @@ DieTest >> testDiceCupRollsSumOfAllIndividualDiceRollsResultsInsideIt [
 { #category : #'tests - LoadedDie' }
 DieTest >> testLoadedDieRollsAlwaysNumberOnLoadedSide [
 
-	self assert: [ (LoadedDie with: 4) roll == 4 ]
+	self assert: [ (LoadedDie with: 4) roll == 4 ].
+	self assert: [ (LoadedDie with: 7) roll == 7 ].
+	self assert: [ (LoadedDie with: 1) roll == 1 ]
 ]
 
 { #category : #'tests - LoadedDie' }
@@ -66,6 +68,11 @@ DieTest >> testLoadedDieWithZeroOrNegativeLoadedSideIsInvalid [
 
 	self
 		should: [ LoadedDie with: 0 ]
+		raise: Error
+		withMessage: 'Loaded side cannot be negative nor zero'.
+		
+	self
+		should: [ LoadedDie with: -1 ]
 		raise: Error
 		withMessage: 'Loaded side cannot be negative nor zero'
 ]
@@ -85,12 +92,19 @@ DieTest >> testRandomDieWithNumberOfSidesFewerThan3IsInvalid [
 	self
 		should: [ Die with: -3 ]
 		raise: Error
+		withMessage: 'Number of sides must be greater than 2'.
+		
+	self
+		should: [ Die with: 2 ]
+		raise: Error
 		withMessage: 'Number of sides must be greater than 2'
 ]
 
-{ #category : #'tests - RandomDie' }
-DieTest >> testRandomDieWithNumberOfSidesGreaterThanTwoIsValid [
+{ #category : #tests }
+DieTest >> testRandomDieWithNumberOfSidesGreaterThanThreeIsValid [
 
 	| aRandomDie |
-	aRandomDie := Die with: 3
+	aRandomDie := Die with: 3.
+	
+	self assert: aRandomDie numberOfSides equals: 3.
 ]

@@ -19,6 +19,11 @@ BoardTest >> testBoardCreationWhereLengthLowerOrEqualThanZeroIsInvalid [
 	self
 		should: [ Board madeUpBy: {  } stretchedIntoParsecs: 10 ]
 		raise: Error
+		withMessage: 'Boards need a minimum length of 1'.
+		
+	self
+		should: [ Board madeUpBy: {  } stretchedIntoParsecs: -10 ]
+		raise: Error
 		withMessage: 'Boards need a minimum length of 1'
 ]
 

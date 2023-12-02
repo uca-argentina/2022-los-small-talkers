@@ -46,6 +46,13 @@ HyperJumpSquare >> applyEffectTo: spaceship from: game [
 	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
 ]
 
+{ #category : #'executing effects' }
+HyperJumpSquare >> applyReverseEffectTo: spaceship from: game [
+
+	game move: spaceship by: 0-(2*(parsecSequence next)).
+	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
+]
+
 { #category : #comparing }
 HyperJumpSquare >> hash [ 
 

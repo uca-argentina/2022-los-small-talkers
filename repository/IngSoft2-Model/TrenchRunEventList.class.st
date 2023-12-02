@@ -13,6 +13,17 @@ TrenchRunEventList >> add: event [
 	events add: event
 ]
 
+{ #category : #accessing }
+TrenchRunEventList >> checkLastPlayCardEventIfEmpty [
+
+	| playCardEvents |
+	playCardEvents := events select: [ :event | 
+		                  event className match: 'PlayCardEvent' ].
+	playCardEvents ifEmpty: [ 
+		^true ].
+	^ false
+]
+
 { #category : #initialization }
 TrenchRunEventList >> initialize [
 	

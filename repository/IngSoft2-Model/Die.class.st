@@ -28,6 +28,12 @@ Die >> initializeWith: aNumberOfSides [
 	numberOfSides := aNumberOfSides
 ]
 
+{ #category : #accessing }
+Die >> numberOfSides [
+
+	^numberOfSides
+]
+
 { #category : #rolling }
 Die >> roll [
 

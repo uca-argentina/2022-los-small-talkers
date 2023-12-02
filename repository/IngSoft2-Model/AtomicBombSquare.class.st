@@ -17,6 +17,13 @@ AtomicBombSquare >> applyEffectTo: spaceship from: game [
 	game history add: (LandsOnSquareEvent from: spaceship landsOn: self).
 ]
 
+{ #category : #'executing effects' }
+AtomicBombSquare >> applyReverseEffectTo: spaceship from: game [
+
+	game moveAllSpaceshipToSquareOne.
+	game history add: (LandsOnSquareEvent from: spaceship landsOn: self).
+]
+
 { #category : #comparing }
 AtomicBombSquare >> hash [ 
 

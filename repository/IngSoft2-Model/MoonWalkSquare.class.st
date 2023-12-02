@@ -40,6 +40,15 @@ MoonWalkSquare >> applyEffectTo: spaceship from: game [
 	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
 ]
 
+{ #category : #'executing effects' }
+MoonWalkSquare >> applyReverseEffectTo: spaceship from: game [
+
+	game
+		moveAllSpaceshipsAnAmountOf: (0 - retrogression)
+		exceptFor: spaceship.
+	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
+]
+
 { #category : #comparing }
 MoonWalkSquare >> hash [ 
 

@@ -152,7 +152,19 @@ CardTest >> testCancellationCardRemovesAnActiveAccelerationCard [
 	game playNextTurn.
 	self assert: (game squareOf: enterprise) equals: 3.
 	self assert: (game squareOf: planetExpress) equals: 2.
-	self assert: (game squareOf: starfighter) equals: 2
+	self assert: (game squareOf: starfighter) equals: 2.
+	self
+		should: [ 
+			game
+				playCancellationCardOwnedBy: starfighter
+				aimingAt: (PlayedPermanentCard
+						 using: (AccelerationCard ownedBy: enterprise)
+						 aimingAt: { 
+						 			enterprise.
+						 			planetExpress.
+						 			starfighter }) ]
+		raise: Error
+		withMessage: 'Cannot remove a nonexistent effect'
 ]
 
 { #category : #accessing }
@@ -864,6 +876,19 @@ CardTest >> testRepeatCardEqualsAnotherRepeatCardWithSameValues [
 	self
 		assert: (RepeatCard ownedBy: 'Enterprise') hash
 		equals: (RepeatCard ownedBy: 'Enterprise') hash
+]
+
+{ #category : #accessing }
+CardTest >> testReversalCardEqualsAnotherReversalCardWithSameValues [
+
+	self
+		assert: (ReversalCard  ownedBy: 'Enterprise')
+		equals: (ReversalCard  ownedBy: 'Enterprise').
+	self
+		assert:
+		(ReversalCard  ownedBy: 'Enterprise') hash
+		equals:
+		(ReversalCard  ownedBy: 'Enterprise') hash
 ]
 
 { #category : #accessing }

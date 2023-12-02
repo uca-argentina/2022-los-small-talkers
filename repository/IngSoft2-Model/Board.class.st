@@ -49,6 +49,12 @@ Board >> applyEffectAt: aSquare to: aSpaceship on: aGame [
 	(squares at: aSquare) applyEffectTo: aSpaceship from: aGame
 ]
 
+{ #category : #'executing effects' }
+Board >> applyReverseEffectAt: aSquare to: aSpaceship on: aGame [
+
+	(squares at: aSquare) applyReverseEffectTo: aSpaceship from: aGame
+]
+
 { #category : #initialization }
 Board >> initializeMadeUpBy: someSquares stretchedInto: anAmountOfParsecs [
 

@@ -16,6 +16,12 @@ Square >> applyEffectTo: spaceship from: game [
 	self subclassResponsibility
 ]
 
+{ #category : #'executing effects' }
+Square >> applyReverseEffectTo: spaceship from: game [
+
+	self subclassResponsibility
+]
+
 { #category : #comparing }
 Square >> hash [
 

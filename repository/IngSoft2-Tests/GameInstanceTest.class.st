@@ -115,10 +115,6 @@ GameInstanceTest >> testAtomicBombSlotResetsPositionsToOneButMaintainsNumberOfLa
 
 
 	aGame playNextTurn.
-	"aGame playSpeedUpCardOf: aSpaceship targetting: { anotherSpaceship }."
-	"checkea si la tiene"
-	"chequea si la puede jugar (isPLayableAtAnyTime) (inWhichSpaceshipsTurn)"
-	"playedCardStack addCard: x playedBy: y targetting: z"
 	aGame playNextTurn.
 	aGame playNextTurn.
 
@@ -133,7 +129,7 @@ GameInstanceTest >> testAtomicBombSlotResetsPositionsToOneButMaintainsNumberOfLa
 { #category : #'tests - slot functionality' }
 GameInstanceTest >> testBlankSlotHasNoEffect [
 
-	| aGame enterprise dice board squares |
+	| aGame enterprise dice board squares deck |
 	dice := LoadedDie with: 5.
 	squares := SquareGenerator
 		           creating: 10
@@ -141,12 +137,13 @@ GameInstanceTest >> testBlankSlotHasNoEffect [
 		           with: { 1 }.
 	board := Board madeUpBy: squares stretchedIntoParsecs: 10.
 	enterprise := 'Enterprise'.
+	deck := Deck handingOver: { SpeedCard }.
 	aGame := TrenchRunGame
 		         withParticipating: { enterprise }
 		         rolling: dice
 		         on: board
 		         until: 1
-		         using: (Deck handingOver: { SpeedCard }).
+		         using: deck.
 
 	aGame playNextTurn.
 
@@ -157,7 +154,7 @@ GameInstanceTest >> testBlankSlotHasNoEffect [
 { #category : #'tests - starting game checks' }
 GameInstanceTest >> testGameWithOneSpaceshipIsStartedOnceFirstHandIsPlayed [
 
-	| game enterprise aDiceCup aBoard squares |
+	| game enterprise aDiceCup aBoard squares deck |
 	enterprise := 'Enterprise'.
 	squares := SquareGenerator
 		           creating: 10
@@ -165,12 +162,13 @@ GameInstanceTest >> testGameWithOneSpaceshipIsStartedOnceFirstHandIsPlayed [
 		           with: { 1 }.
 	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 10.
 	aDiceCup := DiceCup withAll: { (LoadedDie with: 7) }.
+	deck := Deck handingOver: { SpeedCard }.
 	game := TrenchRunGame
 		        withParticipating: { enterprise }
 		        rolling: aDiceCup
 		        on: aBoard
 		        until: 1
-		        using: (Deck handingOver: { SpeedCard }).
+		        using: deck.
 
 	game playNextTurn.
 
@@ -327,11 +325,223 @@ GameInstanceTest >> testOneShippedGameCanOnlyKnowWinnerOnceGameIsFinished [
 		         until: 1
 		         using: (Deck handingOver: { SpeedCard }).
 
+	self
+		should: [ aGame winner ]
+		raise: Error
+		withMessage: 'There cannot be a winner if the game has not finished'.
+		
 	aGame playNextTurn.
 	winner := aGame winner.
 
 	self assert:
 		(aGame isFinished and: (winner match: 'Enterprise'))
+]
+
+{ #category : #tests }
+GameInstanceTest >> testReversalCardHasNoEffectWhenOwnerUsesItOnABlankSquare [
+	| game enterprise planetExpress starfighter aDie aBoard squares deck |
+		enterprise := 'Enterprise'.
+		planetExpress := 'PlanetExpress'.
+		starfighter := 'StarFighter'.
+		squares := SquareGenerator
+			           creating: 20
+		 	          of: { BlankSquare }
+		  	         with: { 1 }.
+		deck := Deck handingOver: { SpeedCard }.
+		aBoard := Board madeUpBy: squares stretchedIntoParsecs: 20.
+		aDie := LoadedDie with: 3.
+		game := TrenchRunGame
+		        withParticipating: { 
+				        enterprise.
+				        planetExpress.
+				        starfighter }
+		        rolling: aDie
+		        on: aBoard
+		        until: 1
+		        using: deck.
+		
+		game give: ReversalCard toHandsOf: enterprise.
+		game playNextTurn.
+		game playNextTurn.
+		game playNextTurn.
+		game playNextTurn.
+		game playReversalCardOwnedBy: enterprise aimingAt: starfighter.
+		game playNextTurn.
+
+		self assert: (game squareOf: enterprise) equals: 7.
+		self assert: (game squareOf: planetExpress) equals: 7.
+		self assert: (game squareOf: starfighter) equals: 4.
+]
+
+{ #category : #tests }
+GameInstanceTest >> testReversalCardHasSameEffectAsOriginalSquareWhenOwnerShipLandsOnAtomicBombSquare [
+	| game enterprise planetExpress starfighter aDie aBoard squares deck |
+		enterprise := 'Enterprise'.
+		planetExpress := 'PlanetExpress'.
+		starfighter := 'StarFighter'.
+		squares := SquareGenerator
+			           creating: 20
+		 	          of: { BlankSquare }
+		  	         with: { 1 }.
+		deck := Deck handingOver: { SpeedCard }.
+		aBoard := Board madeUpBy: squares stretchedIntoParsecs: 20.
+		aDie := LoadedDie with: 3.
+		game := TrenchRunGame
+		        withParticipating: { 
+				        enterprise.
+				        planetExpress.
+				        starfighter }
+		        rolling: aDie
+		        on: aBoard
+		        until: 1
+		        using: deck.
+		squares at: 7 put: AtomicBombSquare new.
+		game give: ReversalCard toHandsOf: enterprise.
+		game playNextTurn.
+		game playNextTurn.
+		game playNextTurn.
+		game playNextTurn.
+		game playReversalCardOwnedBy: enterprise aimingAt: starfighter.
+		game playNextTurn.
+
+		self assert: (game squareOf: enterprise) equals: 1.
+		self assert: (game squareOf: planetExpress) equals: 4.
+		self assert: (game squareOf: starfighter) equals: 1.
+]
+
+{ #category : #tests }
+GameInstanceTest >> testReversalCardMovesTargetSpaceshiftBackwardsAnAmountOfFourWhenOwnerShipLandsOnSpeedUpSquare [
+	| game enterprise planetExpress starfighter aDie aBoard squares deck |
+		enterprise := 'Enterprise'.
+		planetExpress := 'PlanetExpress'.
+		starfighter := 'StarFighter'.
+		squares := SquareGenerator
+			           creating: 20
+		 	          of: { BlankSquare }
+		  	         with: { 1 }.
+		deck := Deck handingOver: { SpeedCard }.
+		aBoard := Board madeUpBy: squares stretchedIntoParsecs: 20.
+		aDie := LoadedDie with: 3.
+		game := TrenchRunGame
+		        withParticipating: { 
+				        enterprise.
+				        planetExpress.
+				        starfighter }
+		        rolling: aDie
+		        on: aBoard
+		        until: 1
+		        using: deck.
+		squares at: 7 put: SpeedUpSquare new.
+		game give: ReversalCard toHandsOf: enterprise.
+		game playNextTurn.
+		game playNextTurn.
+		game playNextTurn.
+		game playNextTurn.
+		game playReversalCardOwnedBy: enterprise aimingAt: starfighter.
+		game playNextTurn.
+
+		self assert: (game squareOf: enterprise) equals: 11.
+		self assert: (game squareOf: planetExpress) equals: 7.
+		self assert: (game squareOf: starfighter) equals: 1.
+]
+
+{ #category : #tests }
+GameInstanceTest >> testReversalCardMovesTargetSpaceshipBackwardsAnAmountOfFourWhenOwnerShipLandsOnSpeedUpSquare [
+	| game enterprise planetExpress starfighter aDie aBoard squares deck |
+		enterprise := 'Enterprise'.
+		planetExpress := 'PlanetExpress'.
+		starfighter := 'StarFighter'.
+		squares := SquareGenerator
+			           creating: 20
+		 	          of: { BlankSquare }
+		  	         with: { 1 }.
+		deck := Deck handingOver: { SpeedCard }.
+		aBoard := Board madeUpBy: squares stretchedIntoParsecs: 20.
+		aDie := LoadedDie with: 3.
+		game := TrenchRunGame
+		        withParticipating: { 
+				        enterprise.
+				        planetExpress.
+				        starfighter }
+		        rolling: aDie
+		        on: aBoard
+		        until: 1
+		        using: deck.
+		squares at: 7 put: SpeedUpSquare new.
+		game give: ReversalCard toHandsOf: enterprise.
+		game playNextTurn.
+		game playNextTurn.
+		game playNextTurn.
+		game playNextTurn.
+		game playReversalCardOwnedBy: enterprise aimingAt: starfighter.
+		game playNextTurn.
+
+		self assert: (game squareOf: enterprise) equals: 11.
+		self assert: (game squareOf: planetExpress) equals: 7.
+		self assert: (game squareOf: starfighter) equals: 1.
+]
+
+{ #category : #tests }
+GameInstanceTest >> testReversalCardMovesTargetSpaceshipBackwardsAnAmountOfLightYearsWhenOwnerLandsOnHyperJumpSquare [
+
+	| game enterprise die board squares |
+	enterprise := 'Enterprise'.
+	die := LoadedDie with: 1.
+	squares := SquareGenerator
+		           creating: 10
+		           of: { BlankSquare }
+		           with: { 1 }.
+	squares at: 2 put: (HyperJumpSquare withLightYears: { 3. 4 }).
+	squares at: 5 put: (HyperJumpSquare withLightYears: { 1. 2 }).
+	board := Board madeUpBy: squares stretchedIntoLightYears: 20.
+	game := TrenchRunGame
+		        withParticipating: { enterprise }
+		        rolling: die
+		        on: board
+		        until: 1
+		        using: (Deck handingOver: { SpeedCard }).
+	game give: ReversalCard toHandsOf: enterprise.
+	game playNextTurn.
+	game playReversalCardOwnedBy: enterprise aimingAt: enterprise.
+	game playNextTurn.
+
+	self assert: (game squareOf: enterprise) equals: 3.
+]
+
+{ #category : #tests }
+GameInstanceTest >> testReversalCardMovesTargetSpaceshipForwardAnAmountOfFourSquaresWhenOwnerLandsOnWormHoleSquare [
+	| game enterprise planetExpress starfighter aDie aBoard squares deck |
+		enterprise := 'Enterprise'.
+		planetExpress := 'PlanetExpress'.
+		starfighter := 'StarFighter'.
+		squares := SquareGenerator
+			           creating: 20
+		 	          of: { BlankSquare }
+		  	         with: { 1 }.
+		deck := Deck handingOver: { SpeedCard }.
+		aBoard := Board madeUpBy: squares stretchedIntoParsecs: 20.
+		aDie := LoadedDie with: 3.
+		game := TrenchRunGame
+		        withParticipating: { 
+				        enterprise.
+				        planetExpress.
+				        starfighter }
+		        rolling: aDie
+		        on: aBoard
+		        until: 1
+		        using: deck.
+		squares at: 7 put: WormHoleSquare new.
+		game give: ReversalCard toHandsOf: enterprise.
+		game playNextTurn.
+		game playNextTurn.
+		game playNextTurn.
+		game playNextTurn.
+		game playReversalCardOwnedBy: enterprise aimingAt: starfighter.
+		game playNextTurn.
+
+		self assert: (game squareOf: enterprise) equals: 3.
+		self assert: (game squareOf: planetExpress) equals: 7.
+		self assert: (game squareOf: starfighter) equals: 8.
 ]
 
 { #category : #'tests - starting game checks' }
@@ -413,6 +623,130 @@ GameInstanceTest >> testSpaceshipCompletingALapActuallyCountsIntoPositionTracker
 	self assert:
 		((game lapOf: enterprise) = 2 and: [ 
 			 (game squareOf: enterprise) = 4 ])
+]
+
+{ #category : #tests }
+GameInstanceTest >> testSpaceshipPlayingOutOfTurnIsAddedToPenalizationStack [
+
+	| game enterprise die board squares starship penalizedShips |
+	enterprise := 'Enterprise'.
+	starship := 'Starship'.
+	die := LoadedDie with: 3.
+	squares := SquareGenerator
+		           creating: 20
+		           of: { BlankSquare }
+		           with: { 1 }.
+	board := Board madeUpBy: squares stretchedIntoLightYears: 20.
+	game := TrenchRunGame
+		        withParticipating: { enterprise. starship }
+		        rolling: die
+		        on: board
+		        until: 1
+		        using: (Deck handingOver: { SpeedCard }).
+	
+	
+	game playOwnTurn: enterprise.
+	game playOwnTurn: starship.
+	game playOwnTurn: enterprise.
+	game playOwnTurn: starship.
+	game playOwnTurn: starship.
+	
+	penalizedShips := game penalizedSpaceshipsStack.
+	
+	self assert: (penalizedShips includes: starship).
+]
+
+{ #category : #tests }
+GameInstanceTest >> testSpaceshipPlayingOutOfTurnIsMovedTwoSquaresBackwards [
+
+	| game enterprise die board squares starship |
+	enterprise := 'Enterprise'.
+	starship := 'Starship'.
+	die := LoadedDie with: 3.
+	squares := SquareGenerator
+		           creating: 20
+		           of: { BlankSquare }
+		           with: { 1 }.
+	board := Board madeUpBy: squares stretchedIntoLightYears: 20.
+	game := TrenchRunGame
+		        withParticipating: { enterprise. starship }
+		        rolling: die
+		        on: board
+		        until: 1
+		        using: (Deck handingOver: { SpeedCard }).
+	
+	
+	game playOwnTurn: enterprise.
+	game playOwnTurn: starship.
+	game playOwnTurn: enterprise.
+	game playOwnTurn: starship.
+	game playOwnTurn: starship.
+	
+	self assert: (game squareOf: enterprise) equals: 7.
+	self assert: (game squareOf: starship) equals: 5.
+]
+
+{ #category : #tests }
+GameInstanceTest >> testSpaceshipPlayingOutOfTurnIsNotEnabledToPlayNextTurn [
+
+	| game enterprise die board squares starship penalizedShips |
+	enterprise := 'Enterprise'.
+	starship := 'Starship'.
+	die := LoadedDie with: 3.
+	squares := SquareGenerator
+		           creating: 20
+		           of: { BlankSquare }
+		           with: { 1 }.
+	board := Board madeUpBy: squares stretchedIntoLightYears: 20.
+	game := TrenchRunGame
+		        withParticipating: { enterprise. starship }
+		        rolling: die
+		        on: board
+		        until: 1
+		        using: (Deck handingOver: { SpeedCard }).
+	
+	
+	game playOwnTurn: enterprise.
+	game playOwnTurn: starship.
+	game playOwnTurn: enterprise.
+	game playOwnTurn: starship.
+	game playOwnTurn: starship.
+	
+	penalizedShips := game penalizedSpaceshipsStack.
+	
+	self deny: (penalizedShips checkEnabledToPlay: starship).
+]
+
+{ #category : #tests }
+GameInstanceTest >> testSpaceshipPlayingOutOfTurnIsPenalizedAndThenCanPlayAgain [
+
+	| game enterprise die board squares starship penalizedShips |
+	enterprise := 'Enterprise'.
+	starship := 'Starship'.
+	die := LoadedDie with: 3.
+	squares := SquareGenerator
+		           creating: 20
+		           of: { BlankSquare }
+		           with: { 1 }.
+	board := Board madeUpBy: squares stretchedIntoLightYears: 20.
+	game := TrenchRunGame
+		        withParticipating: { enterprise. starship }
+		        rolling: die
+		        on: board
+		        until: 1
+		        using: (Deck handingOver: { SpeedCard }).
+	
+	
+	game playOwnTurn: enterprise.
+	game playOwnTurn: starship.
+	game playOwnTurn: enterprise.
+	game playOwnTurn: starship.
+	game playOwnTurn: starship.
+	
+	penalizedShips := game penalizedSpaceshipsStack.
+	penalizedShips canPlayAgain: starship.
+	
+	self assert: (penalizedShips checkEnabledToPlay: starship).
 ]
 
 { #category : #'tests - slot functionality' }
@@ -517,6 +851,11 @@ GameInstanceTest >> testTwoShippedGameCanOnlyKnowWinnerOnceGameIsFinished [
 		         until: 1
 		         using: (Deck handingOver: { SpeedCard }).
 
+	self
+		should: [ aGame winner ]
+		raise: Error
+		withMessage: 'There cannot be a winner if the game has not finished'.
+		
 	aGame playNextTurn.
 	aGame playNextTurn.
 	aGame playNextTurn.
@@ -608,7 +947,11 @@ GameInstanceTest >> testWormHoleSlotBackTracksFourSquares [
 		         rolling: dice
 		         on: board
 		         until: 1
-		         using: (Deck handingOver: { SpeedCard })
+		         using: (Deck handingOver: { SpeedCard }).
+		
+	aGame playNextTurn.
+	self assert: (aGame squareOf: enterprise) equals: 5.
+	self assert: (aGame lapOf: enterprise) equals: 1
 ]
 
 { #category : #'tests - slot functionality' }

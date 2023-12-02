@@ -17,6 +17,13 @@ WormHoleSquare >> applyEffectTo: spaceship from: game [
 	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
 ]
 
+{ #category : #'executing effects' }
+WormHoleSquare >> applyReverseEffectTo: spaceship from: game [
+
+	game move: spaceship anAmountOf: 4.
+	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
+]
+
 { #category : #comparing }
 WormHoleSquare >> hash [ 
 

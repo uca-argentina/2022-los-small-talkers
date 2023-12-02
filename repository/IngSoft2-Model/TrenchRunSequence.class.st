@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'elements',
 		'counter',
-		'previous'
+		'previous',
+		'secondCounter'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -41,7 +42,8 @@ TrenchRunSequence >> hash [
 { #category : #initialization }
 TrenchRunSequence >> initializeWithAll: sequenceableElements [
 	elements := sequenceableElements.
-	counter := 0
+	counter := 0.
+	secondCounter := 0
 ]
 
 { #category : #accessing }
@@ -52,10 +54,34 @@ TrenchRunSequence >> next [
 	^previous
 ]
 
+{ #category : #'as yet unclassified' }
+TrenchRunSequence >> nextPlayer [
+	| index |
+	"self secondCounterAdd.
+    ^ elements at: secondCounter."
+	self secondCounterAdd.
+    index := secondCounter - 1 \\ elements size + 1.
+    ^ elements at: index
+]
+
+{ #category : #'as yet unclassified' }
+TrenchRunSequence >> nextPlayerName [
+	| playerName |
+    playerName := self nextPlayer.
+    ^ playerName.
+]
+
 { #category : #accessing }
 TrenchRunSequence >> previous [
 
-	previous ifNil: [ Error signal: 'Trying to access previous element in sequence when inexistent' ].
+	"previous ifNil: [ Error signal: 'Trying to access previous element in sequence when inexistent' ]."
+	previous ifNil: [ nil ].
 	^ previous 
 	
+]
+
+{ #category : #'as yet unclassified' }
+TrenchRunSequence >> secondCounterAdd [
+
+	secondCounter := secondCounter + 1
 ]

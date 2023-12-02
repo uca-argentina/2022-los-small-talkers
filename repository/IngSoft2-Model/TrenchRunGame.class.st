@@ -11,7 +11,8 @@ Class {
 		'onHandCardStack',
 		'playedCardStack',
 		'history',
-		'spaceshipSequence'
+		'spaceshipSequence',
+		'penalizedSpaceshipStack'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -67,6 +68,7 @@ TrenchRunGame >> initializeWithParticipating: spaceships rolling: aDiceCup on: a
 	positionTracker := PositionTracker tracking: spaceships.
 	onHandCardStack := OnHandCardStack new.
 	playedCardStack := PlayedPermanentCardStack new.
+	penalizedSpaceshipStack := PenalizedSpaceshipsStack new.
 	spaceships do: [ :spaceship | self take: 2 andGiveToHandsOf: spaceship].
 	history := TrenchRunEventList new.
 	spaceshipSequence := TrenchRunSequence withAll: spaceships
@@ -143,6 +145,25 @@ TrenchRunGame >> moveAllSpaceshipsAnAmountOf: squares exceptFor: aSpaceship [
 	spaceshipsToMove do: [ :spaceship | self move: spaceship anAmountOf: (0 - squares) ].
 ]
 
+{ #category : #accessing }
+TrenchRunGame >> next [
+
+	spaceshipSequence next.
+	self nextPlayer.
+]
+
+{ #category : #'as yet unclassified' }
+TrenchRunGame >> nextPlayer [
+
+	^ spaceshipSequence nextPlayerName
+]
+
+{ #category : #accessing }
+TrenchRunGame >> penalizedSpaceshipsStack [
+
+	^penalizedSpaceshipStack 
+]
+
 { #category : #'card playing' }
 TrenchRunGame >> playAccelerationCardOwnedBy: aSpaceship [
 
@@ -169,10 +190,24 @@ TrenchRunGame >> playNextTurn [
 	| squaresForward ship |
 	ship := spaceshipSequence next.
 	state update: self.
+	(penalizedSpaceshipStack checkEnabledToPlay: ship) ifFalse: [
+        ^nil
+    ].
 	squaresForward := playedCardStack applyEffectsTo: ship using: dice roll.
 	self move: ship anAmountOf: squaresForward.
-	self isFinished ifFalse: [ 
-		gameBoard applyEffectAt: (self squareOf: ship) to: ship on: self ]
+	(self isFinished ifFalse: [
+	(((self history) checkLastPlayCardEventIfEmpty)
+		ifTrue: [
+			gameBoard applyEffectAt: (self squareOf: ship) to: ship on: self
+		]
+		ifFalse: [
+			(self lastPlayedCard isKindOf: ReversalCard)
+				ifTrue: [ gameBoard applyReverseEffectAt: (self squareOf: ship) to: ((self history) lastPlayCardEvent) target on: self ]
+				ifFalse: [ gameBoard applyEffectAt: (self squareOf: ship) to: ship on: self ]
+		]).
+	]).
+	"self isFinished ifFalse: [ 
+		gameBoard applyEffectAt: (self squareOf: ship) to: ship on: self ]"
 ]
 
 { #category : #'card playing' }
@@ -183,6 +218,41 @@ TrenchRunGame >> playOverloadCardOwnedBy: aSpaceship aimingAt: anotherSpaceship 
 		a: aSpaceship
 		playsCardIn: self
 		aimingAt: anotherSpaceship
+]
+
+{ #category : #'as yet unclassified' }
+TrenchRunGame >> playOwnTurn: ship [
+	
+	| nextPlayerName |
+	"aSpaceship := spaceshipSequence next.
+	state update: self."
+	"necesito que ship sea igual a self nextPlayer"
+	nextPlayerName := self nextPlayer.
+	(ship = nextPlayerName) ifTrue: [
+        self playNextTurn
+		  
+    ] ifFalse: [
+        self move: ship anAmountOf: -2.
+		  penalizedSpaceshipStack losesNextTurn: ship.
+   		  self next.
+			"aSpaceship := spaceshipSequence previous."
+    ].
+	"(penalizedSpaceshipStack checkEnabledToPlay: ship) ifFalse: [
+        ^nil
+    ].
+	squaresForward := playedCardStack applyEffectsTo: ship using: dice roll.
+	self move: ship anAmountOf: squaresForward.
+	(self isFinished ifFalse: [
+	(((self history) checkLastPlayCardEventIfEmpty)
+		ifTrue: [
+			gameBoard applyEffectAt: (self squareOf: ship) to: ship on: self
+		]
+		ifFalse: [
+			(self lastPlayedCard isKindOf: ReversalCard)
+				ifTrue: [ gameBoard applyReverseEffectAt: (self squareOf: ship) to: ((self history) lastPlayCardEvent) target on: self ]
+				ifFalse: [ gameBoard applyEffectAt: (self squareOf: ship) to: ship on: self ]
+		]).
+	])."
 ]
 
 { #category : #'card playing' }
@@ -200,6 +270,13 @@ TrenchRunGame >> playRepeatCardOwnedBy: aSpaceship aimingAt: anotherSpaceship [
 		a: aSpaceship
 		playsCardIn: self
 		aimingAt: anotherSpaceship
+]
+
+{ #category : #accessing }
+TrenchRunGame >> playReversalCardOwnedBy: aSpaceship aimingAt: anotherSpaceship [
+
+	onHandCardStack take: ReversalCard fromHandsOf: aSpaceship.
+	(ReversalCard ownedBy: aSpaceship ) a: aSpaceship playsCardIn: self aimingAt: anotherSpaceship
 ]
 
 { #category : #'card playing' }
