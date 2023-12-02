@@ -37,7 +37,7 @@ ReversalCard >> a: spaceship playsCardIn: game aimingAt: target [
 { #category : #'applying effects' }
 ReversalCard >> applyEffectsUsing: anInitialValue [
 
-	^ anInitialValue + 5
+	^ anInitialValue
 ]
 
 { #category : #comparing }

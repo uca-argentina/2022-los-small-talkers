@@ -878,6 +878,38 @@ CardTest >> testRepeatCardEqualsAnotherRepeatCardWithSameValues [
 		equals: (RepeatCard ownedBy: 'Enterprise') hash
 ]
 
+{ #category : #tests }
+CardTest >> testReversalCardCantBePlayedIfNotOwnedByTheSpaceship [
+
+	| aGame enterprise dice board squares star |
+	dice := LoadedDie with: 7.
+	squares := SquareGenerator
+		           creating: 30
+		           of: { BlankSquare }
+		           with: { 1 }.
+	squares at: 8 put: SpeedUpSquare new.
+	board := Board madeUpBy: squares stretchedIntoParsecs: 30.
+	enterprise := 'Enterprise'.
+	star := 'Star'.
+	aGame := TrenchRunGame
+		         withParticipating: { enterprise. star }
+		         rolling: dice
+		         on: board
+		         until: 1
+		         using: (Deck handingOver: { SpeedCard }).
+	
+	aGame give: ReversalCard toHandsOf: star.
+	aGame playNextTurn.
+	
+	
+	self
+		should: [ aGame playReversalCardOwnedBy: enterprise aimingAt: star. ]
+		raise: Error
+		withMessage: 'Player does not own the selected card'.
+	
+	
+]
+
 { #category : #accessing }
 CardTest >> testReversalCardEqualsAnotherReversalCardWithSameValues [
 
@@ -889,6 +921,242 @@ CardTest >> testReversalCardEqualsAnotherReversalCardWithSameValues [
 		(ReversalCard  ownedBy: 'Enterprise') hash
 		equals:
 		(ReversalCard  ownedBy: 'Enterprise') hash
+]
+
+{ #category : #tests }
+CardTest >> testReversalCardHasNoEffectWhenOwnerUsesItOnABlankSquare [
+	| game enterprise planetExpress starfighter aDie aBoard squares deck |
+		enterprise := 'Enterprise'.
+		planetExpress := 'PlanetExpress'.
+		starfighter := 'StarFighter'.
+		squares := SquareGenerator
+			           creating: 20
+		 	          of: { BlankSquare }
+		  	         with: { 1 }.
+		deck := Deck handingOver: { SpeedCard }.
+		aBoard := Board madeUpBy: squares stretchedIntoParsecs: 20.
+		aDie := LoadedDie with: 3.
+		game := TrenchRunGame
+		        withParticipating: { 
+				        enterprise.
+				        planetExpress.
+				        starfighter }
+		        rolling: aDie
+		        on: aBoard
+		        until: 1
+		        using: deck.
+		
+		game give: ReversalCard toHandsOf: enterprise.
+		game playNextTurn.
+		game playNextTurn.
+		game playNextTurn.
+		game playNextTurn.
+		game playReversalCardOwnedBy: enterprise aimingAt: starfighter.
+		game playNextTurn.
+
+		self assert: (game squareOf: enterprise) equals: 7.
+		self assert: (game squareOf: planetExpress) equals: 7.
+		self assert: (game squareOf: starfighter) equals: 4.
+]
+
+{ #category : #tests }
+CardTest >> testReversalCardHasSameEffectAsOriginalSquareWhenOwnerShipLandsOnAtomicBombSquare [
+	| game enterprise planetExpress starfighter aDie aBoard squares deck |
+		enterprise := 'Enterprise'.
+		planetExpress := 'PlanetExpress'.
+		starfighter := 'StarFighter'.
+		squares := SquareGenerator
+			           creating: 20
+		 	          of: { BlankSquare }
+		  	         with: { 1 }.
+		deck := Deck handingOver: { SpeedCard }.
+		aBoard := Board madeUpBy: squares stretchedIntoParsecs: 20.
+		aDie := LoadedDie with: 3.
+		game := TrenchRunGame
+		        withParticipating: { 
+				        enterprise.
+				        planetExpress.
+				        starfighter }
+		        rolling: aDie
+		        on: aBoard
+		        until: 1
+		        using: deck.
+		squares at: 7 put: AtomicBombSquare new.
+		game give: ReversalCard toHandsOf: enterprise.
+		game playNextTurn.
+		game playNextTurn.
+		game playNextTurn.
+		game playNextTurn.
+		game playReversalCardOwnedBy: enterprise aimingAt: starfighter.
+		game playNextTurn.
+
+		self assert: (game squareOf: enterprise) equals: 1.
+		self assert: (game squareOf: planetExpress) equals: 4.
+		self assert: (game squareOf: starfighter) equals: 1.
+]
+
+{ #category : #tests }
+CardTest >> testReversalCardHasSameEffectAsOriginalSquareWhenOwnerShipLandsOnDrawCardSquare [
+	| aGame enterprise dice board squares star |
+	dice := LoadedDie with: 7.
+	squares := SquareGenerator
+		           creating: 30
+		           of: { BlankSquare }
+		           with: { 1 }.
+	squares at: 8 put: DrawCardSquare new.
+	board := Board madeUpBy: squares stretchedIntoParsecs: 30.
+	enterprise := 'Enterprise'.
+	star := 'Star'.
+	aGame := TrenchRunGame
+		         withParticipating: { enterprise. star }
+		         rolling: dice
+		         on: board
+		         until: 1
+		         using: (Deck handingOver: { SpeedCard }).
+	
+	aGame give: ReversalCard toHandsOf: star.
+	aGame playNextTurn.
+	aGame playNextTurn.
+	aGame playReversalCardOwnedBy: star aimingAt: star.
+	aGame playNextTurn.
+
+	self assert: (aGame squareOf: enterprise) equals: 15.
+	self assert: (aGame squareOf: star) equals: 8.
+]
+
+{ #category : #tests }
+CardTest >> testReversalCardMovesTargetSpaceshiftBackwardsAnAmountOfFourWhenOwnerShipLandsOnSpeedUpSquare [
+	| game enterprise planetExpress starfighter aDie aBoard squares deck |
+		enterprise := 'Enterprise'.
+		planetExpress := 'PlanetExpress'.
+		starfighter := 'StarFighter'.
+		squares := SquareGenerator
+			           creating: 20
+		 	          of: { BlankSquare }
+		  	         with: { 1 }.
+		deck := Deck handingOver: { SpeedCard }.
+		aBoard := Board madeUpBy: squares stretchedIntoParsecs: 20.
+		aDie := LoadedDie with: 3.
+		game := TrenchRunGame
+		        withParticipating: { 
+				        enterprise.
+				        planetExpress.
+				        starfighter }
+		        rolling: aDie
+		        on: aBoard
+		        until: 1
+		        using: deck.
+		squares at: 7 put: SpeedUpSquare new.
+		game give: ReversalCard toHandsOf: enterprise.
+		game playNextTurn.
+		game playNextTurn.
+		game playNextTurn.
+		game playNextTurn.
+		game playReversalCardOwnedBy: enterprise aimingAt: starfighter.
+		game playNextTurn.
+
+		self assert: (game squareOf: enterprise) equals: 11.
+		self assert: (game squareOf: planetExpress) equals: 7.
+		self assert: (game squareOf: starfighter) equals: 1.
+]
+
+{ #category : #tests }
+CardTest >> testReversalCardMovesTargetSpaceshipBackwardsAnAmountOfFourWhenOwnerShipLandsOnSpeedUpSquare [
+	| game enterprise planetExpress starfighter aDie aBoard squares deck |
+		enterprise := 'Enterprise'.
+		planetExpress := 'PlanetExpress'.
+		starfighter := 'StarFighter'.
+		squares := SquareGenerator
+			           creating: 20
+		 	          of: { BlankSquare }
+		  	         with: { 1 }.
+		deck := Deck handingOver: { SpeedCard }.
+		aBoard := Board madeUpBy: squares stretchedIntoParsecs: 20.
+		aDie := LoadedDie with: 3.
+		game := TrenchRunGame
+		        withParticipating: { 
+				        enterprise.
+				        planetExpress.
+				        starfighter }
+		        rolling: aDie
+		        on: aBoard
+		        until: 1
+		        using: deck.
+		squares at: 7 put: SpeedUpSquare new.
+		game give: ReversalCard toHandsOf: enterprise.
+		game playNextTurn.
+		game playNextTurn.
+		game playNextTurn.
+		game playNextTurn.
+		game playReversalCardOwnedBy: enterprise aimingAt: starfighter.
+		game playNextTurn.
+
+		self assert: (game squareOf: enterprise) equals: 11.
+		self assert: (game squareOf: planetExpress) equals: 7.
+		self assert: (game squareOf: starfighter) equals: 1.
+]
+
+{ #category : #tests }
+CardTest >> testReversalCardMovesTargetSpaceshipBackwardsAnAmountOfLightYearsWhenOwnerLandsOnHyperJumpSquare [
+
+	| game enterprise die board squares |
+	enterprise := 'Enterprise'.
+	die := LoadedDie with: 1.
+	squares := SquareGenerator
+		           creating: 10
+		           of: { BlankSquare }
+		           with: { 1 }.
+	squares at: 2 put: (HyperJumpSquare withLightYears: { 3. 4 }).
+	squares at: 5 put: (HyperJumpSquare withLightYears: { 1. 2 }).
+	board := Board madeUpBy: squares stretchedIntoLightYears: 20.
+	game := TrenchRunGame
+		        withParticipating: { enterprise }
+		        rolling: die
+		        on: board
+		        until: 1
+		        using: (Deck handingOver: { SpeedCard }).
+	game give: ReversalCard toHandsOf: enterprise.
+	game playNextTurn.
+	game playReversalCardOwnedBy: enterprise aimingAt: enterprise.
+	game playNextTurn.
+
+	self assert: (game squareOf: enterprise) equals: 3.
+]
+
+{ #category : #tests }
+CardTest >> testReversalCardMovesTargetSpaceshipForwardAnAmountOfFourSquaresWhenOwnerLandsOnWormHoleSquare [
+	| game enterprise planetExpress starfighter aDie aBoard squares deck |
+		enterprise := 'Enterprise'.
+		planetExpress := 'PlanetExpress'.
+		starfighter := 'StarFighter'.
+		squares := SquareGenerator
+			           creating: 20
+		 	          of: { BlankSquare }
+		  	         with: { 1 }.
+		deck := Deck handingOver: { SpeedCard }.
+		aBoard := Board madeUpBy: squares stretchedIntoParsecs: 20.
+		aDie := LoadedDie with: 3.
+		game := TrenchRunGame
+		        withParticipating: { 
+				        enterprise.
+				        planetExpress.
+				        starfighter }
+		        rolling: aDie
+		        on: aBoard
+		        until: 1
+		        using: deck.
+		squares at: 7 put: WormHoleSquare new.
+		game give: ReversalCard toHandsOf: enterprise.
+		game playNextTurn.
+		game playNextTurn.
+		game playNextTurn.
+		game playNextTurn.
+		game playReversalCardOwnedBy: enterprise aimingAt: starfighter.
+		game playNextTurn.
+
+		self assert: (game squareOf: enterprise) equals: 3.
+		self assert: (game squareOf: planetExpress) equals: 7.
+		self assert: (game squareOf: starfighter) equals: 8.
 ]
 
 { #category : #accessing }

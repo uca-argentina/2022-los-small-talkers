@@ -28,6 +28,36 @@ TrenchRunGame class >> withParticipating: spaceships rolling: aDiceCup on: aBoar
 		  using: aDeck
 ]
 
+{ #category : #'applying effects' }
+TrenchRunGame >> applyEffectsTo: ship [
+
+	(self lastPlayedCard isKindOf: ReversalCard)
+				ifTrue: [ self applyReversalEffectsTo: ship ]
+				ifFalse: [ self applyNormalEffectsTo: ship ]
+]
+
+{ #category : #'applying effects' }
+TrenchRunGame >> applyNormalEffectsTo: ship [
+
+	gameBoard applyEffectAt: (self squareOf: ship) to: ship on: self
+]
+
+{ #category : #'applying effects' }
+TrenchRunGame >> applyReversalEffectsTo: ship [
+
+	gameBoard applyReverseEffectAt: (self squareOf: ship) to: ((self history) lastPlayCardEvent) target on: self
+]
+
+{ #category : #accessing }
+TrenchRunGame >> checkEnabledToPlayTurn: ship [
+
+	(penalizedSpaceshipStack checkEnabledToPlay: ship) ifTrue: [
+        ^ self
+    ].
+    penalizedSpaceshipStack canPlayAgain: ship.
+    ^ self.
+]
+
 { #category : #'accessing - positions' }
 TrenchRunGame >> currentLeader [
 
@@ -49,6 +79,15 @@ TrenchRunGame >> end [
 TrenchRunGame >> give: cardType toHandsOf: spaceship [
 
 	onHandCardStack give: cardType toHandsOf: spaceship
+]
+
+{ #category : #'turn related' }
+TrenchRunGame >> goAheadWithTurn: ship [
+
+	(self history checkLastPlayCardEventIfEmpty) ifTrue: [
+    ^ self applyNormalEffectsTo: ship.
+	].
+	^ self applyEffectsTo: ship.
 ]
 
 { #category : #'event recording' }
@@ -152,7 +191,7 @@ TrenchRunGame >> next [
 	self nextPlayer.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TrenchRunGame >> nextPlayer [
 
 	^ spaceshipSequence nextPlayerName
@@ -190,24 +229,12 @@ TrenchRunGame >> playNextTurn [
 	| squaresForward ship |
 	ship := spaceshipSequence next.
 	state update: self.
-	(penalizedSpaceshipStack checkEnabledToPlay: ship) ifFalse: [
-        ^nil
-    ].
+	self checkEnabledToPlayTurn: ship.
 	squaresForward := playedCardStack applyEffectsTo: ship using: dice roll.
 	self move: ship anAmountOf: squaresForward.
 	(self isFinished ifFalse: [
-	(((self history) checkLastPlayCardEventIfEmpty)
-		ifTrue: [
-			gameBoard applyEffectAt: (self squareOf: ship) to: ship on: self
-		]
-		ifFalse: [
-			(self lastPlayedCard isKindOf: ReversalCard)
-				ifTrue: [ gameBoard applyReverseEffectAt: (self squareOf: ship) to: ((self history) lastPlayCardEvent) target on: self ]
-				ifFalse: [ gameBoard applyEffectAt: (self squareOf: ship) to: ship on: self ]
-		]).
+		self goAheadWithTurn: ship.
 	]).
-	"self isFinished ifFalse: [ 
-		gameBoard applyEffectAt: (self squareOf: ship) to: ship on: self ]"
 ]
 
 { #category : #'card playing' }
@@ -220,13 +247,10 @@ TrenchRunGame >> playOverloadCardOwnedBy: aSpaceship aimingAt: anotherSpaceship 
 		aimingAt: anotherSpaceship
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'turn related' }
 TrenchRunGame >> playOwnTurn: ship [
 	
 	| nextPlayerName |
-	"aSpaceship := spaceshipSequence next.
-	state update: self."
-	"necesito que ship sea igual a self nextPlayer"
 	nextPlayerName := self nextPlayer.
 	(ship = nextPlayerName) ifTrue: [
         self playNextTurn
@@ -235,24 +259,7 @@ TrenchRunGame >> playOwnTurn: ship [
         self move: ship anAmountOf: -2.
 		  penalizedSpaceshipStack losesNextTurn: ship.
    		  self next.
-			"aSpaceship := spaceshipSequence previous."
     ].
-	"(penalizedSpaceshipStack checkEnabledToPlay: ship) ifFalse: [
-        ^nil
-    ].
-	squaresForward := playedCardStack applyEffectsTo: ship using: dice roll.
-	self move: ship anAmountOf: squaresForward.
-	(self isFinished ifFalse: [
-	(((self history) checkLastPlayCardEventIfEmpty)
-		ifTrue: [
-			gameBoard applyEffectAt: (self squareOf: ship) to: ship on: self
-		]
-		ifFalse: [
-			(self lastPlayedCard isKindOf: ReversalCard)
-				ifTrue: [ gameBoard applyReverseEffectAt: (self squareOf: ship) to: ((self history) lastPlayCardEvent) target on: self ]
-				ifFalse: [ gameBoard applyEffectAt: (self squareOf: ship) to: ship on: self ]
-		]).
-	])."
 ]
 
 { #category : #'card playing' }
