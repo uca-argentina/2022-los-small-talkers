@@ -1025,42 +1025,6 @@ CardTest >> testReversalCardHasSameEffectAsOriginalSquareWhenOwnerShipLandsOnDra
 ]
 
 { #category : #tests }
-CardTest >> testReversalCardMovesTargetSpaceshiftBackwardsAnAmountOfFourWhenOwnerShipLandsOnSpeedUpSquare [
-	| game enterprise planetExpress starfighter aDie aBoard squares deck |
-		enterprise := 'Enterprise'.
-		planetExpress := 'PlanetExpress'.
-		starfighter := 'StarFighter'.
-		squares := SquareGenerator
-			           creating: 20
-		 	          of: { BlankSquare }
-		  	         with: { 1 }.
-		deck := Deck handingOver: { SpeedCard }.
-		aBoard := Board madeUpBy: squares stretchedIntoParsecs: 20.
-		aDie := LoadedDie with: 3.
-		game := TrenchRunGame
-		        withParticipating: { 
-				        enterprise.
-				        planetExpress.
-				        starfighter }
-		        rolling: aDie
-		        on: aBoard
-		        until: 1
-		        using: deck.
-		squares at: 7 put: SpeedUpSquare new.
-		game give: ReversalCard toHandsOf: enterprise.
-		game playNextTurn.
-		game playNextTurn.
-		game playNextTurn.
-		game playNextTurn.
-		game playReversalCardOwnedBy: enterprise aimingAt: starfighter.
-		game playNextTurn.
-
-		self assert: (game squareOf: enterprise) equals: 11.
-		self assert: (game squareOf: planetExpress) equals: 7.
-		self assert: (game squareOf: starfighter) equals: 1.
-]
-
-{ #category : #tests }
 CardTest >> testReversalCardMovesTargetSpaceshipBackwardsAnAmountOfFourWhenOwnerShipLandsOnSpeedUpSquare [
 	| game enterprise planetExpress starfighter aDie aBoard squares deck |
 		enterprise := 'Enterprise'.
@@ -1092,8 +1056,8 @@ CardTest >> testReversalCardMovesTargetSpaceshipBackwardsAnAmountOfFourWhenOwner
 		game playNextTurn.
 
 		self assert: (game squareOf: enterprise) equals: 11.
-		self assert: (game squareOf: planetExpress) equals: 7.
-		self assert: (game squareOf: starfighter) equals: 1.
+		self assert: (game squareOf: planetExpress) equals: 3.
+		self assert: (game squareOf: starfighter) equals: 4.
 ]
 
 { #category : #tests }
@@ -1120,7 +1084,7 @@ CardTest >> testReversalCardMovesTargetSpaceshipBackwardsAnAmountOfLightYearsWhe
 	game playReversalCardOwnedBy: enterprise aimingAt: enterprise.
 	game playNextTurn.
 
-	self assert: (game squareOf: enterprise) equals: 3.
+	self assert: (game squareOf: enterprise) equals: 4.
 ]
 
 { #category : #tests }
@@ -1151,12 +1115,12 @@ CardTest >> testReversalCardMovesTargetSpaceshipForwardAnAmountOfFourSquaresWhen
 		game playNextTurn.
 		game playNextTurn.
 		game playNextTurn.
-		game playReversalCardOwnedBy: enterprise aimingAt: starfighter.
+		game playReversalCardOwnedBy: enterprise aimingAt: planetExpress.
 		game playNextTurn.
 
 		self assert: (game squareOf: enterprise) equals: 3.
-		self assert: (game squareOf: planetExpress) equals: 7.
-		self assert: (game squareOf: starfighter) equals: 8.
+		self assert: (game squareOf: planetExpress) equals: 11.
+		self assert: (game squareOf: starfighter) equals: 4.
 ]
 
 { #category : #accessing }

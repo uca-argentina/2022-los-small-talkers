@@ -22,6 +22,11 @@ BlankSquare >> applyReverseEffectTo: spaceship from: game [
 	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
 ]
 
+{ #category : #'as yet unclassified' }
+BlankSquare >> effect [
+	^0
+]
+
 { #category : #comparing }
 BlankSquare >> hash [ 
 

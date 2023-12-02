@@ -49,6 +49,11 @@ MoonWalkSquare >> applyReverseEffectTo: spaceship from: game [
 	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
 ]
 
+{ #category : #'as yet unclassified' }
+MoonWalkSquare >> effect [
+	^retrogression
+]
+
 { #category : #comparing }
 MoonWalkSquare >> hash [ 
 

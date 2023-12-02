@@ -24,6 +24,11 @@ AtomicBombSquare >> applyReverseEffectTo: spaceship from: game [
 	game history add: (LandsOnSquareEvent from: spaceship landsOn: self).
 ]
 
+{ #category : #'as yet unclassified' }
+AtomicBombSquare >> effect [
+	^0
+]
+
 { #category : #comparing }
 AtomicBombSquare >> hash [ 
 

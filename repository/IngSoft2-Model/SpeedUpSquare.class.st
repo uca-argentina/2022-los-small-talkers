@@ -24,6 +24,11 @@ SpeedUpSquare >> applyReverseEffectTo: spaceship from: game [
 	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
 ]
 
+{ #category : #'as yet unclassified' }
+SpeedUpSquare >> effect [
+	^4
+]
+
 { #category : #comparing }
 SpeedUpSquare >> hash [ 
 

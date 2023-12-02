@@ -53,6 +53,11 @@ HyperJumpSquare >> applyReverseEffectTo: spaceship from: game [
 	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
 ]
 
+{ #category : #'as yet unclassified' }
+HyperJumpSquare >> effect [ 
+	^parsecSequence next.
+]
+
 { #category : #comparing }
 HyperJumpSquare >> hash [ 
 

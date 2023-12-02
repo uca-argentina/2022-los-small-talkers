@@ -22,6 +22,11 @@ Square >> applyReverseEffectTo: spaceship from: game [
 	self subclassResponsibility
 ]
 
+{ #category : #'as yet unclassified' }
+Square >> effect [
+	^ self subclassResponsibility
+]
+
 { #category : #comparing }
 Square >> hash [
 

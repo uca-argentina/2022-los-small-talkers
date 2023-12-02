@@ -24,6 +24,11 @@ DrawCardSquare >> applyReverseEffectTo: spaceship from: game [
 	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
 ]
 
+{ #category : #'as yet unclassified' }
+DrawCardSquare >> effect [
+	^0
+]
+
 { #category : #comparing }
 DrawCardSquare >> hash [ 
 

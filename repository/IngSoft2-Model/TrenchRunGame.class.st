@@ -226,14 +226,19 @@ TrenchRunGame >> playCancellationCardOwnedBy: aSpaceship aimingAt: aPlayedPerman
 { #category : #'turn related' }
 TrenchRunGame >> playNextTurn [
 
-	| squaresForward ship |
+	| squaresForward ship lastSquareEffect |
 	ship := spaceshipSequence next.
 	state update: self.
 	self checkEnabledToPlayTurn: ship.
-	squaresForward := playedCardStack applyEffectsTo: ship using: dice roll.
+	lastSquareEffect := 0.
+	(self history checkLastPlayCardEventIfEmpty) ifFalse: [ 
+		(self lastPlayedCard isKindOf: ReversalCard) ifTrue: [ 
+			lastSquareEffect := (self lastLandsOnSquareEvent) effect. ]  ].
+	squaresForward := playedCardStack applyEffectsTo: ship using: (dice roll - lastSquareEffect).
 	self move: ship anAmountOf: squaresForward.
 	(self isFinished ifFalse: [
-		self goAheadWithTurn: ship.
+		gameBoard applyEffectAt: (self squareOf: ship) to: ship on: self .
+		"self goAheadWithTurn: ship."
 	]).
 ]
 
@@ -312,6 +317,12 @@ TrenchRunGame >> positionOf: aShip [
 TrenchRunGame >> positions [ 
 
 	^positionTracker positions.
+]
+
+{ #category : #accessing }
+TrenchRunGame >> previousPlayer [
+
+	spaceshipSequence previous.
 ]
 
 { #category : #'accessing - positions' }

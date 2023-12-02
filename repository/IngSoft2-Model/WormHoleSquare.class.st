@@ -24,6 +24,11 @@ WormHoleSquare >> applyReverseEffectTo: spaceship from: game [
 	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
 ]
 
+{ #category : #'as yet unclassified' }
+WormHoleSquare >> effect [
+	^-4
+]
+
 { #category : #comparing }
 WormHoleSquare >> hash [ 
 
