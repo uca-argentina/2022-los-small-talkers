@@ -419,37 +419,6 @@ GameInstanceTest >> testSpaceshipCompletingALapActuallyCountsIntoPositionTracker
 ]
 
 { #category : #tests }
-GameInstanceTest >> testSpaceshipPlayingOutOfTurnIsAddedToPenalizationStack [
-
-	| game enterprise die board squares starship penalizedShips |
-	enterprise := 'Enterprise'.
-	starship := 'Starship'.
-	die := LoadedDie with: 3.
-	squares := SquareGenerator
-		           creating: 20
-		           of: { BlankSquare }
-		           with: { 1 }.
-	board := Board madeUpBy: squares stretchedIntoLightYears: 20.
-	game := TrenchRunGame
-		        withParticipating: { enterprise. starship }
-		        rolling: die
-		        on: board
-		        until: 1
-		        using: (Deck handingOver: { SpeedCard }).
-	
-	
-	game playOwnTurn: enterprise.
-	game playOwnTurn: starship.
-	game playOwnTurn: enterprise.
-	game playOwnTurn: starship.
-	game playOwnTurn: starship.
-	
-	penalizedShips := game penalizedSpaceshipsStack.
-	
-	self assert: (penalizedShips includes: starship).
-]
-
-{ #category : #tests }
 GameInstanceTest >> testSpaceshipPlayingOutOfTurnIsMovedTwoSquaresBackwards [
 
 	| game enterprise die board squares starship |
@@ -469,6 +438,36 @@ GameInstanceTest >> testSpaceshipPlayingOutOfTurnIsMovedTwoSquaresBackwards [
 		        using: (Deck handingOver: { SpeedCard }).
 	
 	
+	game playOwnTurn: enterprise.
+	game playOwnTurn: starship.
+	game playOwnTurn: enterprise.
+	game playOwnTurn: starship.
+	game playOwnTurn: starship.
+	
+	self assert: (game squareOf: enterprise) equals: 7.
+	self assert: (game squareOf: starship) equals: 5.
+]
+
+{ #category : #tests }
+GameInstanceTest >> testSpaceshipPlayingOutOfTurnIsMovedTwoSquaresBackwardsAndSquareHasNoEffect [
+
+	| game enterprise die board squares starship |
+	enterprise := 'Enterprise'.
+	starship := 'Starship'.
+	die := LoadedDie with: 3.
+	squares := SquareGenerator
+		           creating: 20
+		           of: { BlankSquare }
+		           with: { 1 }.
+	board := Board madeUpBy: squares stretchedIntoLightYears: 20.
+	game := TrenchRunGame
+		        withParticipating: { enterprise. starship }
+		        rolling: die
+		        on: board
+		        until: 1
+		        using: (Deck handingOver: { SpeedCard }).
+	
+	squares at: 5 put: SpeedUpSquare new.
 	game playOwnTurn: enterprise.
 	game playOwnTurn: starship.
 	game playOwnTurn: enterprise.

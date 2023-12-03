@@ -52,7 +52,7 @@ Board >> applyEffectAt: aSquare to: aSpaceship on: aGame [
 { #category : #'executing effects' }
 Board >> applyReverseEffectAt: aSquare to: aSpaceship on: aGame [
 
-	(squares at: aSquare) applyReverseEffectTo: aSpaceship from: aGame
+	"(squares at: aSquare) applyReverseEffectTo: aSpaceship from: aGame"
 ]
 
 { #category : #initialization }

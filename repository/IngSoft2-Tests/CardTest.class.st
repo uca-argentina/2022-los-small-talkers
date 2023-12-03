@@ -167,6 +167,62 @@ CardTest >> testCancellationCardRemovesAnActiveAccelerationCard [
 		withMessage: 'Cannot remove a nonexistent effect'
 ]
 
+{ #category : #tests }
+CardTest >> testCancellationCardRemovesAnActiveReversalCard [
+
+	| game enterprise planetExpress starfighter aDie aBoard squares deck |
+	enterprise := 'Enterprise'.
+	planetExpress := 'PlanetExpress'.
+	starfighter := 'StarFighter'.
+	squares := SquareGenerator
+		           creating: 10
+		           of: { BlankSquare }
+		           with: { 1 }.
+	deck := Deck handingOver: { CancellationCard }.
+	aBoard := Board madeUpBy: squares stretchedIntoParsecs: 10.
+	aDie := LoadedDie with: 1.
+	game := TrenchRunGame
+		        withParticipating: { 
+				        enterprise.
+				        planetExpress.
+				        starfighter }
+		        rolling: aDie
+		        on: aBoard
+		        until: 1
+		        using: deck.
+	
+	squares at: 3 put: WormHoleSquare new.
+	
+	game give: CancellationCard toHandsOf: starfighter.
+	game give: ReversalCard toHandsOf: enterprise.
+	
+
+	game playNextTurn.
+	game playNextTurn.
+	game playNextTurn.
+	game playNextTurn.
+	game playReversalCardOwnedBy: enterprise aimingAt: planetExpress.
+	game playNextTurn.
+	game
+		playCancellationCardOwnedBy: starfighter
+		aimingAt: (PlayedPermanentCard
+				 using: (ReversalCard ownedBy: enterprise)
+				 aimingAt: planetExpress).
+				
+	self
+		should: [ 
+			game
+				playCancellationCardOwnedBy: starfighter
+				aimingAt: (PlayedPermanentCard
+						 using: (AccelerationCard ownedBy: enterprise)
+						 aimingAt: { 
+						 			enterprise.
+						 			planetExpress.
+						 			starfighter }) ]
+		raise: Error
+		withMessage: 'Cannot remove a nonexistent effect'
+]
+
 { #category : #accessing }
 CardTest >> testOverloadCardEqualsAnotherOverloadCardWithSameValues [
 
@@ -1022,6 +1078,39 @@ CardTest >> testReversalCardHasSameEffectAsOriginalSquareWhenOwnerShipLandsOnDra
 
 	self assert: (aGame squareOf: enterprise) equals: 15.
 	self assert: (aGame squareOf: star) equals: 8.
+]
+
+{ #category : #tests }
+CardTest >> testReversalCardMovesSpaceshipsForwardInsteadOfBackwardsWhenOwnerLandsOnMoonWalkSquare [
+
+	| aGame enterprise board starfighter explorer aDie squares |
+	aDie := LoadedDie with: 3.
+	squares := SquareGenerator
+		           creating: 10
+		           of: { BlankSquare }
+		           with: { 1 }.
+	squares at: 7 put: (MoonWalkSquare with: 1).
+	board := Board madeUpBy: squares stretchedIntoParsecs: 10.
+	enterprise := 'Enterprise'.
+	starfighter := 'Starfighter'.
+	explorer := 'Explorer'.
+	aGame := TrenchRunGame
+		         withParticipating: { 
+				         enterprise.
+				         starfighter }
+		         rolling: aDie
+		         on: board
+		         until: 1
+		         using: (Deck handingOver: { SpeedCard }).
+	aGame give: ReversalCard toHandsOf: enterprise.
+	aGame playNextTurn.
+	aGame playNextTurn.
+	aGame playNextTurn.
+	aGame playReversalCardOwnedBy: enterprise aimingAt: starfighter.
+	aGame playNextTurn.
+	
+	self assert: (aGame squareOf: enterprise) equals: 7.
+	self assert: (aGame squareOf: starfighter) equals: 5.
 ]
 
 { #category : #tests }

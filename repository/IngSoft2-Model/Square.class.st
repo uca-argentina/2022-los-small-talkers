@@ -16,12 +16,6 @@ Square >> applyEffectTo: spaceship from: game [
 	self subclassResponsibility
 ]
 
-{ #category : #'executing effects' }
-Square >> applyReverseEffectTo: spaceship from: game [
-
-	self subclassResponsibility
-]
-
 { #category : #'as yet unclassified' }
 Square >> effect [
 	^ self subclassResponsibility

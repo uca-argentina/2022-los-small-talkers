@@ -28,26 +28,6 @@ TrenchRunGame class >> withParticipating: spaceships rolling: aDiceCup on: aBoar
 		  using: aDeck
 ]
 
-{ #category : #'applying effects' }
-TrenchRunGame >> applyEffectsTo: ship [
-
-	(self lastPlayedCard isKindOf: ReversalCard)
-				ifTrue: [ self applyReversalEffectsTo: ship ]
-				ifFalse: [ self applyNormalEffectsTo: ship ]
-]
-
-{ #category : #'applying effects' }
-TrenchRunGame >> applyNormalEffectsTo: ship [
-
-	gameBoard applyEffectAt: (self squareOf: ship) to: ship on: self
-]
-
-{ #category : #'applying effects' }
-TrenchRunGame >> applyReversalEffectsTo: ship [
-
-	gameBoard applyReverseEffectAt: (self squareOf: ship) to: ((self history) lastPlayCardEvent) target on: self
-]
-
 { #category : #accessing }
 TrenchRunGame >> checkEnabledToPlayTurn: ship [
 
@@ -79,15 +59,6 @@ TrenchRunGame >> end [
 TrenchRunGame >> give: cardType toHandsOf: spaceship [
 
 	onHandCardStack give: cardType toHandsOf: spaceship
-]
-
-{ #category : #'turn related' }
-TrenchRunGame >> goAheadWithTurn: ship [
-
-	(self history checkLastPlayCardEventIfEmpty) ifTrue: [
-    ^ self applyNormalEffectsTo: ship.
-	].
-	^ self applyEffectsTo: ship.
 ]
 
 { #category : #'event recording' }
@@ -238,7 +209,6 @@ TrenchRunGame >> playNextTurn [
 	self move: ship anAmountOf: squaresForward.
 	(self isFinished ifFalse: [
 		gameBoard applyEffectAt: (self squareOf: ship) to: ship on: self .
-		"self goAheadWithTurn: ship."
 	]).
 ]
 

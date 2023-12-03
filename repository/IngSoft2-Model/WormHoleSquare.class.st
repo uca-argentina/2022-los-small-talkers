@@ -17,14 +17,7 @@ WormHoleSquare >> applyEffectTo: spaceship from: game [
 	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
 ]
 
-{ #category : #'executing effects' }
-WormHoleSquare >> applyReverseEffectTo: spaceship from: game [
-
-	game move: spaceship anAmountOf: 4.
-	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 WormHoleSquare >> effect [
 	^-4
 ]

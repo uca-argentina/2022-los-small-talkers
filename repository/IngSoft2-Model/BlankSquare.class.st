@@ -16,13 +16,7 @@ BlankSquare >> applyEffectTo: spaceship from: game [
 	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
 ]
 
-{ #category : #'executing effects' }
-BlankSquare >> applyReverseEffectTo: spaceship from: game [
-
-	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BlankSquare >> effect [
 	^0
 ]

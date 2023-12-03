@@ -17,14 +17,7 @@ DrawCardSquare >> applyEffectTo: spaceship from: game [
 	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
 ]
 
-{ #category : #'executing effects' }
-DrawCardSquare >> applyReverseEffectTo: spaceship from: game [
-
-	game take: 1 andGiveToHandsOf: spaceship.
-	game history add: (LandsOnSquareEvent from: spaceship landsOn: self)
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 DrawCardSquare >> effect [
 	^0
 ]

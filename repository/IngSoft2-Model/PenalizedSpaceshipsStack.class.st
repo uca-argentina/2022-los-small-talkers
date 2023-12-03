@@ -38,9 +38,3 @@ PenalizedSpaceshipsStack >> losesNextTurn: aSpaceship [
 
 	penalizedSpaceships add: aSpaceship.
 ]
-
-{ #category : #accessing }
-PenalizedSpaceshipsStack >> penalizedSpaceships [
-
-	^penalizedSpaceships
-]
