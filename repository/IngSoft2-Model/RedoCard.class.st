@@ -1,6 +1,6 @@
 Class {
 	#name : #RedoCard,
-	#superclass : #InstantCard,
+	#superclass : #Card,
 	#instVars : [
 		'owner'
 	],
